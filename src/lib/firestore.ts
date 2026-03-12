@@ -1,0 +1,251 @@
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  getDocs,
+  getDoc,
+  query,
+  where,
+  orderBy,
+  Timestamp,
+} from 'firebase/firestore';
+import { db } from './firebase';
+import { BlogPost, Post, PostStatus } from '@/types';
+
+const POSTS_COLLECTION = 'posts';
+
+// Helper function to convert Firestore Timestamp to ISO string
+const convertTimestamp = (timestamp: any): string => {
+  if (!timestamp) return '';
+  if (typeof timestamp === 'string') return timestamp;
+  if (timestamp.toDate && typeof timestamp.toDate === 'function') {
+    try {
+      return timestamp.toDate().toISOString();
+    } catch (error) {
+      return '';
+    }
+  }
+  return '';
+};
+
+// Create a new blog post
+export async function createPost(postData: Omit<BlogPost, 'id'>) {
+  try {
+    const docRef = await addDoc(collection(db, POSTS_COLLECTION), {
+      ...postData,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
+    return { id: docRef.id, ...postData };
+  } catch (error) {
+    console.error('Error creating post:', error);
+    throw error;
+  }
+}
+
+// Get all blog posts
+export async function getAllPosts() {
+  try {
+    const q = query(
+      collection(db, POSTS_COLLECTION),
+      orderBy('createdAt', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as BlogPost[];
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
+  }
+}
+
+// Get post by ID
+export async function getPostById(postId: string) {
+  try {
+    const docRef = doc(db, POSTS_COLLECTION, postId);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return { id: docSnap.id, ...docSnap.data() } as BlogPost;
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching post:', error);
+    throw error;
+  }
+}
+
+// Get posts by category
+export async function getPostsByCategory(category: string) {
+  try {
+    const q = query(
+      collection(db, POSTS_COLLECTION),
+      where('category', '==', category),
+      orderBy('createdAt', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as BlogPost[];
+  } catch (error) {
+    console.error('Error fetching posts by category:', error);
+    throw error;
+  }
+}
+
+// Update a blog post
+export async function updatePost(postId: string, postData: Partial<BlogPost>) {
+  try {
+    const docRef = doc(db, POSTS_COLLECTION, postId);
+    await updateDoc(docRef, {
+      ...postData,
+      updatedAt: Timestamp.now(),
+    });
+    return { id: postId, ...postData };
+  } catch (error) {
+    console.error('Error updating post:', error);
+    throw error;
+  }
+}
+
+// Delete a blog post
+export async function deletePost(postId: string) {
+  try {
+    await deleteDoc(doc(db, POSTS_COLLECTION, postId));
+    return postId;
+  } catch (error) {
+    console.error('Error deleting post:', error);
+    throw error;
+  }
+}
+
+// ===== Typed Post operations for admin editor =====
+
+export async function createPostDraft(
+  data: Omit<Post, 'id' | 'createdAt' | 'updatedAt' | 'views'>
+): Promise<string> {
+  try {
+    console.log('[Firestore] Creating draft post with data:', data);
+    const docRef = await addDoc(collection(db, POSTS_COLLECTION), {
+      ...data,
+      views: 0,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
+    console.log('[Firestore] Draft post created successfully with ID:', docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error('[Firestore] Error creating draft post:', error);
+    throw error;
+  }
+}
+
+export async function getPostTyped(postId: string): Promise<Post | null> {
+  try {
+    console.log('[Firestore] Getting post with ID:', postId);
+    const docRef = doc(db, POSTS_COLLECTION, postId);
+    const docSnap = await getDoc(docRef);
+    console.log('[Firestore] Document exists:', docSnap.exists());
+    if (docSnap.exists()) {
+      const rawData = docSnap.data();
+      const data: Post = {
+        id: docSnap.id,
+        ...rawData,
+        createdAt: convertTimestamp(rawData.createdAt),
+        updatedAt: convertTimestamp(rawData.updatedAt),
+        publishedAt: rawData.publishedAt ? convertTimestamp(rawData.publishedAt) : undefined,
+      } as Post;
+      console.log('[Firestore] Post data retrieved:', data);
+      return data;
+    }
+    console.log('[Firestore] Document does not exist for ID:', postId);
+    return null;
+  } catch (error) {
+    console.error('[Firestore] Error fetching post:', error);
+    throw error;
+  }
+}
+
+export async function getAllPostsTyped(): Promise<Post[]> {
+  try {
+    const q = query(
+      collection(db, POSTS_COLLECTION),
+      orderBy('createdAt', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: convertTimestamp(data.createdAt),
+        updatedAt: convertTimestamp(data.updatedAt),
+        publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+      } as Post;
+    });
+  } catch (error) {
+    console.error('Error fetching all posts:', error);
+    throw error;
+  }
+}
+
+export async function getPostsByStatusTyped(status: PostStatus): Promise<Post[]> {
+  try {
+    const q = query(
+      collection(db, POSTS_COLLECTION),
+      where('status', '==', status),
+      orderBy('createdAt', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: convertTimestamp(data.createdAt),
+        updatedAt: convertTimestamp(data.updatedAt),
+        publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+      } as Post;
+    });
+  } catch (error) {
+    console.error('Error fetching posts by status:', error);
+    throw error;
+  }
+}
+
+export async function updatePostTyped(
+  postId: string,
+  data: Partial<Post>
+): Promise<void> {
+  try {
+    const docRef = doc(db, POSTS_COLLECTION, postId);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: Timestamp.now(),
+    });
+  } catch (error) {
+    console.error('Error updating post:', error);
+    throw error;
+  }
+}
+
+export async function publishPost(postId: string): Promise<void> {
+  try {
+    console.log('[Firestore] Publishing post with ID:', postId);
+    const docRef = doc(db, POSTS_COLLECTION, postId);
+    console.log('[Firestore] Updating document with status=published...');
+    await updateDoc(docRef, {
+      status: 'published',
+      publishedAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
+    console.log('[Firestore] Post published successfully!');
+  } catch (error) {
+    console.error('[Firestore] Error publishing post:', error);
+    throw error;
+  }
+}

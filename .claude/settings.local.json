@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r admin c:UserstejasOneDriveDesktoptravel-handmadesrc --include=*.tsx --include=*.ts)"
+    ]
+  }
+}
