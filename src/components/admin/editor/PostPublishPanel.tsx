@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { ChevronDown, X } from 'lucide-react';
-import { categories } from '@/data/mockData';
-import type { PostStatus, PostVisibility } from '@/types';
+import { getCategories } from '@/lib/firestore';
+import type { PostStatus, PostVisibility, Category } from '@/types';
 
 interface PostPublishPanelProps {
   status: PostStatus;
@@ -46,6 +46,24 @@ export default function PostPublishPanel({
 }: PostPublishPanelProps): React.ReactElement {
   const [tagInput, setTagInput] = useState('');
   const [seoExpanded, setSeoExpanded] = useState(false);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setCategoriesLoading(true);
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   const readingTime = useMemo(() => {
     const minutes = Math.ceil(wordCount / 200);
@@ -125,19 +143,25 @@ export default function PostPublishPanel({
         <label className="block text-sm font-medium text-gray-900">
           Category
         </label>
-        {categories.map((cat) => (
-          <label key={cat.id} className="flex items-center gap-2">
-            <input
-              type="radio"
-              name="category"
-              value={cat.slug}
-              checked={category === cat.slug}
-              onChange={(e) => onCategoryChange(e.target.value)}
-              className="rounded border-gray-300"
-            />
-            <span className="text-sm text-gray-700">{cat.name}</span>
-          </label>
-        ))}
+        {categoriesLoading ? (
+          <div className="text-sm text-gray-500">Loading categories...</div>
+        ) : categories.length === 0 ? (
+          <div className="text-sm text-gray-500">No categories available</div>
+        ) : (
+          categories.map((cat) => (
+            <label key={cat.id} className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="category"
+                value={cat.slug}
+                checked={category === cat.slug}
+                onChange={(e) => onCategoryChange(e.target.value)}
+                className="rounded border-gray-300"
+              />
+              <span className="text-sm text-gray-700">{cat.name}</span>
+            </label>
+          ))
+        )}
       </div>
 
       {/* Tags */}

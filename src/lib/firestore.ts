@@ -12,9 +12,10 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { BlogPost, Post, PostStatus } from '@/types';
+import { BlogPost, Post, PostStatus, Category } from '@/types';
 
 const POSTS_COLLECTION = 'posts';
+const CATEGORIES_COLLECTION = 'categories';
 
 // Helper function to convert Firestore Timestamp to ISO string
 const convertTimestamp = (timestamp: any): string => {
@@ -246,6 +247,57 @@ export async function publishPost(postId: string): Promise<void> {
     console.log('[Firestore] Post published successfully!');
   } catch (error) {
     console.error('[Firestore] Error publishing post:', error);
+    throw error;
+  }
+}
+
+// ===== Category operations =====
+
+export async function createCategory(data: Omit<Category, 'id'>): Promise<string> {
+  try {
+    console.log('[Firestore] Creating category:', data.name);
+    const docRef = await addDoc(collection(db, CATEGORIES_COLLECTION), data);
+    console.log('[Firestore] Category created with ID:', docRef.id);
+    return docRef.id;
+  } catch (error) {
+    console.error('[Firestore] Error creating category:', error);
+    throw error;
+  }
+}
+
+export async function getCategories(): Promise<Category[]> {
+  try {
+    const q = query(collection(db, CATEGORIES_COLLECTION), orderBy('name', 'asc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Category[];
+  } catch (error) {
+    console.error('[Firestore] Error fetching categories:', error);
+    throw error;
+  }
+}
+
+export async function updateCategory(id: string, data: Partial<Category>): Promise<void> {
+  try {
+    console.log('[Firestore] Updating category:', id);
+    const docRef = doc(db, CATEGORIES_COLLECTION, id);
+    await updateDoc(docRef, data);
+    console.log('[Firestore] Category updated successfully!');
+  } catch (error) {
+    console.error('[Firestore] Error updating category:', error);
+    throw error;
+  }
+}
+
+export async function deleteCategory(id: string): Promise<void> {
+  try {
+    console.log('[Firestore] Deleting category:', id);
+    await deleteDoc(doc(db, CATEGORIES_COLLECTION, id));
+    console.log('[Firestore] Category deleted successfully!');
+  } catch (error) {
+    console.error('[Firestore] Error deleting category:', error);
     throw error;
   }
 }

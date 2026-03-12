@@ -7,6 +7,7 @@ import {
   FileText,
   Plus,
   ExternalLink,
+  Tag,
 } from 'lucide-react';
 
 export default function AdminSidebar(): React.ReactElement {
@@ -38,6 +39,12 @@ export default function AdminSidebar(): React.ReactElement {
           icon={FileText}
           label="All Posts"
           active={isActive('/admin/posts')}
+        />
+        <NavLink
+          href="/admin/categories"
+          icon={Tag}
+          label="Categories"
+          active={isActive('/admin/categories')}
         />
         <NavLink
           href="/admin/posts/new"

@@ -4,8 +4,7 @@ import { useEffect, useState, use } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
-import { getAllPostsTyped } from '@/lib/firestore';
-import { categories } from '@/data/mockData';
+import { getAllPostsTyped, getCategories } from '@/lib/firestore';
 import type { Post, Category } from '@/types';
 
 interface CategoryPageProps {
@@ -16,6 +15,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = use(params);
   const [posts, setPosts] = useState<Post[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
+  const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,8 +23,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       try {
         setLoading(true);
 
+        // Get all categories from Firestore
+        const categoriesData = await getCategories();
+        setAllCategories(categoriesData);
+
         // Find the category by slug
-        const foundCategory = categories.find((c) => c.slug === slug);
+        const foundCategory = categoriesData.find((c) => c.slug === slug);
         setCategory(foundCategory || null);
 
         if (foundCategory) {
@@ -127,12 +131,13 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               </div>
 
               {/* Browse Other Categories */}
+              {allCategories.length > 0 && (
               <div className="mt-16 pt-12 border-t border-gray-300">
                 <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
                   Browse Other Categories
                 </h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                  {categories
+                  {allCategories
                     .filter((c) => c.slug !== slug)
                     .map((cat) => (
                       <Link
@@ -151,6 +156,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                     ))}
                 </div>
               </div>
+              )}
             </>
           )}
         </div>

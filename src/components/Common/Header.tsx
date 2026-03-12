@@ -2,17 +2,29 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { getCategories } from '@/lib/firestore';
+import type { Category } from '@/types';
 
 export default function Header() {
-  const navigationItems = [
-    { name: 'TRAVEL + LIVING', slug: 'travel-living' },
-    { name: 'ADVENTURE + WILDLIFE', slug: 'adventure-wildlife' },
-    { name: 'FOOD + DRINKS', slug: 'food-drinks' },
-    { name: 'RETREATS', slug: 'retreats' },
-    { name: 'WELLNESS', slug: 'wellness' },
-    { name: 'CHANGEMAKER', slug: 'changemaker' },
-    { name: 'TRAVELLER', slug: 'traveller' },
-  ];
+  const [navigationItems, setNavigationItems] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchNavigation = async () => {
+      try {
+        setLoading(true);
+        const categories = await getCategories();
+        setNavigationItems(categories);
+      } catch (error) {
+        console.error('Failed to fetch navigation categories:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNavigation();
+  }, []);
 
   return (
     <header className="bg-black text-white sticky top-0 z-50">
@@ -31,7 +43,7 @@ export default function Header() {
 
         {/* Navigation Items */}
         <div className="hidden xl:flex gap-12 items-center justify-center flex-1 ml-20">
-          {navigationItems.map((item) => (
+          {!loading && navigationItems.length > 0 && navigationItems.map((item) => (
             <Link
               key={item.slug}
               href={`/category/${item.slug}`}
