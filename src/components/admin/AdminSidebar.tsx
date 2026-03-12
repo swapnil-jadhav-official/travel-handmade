@@ -8,6 +8,7 @@ import {
   Plus,
   ExternalLink,
   Tag,
+  Settings,
 } from 'lucide-react';
 
 export default function AdminSidebar(): React.ReactElement {
@@ -55,14 +56,22 @@ export default function AdminSidebar(): React.ReactElement {
       </nav>
 
       {/* Footer */}
-      <div className="border-t border-gray-800 px-6 py-6">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
-        >
-          View Site
-          <ExternalLink className="h-4 w-4" />
-        </Link>
+      <div className="border-t border-gray-800 space-y-2 px-3 py-6">
+        <NavLink
+          href="/admin/setup"
+          icon={Settings}
+          label="Setup"
+          active={isActive('/admin/setup')}
+        />
+        <div className="px-4 pt-2">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
+          >
+            View Site
+            <ExternalLink className="h-4 w-4" />
+          </Link>
+        </div>
       </div>
     </aside>
   );
