@@ -39,15 +39,15 @@ export default function HeroCarousel({
 
         {/* Title Overlay */}
         {images[activeIndex] && (
-          <div className="absolute bottom-8 left-8 z-10">
-            <h1 className="font-unbounded font-medium text-2xl text-white md:text-3xl">
+          <div className="absolute inset-0 flex items-center justify-center z-10 px-4">
+            <h1 className="font-unbounded font-medium text-4xl md:text-5xl lg:text-6xl text-white text-center leading-tight max-w-4xl">
               {images[activeIndex].title}
             </h1>
           </div>
         )}
 
         {/* Dot Indicators */}
-        <div className="absolute bottom-8 right-8 z-10 flex gap-2">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2">
           {images.map((_, index) => (
             <button
               key={index}
