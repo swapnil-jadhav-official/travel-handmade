@@ -1,4 +1,3 @@
-import SectionHeader from '@/components/ui/SectionHeader';
 import HoverImageList from '@/components/ui/HoverImageList';
 import type { Article } from '@/types';
 
@@ -10,13 +9,20 @@ export default function Retreats({
   articles,
 }: RetreatsProps): React.ReactElement {
   return (
-    <section className="w-full px-8 py-16">
-      <SectionHeader title="Retreats" className="mb-12" />
-      <HoverImageList
-        articles={articles}
-        imagePosition="left"
-        showMeta={false}
-      />
+    <section className="w-full bg-black py-16">
+      <div className="px-8 mb-12">
+        <h2 className="font-unbounded font-light text-3xl uppercase tracking-wide text-white border-b border-white pb-2">
+          Retreats
+        </h2>
+      </div>
+      <div className="px-8">
+        <HoverImageList
+          articles={articles}
+          imagePosition="right"
+          showMeta={true}
+          darkMode={true}
+        />
+      </div>
     </section>
   );
 }

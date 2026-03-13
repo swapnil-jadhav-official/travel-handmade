@@ -9,12 +9,14 @@ interface HoverImageListProps {
   articles: Article[];
   imagePosition: "left" | "right";
   showMeta?: boolean;
+  darkMode?: boolean;
 }
 
 export default function HoverImageList({
   articles,
   imagePosition,
   showMeta = false,
+  darkMode = false,
 }: HoverImageListProps): React.ReactElement {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -40,16 +42,30 @@ export default function HoverImageList({
                   index !== articles.length - 1 ? "border-b border-black/20" : ""
                 }`}
               >
-                {/* Metadata (optional) */}
-                {showMeta && (
-                  <p className="mb-2 font-work-sans text-xs text-gray-600">
-                    {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
-                    {article.date}
-                  </p>
+                {/* Author (shown in dark mode instead of metadata) */}
+                {darkMode && article.author ? (
+                  <div className="mb-2">
+                    <p className={`font-work-sans text-xs ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                      {article.author.toUpperCase()}
+                    </p>
+                    {article.authorLocation && (
+                      <p className={`font-unbounded font-bold text-base ${darkMode ? "text-white" : "text-black"}`}>
+                        {article.authorLocation}
+                      </p>
+                    )}
+                  </div>
+                ) : (
+                  /* Metadata (optional, shown when not in dark mode or no author) */
+                  showMeta && (
+                    <p className={`mb-2 font-work-sans text-xs ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                      {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
+                      {article.date}
+                    </p>
+                  )
                 )}
 
                 {/* Title */}
-                <h3 className="font-unbounded font-bold text-base text-black transition-all duration-200 group-hover:underline">
+                <h3 className={`font-unbounded font-bold text-base transition-all duration-200 group-hover:underline ${darkMode ? "text-white" : "text-black"}`}>
                   {article.title}
                 </h3>
               </div>

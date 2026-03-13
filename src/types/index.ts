@@ -15,6 +15,7 @@ export interface Post {
   category: string;
   tags: string[];
   author: string;
+  authorLocation?: string;
   status: PostStatus;
   visibility: PostVisibility;
   password?: string;
@@ -34,6 +35,8 @@ export interface Article {
   slug: string;
   category?: string;
   date?: string;
+  author?: string;
+  authorLocation?: string;
 }
 
 export interface HeroImage {

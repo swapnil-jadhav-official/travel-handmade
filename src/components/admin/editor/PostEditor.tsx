@@ -155,6 +155,8 @@ export default function PostEditor({
             slug={post.slug || ''}
             excerpt={post.excerpt || ''}
             featuredImage={post.featuredImage}
+            author={post.author || ''}
+            authorLocation={post.authorLocation}
             onTitleChange={(title) => handleFieldChange('title', title)}
             onSlugChange={(slug) => handleFieldChange('slug', slug)}
             onExcerptChange={(excerpt) => handleFieldChange('excerpt', excerpt)}
@@ -162,6 +164,10 @@ export default function PostEditor({
               handleFieldChange('featuredImage', url)
             }
             onFeaturedImageRemove={() => handleFieldChange('featuredImage', '')}
+            onAuthorChange={(author) => handleFieldChange('author', author)}
+            onAuthorLocationChange={(location) =>
+              handleFieldChange('authorLocation', location)
+            }
           />
         </div>
       )}

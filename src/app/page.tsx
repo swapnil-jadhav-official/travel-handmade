@@ -8,6 +8,7 @@ import LatestArticles from '@/components/sections/LatestArticles';
 import TravelLiving from '@/components/sections/TravelLiving';
 import AdventureWildlife from '@/components/sections/AdventureWildlife';
 import FoodDrinks from '@/components/sections/FoodDrinks';
+import Retreats from '@/components/sections/Retreats';
 import Wellness from '@/components/sections/Wellness';
 import ChangeMaker from '@/components/sections/ChangeMaker';
 import TravellerSection from '@/components/sections/Traveller';
@@ -44,6 +45,8 @@ export default function Home() {
     slug: post.slug,
     category: post.category,
     date: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : '',
+    author: post.author,
+    authorLocation: post.authorLocation,
   }));
 
   // Create hero images from latest posts with featured images
@@ -61,6 +64,7 @@ export default function Home() {
   const travelLivingArticles = postsAsArticles.filter((p) => p.category === 'travel-living').slice(0, 3);
   const adventureArticles = postsAsArticles.filter((p) => p.category === 'adventure-wildlife').slice(0, 3);
   const foodDrinksArticles = postsAsArticles.filter((p) => p.category === 'food-drinks').slice(0, 3);
+  const retreatsArticles = postsAsArticles.filter((p) => p.category === 'retreats').slice(0, 3);
   const wellnessArticles = postsAsArticles.filter((p) => p.category === 'wellness').slice(0, 3);
   const changeMakerArticles = postsAsArticles.filter((p) => p.category === 'changemaker').slice(0, 3);
 
@@ -82,6 +86,9 @@ export default function Home() {
 
         {/* Food + Drinks */}
         {!loading && foodDrinksArticles.length > 0 && <FoodDrinks articles={foodDrinksArticles} />}
+
+        {/* Retreats */}
+        {!loading && retreatsArticles.length > 0 && <Retreats articles={retreatsArticles} />}
 
         {/* Wellness */}
         {!loading && wellnessArticles.length > 0 && <Wellness articles={wellnessArticles} />}

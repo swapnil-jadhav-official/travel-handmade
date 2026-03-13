@@ -9,11 +9,15 @@ interface PostMetaPanelProps {
   slug: string;
   excerpt: string;
   featuredImage?: string;
+  author: string;
+  authorLocation?: string;
   onTitleChange: (title: string) => void;
   onSlugChange: (slug: string) => void;
   onExcerptChange: (excerpt: string) => void;
   onFeaturedImageChange: (url: string) => void;
   onFeaturedImageRemove: () => void;
+  onAuthorChange: (author: string) => void;
+  onAuthorLocationChange: (location: string) => void;
 }
 
 const generateSlug = (text: string): string => {
@@ -30,11 +34,15 @@ export default function PostMetaPanel({
   slug,
   excerpt,
   featuredImage,
+  author,
+  authorLocation,
   onTitleChange,
   onSlugChange,
   onExcerptChange,
   onFeaturedImageChange,
   onFeaturedImageRemove,
+  onAuthorChange,
+  onAuthorLocationChange,
 }: PostMetaPanelProps): React.ReactElement {
   const [uploading, setUploading] = useState(false);
 
@@ -109,6 +117,34 @@ export default function PostMetaPanel({
           placeholder="Brief summary of the post"
           maxLength={160}
           className="h-20 w-full resize-none rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
+        />
+      </div>
+
+      {/* Author */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Author
+        </label>
+        <input
+          type="text"
+          value={author}
+          onChange={(e) => onAuthorChange(e.target.value)}
+          placeholder="Author name"
+          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
+        />
+      </div>
+
+      {/* Author Location */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Author Location
+        </label>
+        <input
+          type="text"
+          value={authorLocation || ''}
+          onChange={(e) => onAuthorLocationChange(e.target.value)}
+          placeholder="e.g., Thailand, New Zealand"
+          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
         />
       </div>
 
