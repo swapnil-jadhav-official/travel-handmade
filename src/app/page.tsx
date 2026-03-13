@@ -43,7 +43,7 @@ export default function Home() {
     image: post.featuredImage || '',
     slug: post.slug,
     category: post.category,
-    date: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : '',
+    date: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : '',
   }));
 
   // Create hero images from latest posts with featured images
@@ -57,9 +57,9 @@ export default function Home() {
     }));
 
   // Organize posts by category
-  const latestArticles = postsAsArticles.slice(0, 6);
+  const latestArticles = postsAsArticles.slice(0, 4);
   const travelLivingArticles = postsAsArticles.filter((p) => p.category === 'travel-living').slice(0, 3);
-  const adventureArticle = postsAsArticles.filter((p) => p.category === 'adventure-wildlife').slice(0, 1);
+  const adventureArticles = postsAsArticles.filter((p) => p.category === 'adventure-wildlife').slice(0, 3);
   const foodDrinksArticles = postsAsArticles.filter((p) => p.category === 'food-drinks').slice(0, 3);
   const wellnessArticles = postsAsArticles.filter((p) => p.category === 'wellness').slice(0, 3);
   const changeMakerArticles = postsAsArticles.filter((p) => p.category === 'changemaker').slice(0, 3);
@@ -78,7 +78,7 @@ export default function Home() {
         {!loading && travelLivingArticles.length > 0 && <TravelLiving articles={travelLivingArticles} />}
 
         {/* Adventure + Wildlife */}
-        {!loading && adventureArticle.length > 0 && <AdventureWildlife article={adventureArticle[0]} />}
+        {!loading && adventureArticles.length > 0 && <AdventureWildlife articles={adventureArticles} />}
 
         {/* Food + Drinks */}
         {!loading && foodDrinksArticles.length > 0 && <FoodDrinks articles={foodDrinksArticles} />}

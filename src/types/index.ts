@@ -51,8 +51,8 @@ export interface Testimonial {
 
 export interface Traveller {
   id: string;
-  name: string;
-  title: string;
+  country: string;
+  traveller_name: string;
   image: string;
   slug: string;
 }

@@ -37,10 +37,13 @@ export default function HeroCarousel({
           />
         ))}
 
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/70 z-5" />
+
         {/* Title Overlay */}
         {images[activeIndex] && (
-          <div className="absolute inset-0 flex items-center justify-center z-10 px-4">
-            <h1 className="font-unbounded font-medium text-4xl md:text-5xl lg:text-6xl text-white text-center leading-tight max-w-4xl">
+          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 px-4 w-full">
+            <h1 className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto">
               {images[activeIndex].title}
             </h1>
           </div>

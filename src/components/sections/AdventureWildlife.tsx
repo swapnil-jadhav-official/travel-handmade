@@ -1,35 +1,70 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import SectionHeader from '@/components/ui/SectionHeader';
+import Image from 'next/image';
 import type { Article } from '@/types';
 
 interface AdventureWildlifeProps {
-  article: Article;
+  articles: Article[];
 }
 
+const AUTO_ROTATE_INTERVAL = 5000;
+
 export default function AdventureWildlife({
-  article,
+  articles,
 }: AdventureWildlifeProps): React.ReactElement {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (articles.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % articles.length);
+    }, AUTO_ROTATE_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [articles.length]);
+
+  const currentArticle = articles[currentIndex];
+
+  if (!currentArticle) return <section className="w-full px-8 py-16" />;
+
   return (
     <section className="w-full px-8 py-16">
-      <SectionHeader title="Adventure + Wildlife" className="mb-12" />
-
-      {/* Hero Image with Overlay */}
-      <Link href={`/blog/${article.slug}`}>
-        <div className="group relative overflow-hidden">
-          <img
-            src={article.image}
-            alt={article.title}
-            className="h-[500px] w-full object-cover transition-transform duration-300 group-hover:scale-105"
+      {/* Featured Card */}
+      <Link href={`/blog/${currentArticle.slug}`}>
+        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-[500px]">
+          {/* Background Image */}
+          <Image
+            src={currentArticle.image}
+            alt={currentArticle.title}
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/40 transition-colors duration-300 group-hover:bg-black/50" />
+          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
 
-          {/* Title */}
-          <div className="absolute bottom-8 left-8 z-10">
-            <h2 className="font-unbounded font-light text-2xl text-white md:text-3xl">
-              {article.title}
+          {/* Content Overlay */}
+          <div className="absolute inset-0 flex flex-col justify-between p-8">
+            {/* Section Header at Top */}
+            <h2 className="font-unbounded font-light text-3xl uppercase tracking-wide text-white border-b border-white pb-2">
+              Adventure + Wildlife
             </h2>
+
+            {/* Article Content at Bottom */}
+            <div>
+              {/* Metadata */}
+              <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-4">
+                {currentArticle.category?.replace(/-/g, ' + ').toUpperCase()} | {currentArticle.date}
+              </p>
+
+              {/* Title */}
+              <h3 className="font-unbounded font-bold text-2xl text-white leading-tight">
+                {currentArticle.title}
+              </h3>
+            </div>
           </div>
         </div>
       </Link>

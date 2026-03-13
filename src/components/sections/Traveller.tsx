@@ -14,9 +14,9 @@ export default function TravellerSection({
       <SectionHeader title="Traveller" className="mb-12" />
 
       {/* 4-Column Grid (lg), 2-Column (md), 1-Column (mobile) */}
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-        {travellers.map((traveller) => (
-          <ProfileCard key={traveller.id} traveller={traveller} />
+      <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-4">
+        {travellers.map((traveller, index) => (
+          <ProfileCard key={traveller.id} traveller={traveller} index={index} />
         ))}
       </div>
     </section>

@@ -1,44 +1,99 @@
+'use client';
+
 import Link from 'next/link';
+import Image from 'next/image';
+import { Instagram, Twitter, Linkedin, Heart } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { getCategories } from '@/lib/firestore';
+import type { Category } from '@/types';
 
 export default function Footer() {
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error('Failed to fetch categories:', error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   return (
-    <footer className="bg-slate-900 text-gray-300 mt-16">
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          <div>
-            <h3 className="text-white font-bold text-lg mb-4">Travel Handmade</h3>
-            <p className="text-sm">Inspiring conscious travel and authentic experiences worldwide.</p>
+    <footer className="bg-black text-white mt-16 w-full">
+      <div className="w-full px-12 py-16">
+        {/* Main Footer Content */}
+        <div className="flex gap-24 mb-16">
+          {/* Logo Section */}
+          <div className="flex-shrink-0">
+            <Image
+              src="/th-logo.png"
+              alt="Travel Handmade"
+              width={120}
+              height={50}
+              className="h-auto w-auto mb-6"
+            />
+            <p className="text-xs text-gray-400">© 2026 Travel Handmade.</p>
           </div>
-          <div>
-            <h4 className="text-white font-bold mb-4">Categories</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="#" className="hover:text-orange-500">Travel + Living</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Adventure</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Food + Drinks</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Wellness</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-bold mb-4">Company</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="#" className="hover:text-orange-500">About Us</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Contact</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Privacy</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Terms</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-white font-bold mb-4">Follow Us</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="#" className="hover:text-orange-500">Facebook</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Instagram</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">Twitter</Link></li>
-              <li><Link href="#" className="hover:text-orange-500">YouTube</Link></li>
-            </ul>
+
+          {/* Links Columns */}
+          <div className="flex-1 grid grid-cols-3 gap-16">
+            {/* Column 1: Main Links */}
+            <div>
+              <ul className="space-y-3 text-xs tracking-wide">
+                <li><Link href="/" className="text-white hover:opacity-70 transition">HOME</Link></li>
+                <li><Link href="#" className="text-white hover:opacity-70 transition">ABOUT US</Link></li>
+                <li><Link href="#" className="text-white hover:opacity-70 transition">NEWSLETTER</Link></li>
+                <li><Link href="#" className="text-white hover:opacity-70 transition">CONTACT US</Link></li>
+                <li><Link href="#" className="text-white hover:opacity-70 transition">PRIVACY</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 2: Categories */}
+            <div>
+              <ul className="space-y-3 text-xs tracking-wide">
+                {categories.map((cat) => (
+                  <li key={cat.id}>
+                    <Link href={`/category/${cat.slug}`} className="text-white hover:opacity-70 transition uppercase">
+                      {cat.name}
+                    </Link>
+                  </li>
+                ))}
+                <li><Link href="#" className="text-white hover:opacity-70 transition">TRAVELLER</Link></li>
+              </ul>
+            </div>
+
+            {/* Column 3: Social Links */}
+            <div>
+              <h4 className="text-xs font-semibold mb-6 tracking-wider">OUR SOCIALS</h4>
+              <div className="flex gap-6">
+                <a href="#" className="text-white hover:opacity-70 transition">
+                  <Instagram className="h-5 w-5" />
+                </a>
+                <a href="#" className="text-white hover:opacity-70 transition">
+                  <Twitter className="h-5 w-5" />
+                </a>
+                <a href="#" className="text-white hover:opacity-70 transition">
+                  <Heart className="h-5 w-5" />
+                </a>
+                <a href="#" className="text-white hover:opacity-70 transition">
+                  <Linkedin className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
-        <div className="border-t border-gray-700 pt-8 text-center text-sm">
-          <p>&copy; 2024 Travel Handmade. All rights reserved.</p>
+
+        {/* Divider */}
+        <div className="border-t border-gray-700"></div>
+
+        {/* Copyright Text */}
+        <div className="pt-8 text-center text-xs text-gray-400">
+          <p>All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade</p>
         </div>
       </div>
     </footer>

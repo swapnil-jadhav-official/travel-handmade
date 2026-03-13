@@ -47,7 +47,7 @@ export default function Header() {
             <Link
               key={item.slug}
               href={`/category/${item.slug}`}
-              className="text-xs font-semibold tracking-wider hover:opacity-70 transition whitespace-nowrap"
+              className="text-sm font-normal tracking-wider uppercase hover:opacity-70 transition whitespace-nowrap"
             >
               {item.name}
             </Link>
