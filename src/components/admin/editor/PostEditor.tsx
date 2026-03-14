@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import BlockEditor from './BlockEditor';
 import PostMetaPanel from './PostMetaPanel';
 import PostPublishPanel from './PostPublishPanel';
@@ -19,6 +20,8 @@ export default function PostEditor({
   initialPost,
 }: PostEditorProps): React.ReactElement {
   const router = useRouter();
+  const { user, userProfile, canPublish } = useAuth();
+
   const [post, setPost] = useState<Partial<Post>>(
     initialPost || {
       title: '',
@@ -27,7 +30,10 @@ export default function PostEditor({
       excerpt: '',
       category: '',
       tags: [],
-      author: 'Admin',
+      authorId: user?.uid || '',
+      authorName: userProfile?.displayName || '',
+      authorCity: userProfile?.city || '',
+      authorCountry: userProfile?.country || '',
       status: 'draft' as PostStatus,
       visibility: 'public' as PostVisibility,
       views: 0,
@@ -94,6 +100,12 @@ export default function PostEditor({
     try {
       console.log('[PostEditor] Publish button clicked');
 
+      // Check role permission
+      if (!canPublish()) {
+        alert('Your role does not have permission to publish posts. Please ask an editor or admin.');
+        return;
+      }
+
       // Validate required fields
       if (!post.title?.trim()) {
         console.warn('[PostEditor] Validation failed: Title is empty');
@@ -155,8 +167,10 @@ export default function PostEditor({
             slug={post.slug || ''}
             excerpt={post.excerpt || ''}
             featuredImage={post.featuredImage}
-            author={post.author || ''}
+            author={post.authorName || ''}
             authorLocation={post.authorLocation}
+            authorCity={post.authorCity}
+            authorCountry={post.authorCountry}
             onTitleChange={(title) => handleFieldChange('title', title)}
             onSlugChange={(slug) => handleFieldChange('slug', slug)}
             onExcerptChange={(excerpt) => handleFieldChange('excerpt', excerpt)}
@@ -164,10 +178,12 @@ export default function PostEditor({
               handleFieldChange('featuredImage', url)
             }
             onFeaturedImageRemove={() => handleFieldChange('featuredImage', '')}
-            onAuthorChange={(author) => handleFieldChange('author', author)}
+            onAuthorChange={(authorName) => handleFieldChange('authorName', authorName)}
             onAuthorLocationChange={(location) =>
               handleFieldChange('authorLocation', location)
             }
+            onAuthorCityChange={(city) => handleFieldChange('authorCity', city)}
+            onAuthorCountryChange={(country) => handleFieldChange('authorCountry', country)}
           />
         </div>
       )}

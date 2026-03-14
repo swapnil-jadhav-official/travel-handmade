@@ -3,18 +3,27 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Trash2, Edit } from 'lucide-react';
-import { getAllPostsTyped, deletePost } from '@/lib/firestore';
+import { useAuth } from '@/contexts/AuthContext';
+import { getAllPostsTyped, deletePost, getPostsByAuthorTyped } from '@/lib/firestore';
 import type { Post } from '@/types';
 
 export default function PostsPage(): React.ReactElement {
+  const { user, isEditorOrAbove } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
       try {
-        const data = await getAllPostsTyped();
-        setPosts(data);
+        if (isEditorOrAbove()) {
+          // Editors and super admins see all posts
+          const data = await getAllPostsTyped();
+          setPosts(data);
+        } else if (user) {
+          // Authors and contributors see only their own posts
+          const data = await getPostsByAuthorTyped(user.uid);
+          setPosts(data);
+        }
       } catch (error) {
         console.error('Failed to fetch posts:', error);
       } finally {
@@ -23,7 +32,7 @@ export default function PostsPage(): React.ReactElement {
     };
 
     fetchPosts();
-  }, []);
+  }, [user, isEditorOrAbove]);
 
   const handleDelete = async (id: string): Promise<void> => {
     if (!confirm('Are you sure you want to delete this post?')) return;

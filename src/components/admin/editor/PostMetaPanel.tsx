@@ -1,8 +1,11 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { X } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
+import { getAllUserProfiles } from '@/lib/users';
+import type { UserProfile } from '@/types';
 
 interface PostMetaPanelProps {
   title: string;
@@ -11,6 +14,8 @@ interface PostMetaPanelProps {
   featuredImage?: string;
   author: string;
   authorLocation?: string;
+  authorCity?: string;
+  authorCountry?: string;
   onTitleChange: (title: string) => void;
   onSlugChange: (slug: string) => void;
   onExcerptChange: (excerpt: string) => void;
@@ -18,6 +23,8 @@ interface PostMetaPanelProps {
   onFeaturedImageRemove: () => void;
   onAuthorChange: (author: string) => void;
   onAuthorLocationChange: (location: string) => void;
+  onAuthorCityChange?: (city: string) => void;
+  onAuthorCountryChange?: (country: string) => void;
 }
 
 const generateSlug = (text: string): string => {
@@ -36,6 +43,8 @@ export default function PostMetaPanel({
   featuredImage,
   author,
   authorLocation,
+  authorCity,
+  authorCountry,
   onTitleChange,
   onSlugChange,
   onExcerptChange,
@@ -43,10 +52,22 @@ export default function PostMetaPanel({
   onFeaturedImageRemove,
   onAuthorChange,
   onAuthorLocationChange,
+  onAuthorCityChange,
+  onAuthorCountryChange,
 }: PostMetaPanelProps): React.ReactElement {
   const [uploading, setUploading] = useState(false);
+  const [authors, setAuthors] = useState<UserProfile[]>([]);
+  const { isEditorOrAbove, userProfile } = useAuth();
 
   const suggestedSlug = useMemo(() => generateSlug(title), [title]);
+
+  useEffect(() => {
+    if (isEditorOrAbove()) {
+      getAllUserProfiles()
+        .then(setAuthors)
+        .catch(() => console.error('Failed to fetch authors'));
+    }
+  }, [isEditorOrAbove]);
 
   const handleImageUpload = async (
     e: React.ChangeEvent<HTMLInputElement>
@@ -125,19 +146,65 @@ export default function PostMetaPanel({
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Author
         </label>
-        <input
-          type="text"
-          value={author}
-          onChange={(e) => onAuthorChange(e.target.value)}
-          placeholder="Author name"
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
-        />
+        {isEditorOrAbove() ? (
+          <select
+            value={author}
+            onChange={(e) => {
+              const selectedAuthor = authors.find(a => a.displayName === e.target.value);
+              onAuthorChange(e.target.value);
+              if (selectedAuthor) {
+                onAuthorCityChange?.(selectedAuthor.city || '');
+                onAuthorCountryChange?.(selectedAuthor.country || '');
+              }
+            }}
+            className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-black focus:outline-none"
+          >
+            <option value="">Select an author...</option>
+            {authors.map(a => (
+              <option key={a.uid} value={a.displayName}>
+                {a.displayName} {a.country && `(${a.country})`}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <div className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-gray-100">
+            {author || userProfile?.displayName}
+          </div>
+        )}
       </div>
 
-      {/* Author Location */}
+      {/* Author City & Country */}
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Author City
+          </label>
+          <input
+            type="text"
+            value={authorCity || ''}
+            onChange={(e) => onAuthorCityChange?.(e.target.value)}
+            placeholder="e.g., Bangkok"
+            className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Author Country
+          </label>
+          <input
+            type="text"
+            value={authorCountry || ''}
+            onChange={(e) => onAuthorCountryChange?.(e.target.value)}
+            placeholder="e.g., Thailand"
+            className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
+          />
+        </div>
+      </div>
+
+      {/* Author Location (Legacy) */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Author Location
+          Author Location (Legacy)
         </label>
         <input
           type="text"

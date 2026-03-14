@@ -301,3 +301,29 @@ export async function deleteCategory(id: string): Promise<void> {
     throw error;
   }
 }
+
+// ===== Author-specific post queries =====
+
+export async function getPostsByAuthorTyped(authorId: string): Promise<Post[]> {
+  try {
+    const q = query(
+      collection(db, POSTS_COLLECTION),
+      where('authorId', '==', authorId),
+      orderBy('createdAt', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: convertTimestamp(data.createdAt),
+        updatedAt: convertTimestamp(data.updatedAt),
+        publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+      } as Post;
+    });
+  } catch (error) {
+    console.error('Error fetching posts by author:', error);
+    throw error;
+  }
+}

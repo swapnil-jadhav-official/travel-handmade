@@ -5,7 +5,6 @@ export async function uploadImageToCloudinary(file: File): Promise<string> {
 
   try {
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-    console.log('[Cloudinary] Uploading image to cloud:', cloudName);
 
     const response = await fetch(
       `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
@@ -22,7 +21,6 @@ export async function uploadImageToCloudinary(file: File): Promise<string> {
     }
 
     const data = await response.json();
-    console.log('[Cloudinary] Image uploaded successfully:', data.secure_url);
     return data.secure_url;
   } catch (error) {
     console.error('[Cloudinary] Error uploading image:', error);

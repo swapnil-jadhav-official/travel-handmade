@@ -47,6 +47,8 @@ export default function Home() {
     date: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : '',
     author: post.author,
     authorLocation: post.authorLocation,
+    authorCity: post.authorCity,
+    authorCountry: post.authorCountry,
   }));
 
   // Create hero images from latest posts with featured images

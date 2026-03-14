@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Image from 'next/image';
+import { useRouter, usePathname } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   LayoutDashboard,
   FileText,
@@ -9,22 +11,42 @@ import {
   ExternalLink,
   Tag,
   Settings,
+  Users,
+  UserCircle,
+  LogOut,
 } from 'lucide-react';
 
 export default function AdminSidebar(): React.ReactElement {
+  const router = useRouter();
   const pathname = usePathname();
+  const { userProfile, signOut, isSuperAdmin, canManageUsers } = useAuth();
 
   const isActive = (path: string): boolean => {
     if (path === '/admin') return pathname === '/admin';
     return pathname.startsWith(path);
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+  };
+
   return (
     <aside className="w-64 border-r border-gray-200 bg-black text-white flex flex-col">
-      {/* Header */}
-      <div className="border-b border-gray-800 px-6 py-6">
-        <div className="text-xl font-bold">Travel Handmade</div>
-        <p className="text-xs text-gray-400">Blog Admin</p>
+      {/* Header - Logo */}
+      <div className="border-b border-gray-800 px-6 py-6 flex items-center justify-center">
+        <Image
+          src="/th-logo.png"
+          alt="Travel Handmade"
+          width={120}
+          height={60}
+          priority
+          className="object-contain"
+        />
       </div>
 
       {/* Navigation */}
@@ -53,17 +75,72 @@ export default function AdminSidebar(): React.ReactElement {
           label="New Post"
           active={isActive('/admin/posts/new')}
         />
+
+        {canManageUsers() && (
+          <NavLink
+            href="/admin/authors"
+            icon={Users}
+            label="Authors"
+            active={isActive('/admin/authors')}
+          />
+        )}
       </nav>
 
-      {/* Footer */}
-      <div className="border-t border-gray-800 space-y-2 px-3 py-6">
+      {/* User Section & Footer */}
+      <div className="border-t border-gray-800 px-3 py-6 space-y-4">
+        {/* User Info */}
+        {userProfile && (
+          <div className="px-3 py-3 bg-white/5 rounded-lg">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold flex-shrink-0">
+                {userProfile.avatarUrl ? (
+                  <img
+                    src={userProfile.avatarUrl}
+                    alt={userProfile.displayName}
+                    className="w-full h-full rounded-full object-cover"
+                  />
+                ) : (
+                  userProfile.displayName.charAt(0).toUpperCase()
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-white truncate">{userProfile.displayName}</p>
+                <p className="text-xs text-gray-400 capitalize">
+                  {userProfile.role.replace('_', ' ')}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Nav Links */}
         <NavLink
-          href="/admin/setup"
-          icon={Settings}
-          label="Setup"
-          active={isActive('/admin/setup')}
+          href="/admin/profile"
+          icon={UserCircle}
+          label="My Profile"
+          active={isActive('/admin/profile')}
         />
-        <div className="px-4 pt-2">
+
+        {isSuperAdmin() && (
+          <NavLink
+            href="/admin/setup"
+            icon={Settings}
+            label="Setup"
+            active={isActive('/admin/setup')}
+          />
+        )}
+
+        {/* Logout Button */}
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-gray-300 hover:bg-white/5 transition-colors"
+        >
+          <LogOut className="h-5 w-5" />
+          Logout
+        </button>
+
+        {/* View Site Link */}
+        <div className="px-4 pt-2 border-t border-gray-800">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"

@@ -48,9 +48,11 @@ export default function HoverImageList({
                     <p className={`font-work-sans text-xs ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
                       {article.author.toUpperCase()}
                     </p>
-                    {article.authorLocation && (
+                    {(article.authorCity || article.authorCountry || article.authorLocation) && (
                       <p className={`font-unbounded font-bold text-base ${darkMode ? "text-white" : "text-black"}`}>
-                        {article.authorLocation}
+                        {article.authorCity && article.authorCountry
+                          ? `${article.authorCity}, ${article.authorCountry}`
+                          : article.authorCity || article.authorCountry || article.authorLocation}
                       </p>
                     )}
                   </div>
