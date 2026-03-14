@@ -57,9 +57,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         {/* Category Header */}
         <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16">
           <div className="max-w-7xl mx-auto px-4 text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <div className="text-4xl md:text-5xl font-bold mb-4">
               {category?.name || 'Category'}
-            </h1>
+            </div>
             <p className="text-lg opacity-90">
               {category?.description || 'Explore posts in this category'}
             </p>
@@ -115,9 +115,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                             : ''}
                         </span>
                       </div>
-                      <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition line-clamp-2">
+                      <div className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition line-clamp-2">
                         {post.title}
-                      </h3>
+                      </div>
                       <p className="text-gray-600 text-sm mb-4 line-clamp-3">
                         {post.excerpt}
                       </p>
@@ -133,9 +133,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               {/* Browse Other Categories */}
               {allCategories.length > 0 && (
               <div className="mt-16 pt-12 border-t border-gray-300">
-                <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">
+                <div className="text-2xl font-bold text-gray-900 mb-8 text-center">
                   Browse Other Categories
-                </h2>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
                   {allCategories
                     .filter((c) => c.slug !== slug)
@@ -149,9 +149,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                           className="h-2 rounded mb-3"
                           style={{ backgroundColor: cat.color }}
                         ></div>
-                        <h3 className="font-bold text-gray-900 group-hover:text-orange-600 transition">
+                        <div className="font-bold text-gray-900 group-hover:text-orange-600 transition">
                           {cat.name}
-                        </h3>
+                        </div>
                       </Link>
                     ))}
                 </div>

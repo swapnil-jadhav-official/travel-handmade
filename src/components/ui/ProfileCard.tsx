@@ -28,9 +28,9 @@ export default function ProfileCard({
       {/* Info Section with Alternating Background */}
       <div className={`px-6 py-8 ${isBlackBg ? 'bg-black' : 'bg-white border border-gray-200'}`}>
         {/* Location/Country */}
-        <h3 className={`font-unbounded font-medium text-xl text-center ${isBlackBg ? 'text-white' : 'text-black'}`}>
+        <div className={`font-unbounded font-medium text-xl text-center ${isBlackBg ? 'text-white' : 'text-black'}`}>
           {traveller.country}
-        </h3>
+        </div>
 
         {/* Traveller Name */}
         <p className={`font-unbounded text-xs font-semibold text-center mt-2 tracking-widest uppercase ${isBlackBg ? 'text-white' : 'text-black'}`}>

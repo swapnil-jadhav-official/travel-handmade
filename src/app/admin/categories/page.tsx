@@ -90,7 +90,7 @@ export default function CategoriesPage(): React.ReactElement {
       <div className="space-y-6 p-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Categories</h1>
+            <div className="text-3xl font-bold text-gray-900">Categories</div>
             <p className="text-gray-600">Manage blog post categories</p>
           </div>
           <button
@@ -105,9 +105,9 @@ export default function CategoriesPage(): React.ReactElement {
         {/* Category Form */}
         {showForm && (
           <div className="rounded-lg border border-gray-200 bg-white p-6">
-            <h2 className="mb-4 text-xl font-bold text-gray-900">
+            <div className="mb-4 text-xl font-bold text-gray-900">
               {editingId ? 'Edit Category' : 'Create New Category'}
-            </h2>
+            </div>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">

@@ -23,7 +23,7 @@ export default function AdminSidebar(): React.ReactElement {
     <aside className="w-64 border-r border-gray-200 bg-black text-white flex flex-col">
       {/* Header */}
       <div className="border-b border-gray-800 px-6 py-6">
-        <h1 className="text-xl font-bold">Travel Handmade</h1>
+        <div className="text-xl font-bold">Travel Handmade</div>
         <p className="text-xs text-gray-400">Blog Admin</p>
       </div>
 

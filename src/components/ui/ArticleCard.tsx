@@ -24,9 +24,9 @@ export default function ArticleCard({
 
         {/* Title */}
         <div className="pt-4">
-          <h3 className="font-unbounded font-light text-lg text-black transition-all duration-300 group-hover:underline">
+          <div className="font-unbounded font-light text-lg text-black transition-all duration-300 group-hover:underline">
             {article.title}
-          </h3>
+          </div>
         </div>
       </article>
     </Link>

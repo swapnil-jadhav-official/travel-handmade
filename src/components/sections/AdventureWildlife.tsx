@@ -62,9 +62,9 @@ export default function AdventureWildlife({
               </p>
 
               {/* Title */}
-              <h3 className="font-unbounded font-bold text-2xl text-white leading-tight">
+              <div className="font-unbounded font-bold text-2xl text-white leading-tight">
                 {currentArticle.title}
-              </h3>
+              </div>
             </div>
           </div>
         </div>

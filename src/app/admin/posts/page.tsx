@@ -41,7 +41,7 @@ export default function PostsPage(): React.ReactElement {
       <div className="space-y-6 p-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Posts</h1>
+            <div className="text-3xl font-bold text-gray-900">Posts</div>
             <p className="text-gray-600">Manage all your blog posts</p>
           </div>
           <Link

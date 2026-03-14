@@ -65,9 +65,9 @@ export default function HoverImageList({
                 )}
 
                 {/* Title */}
-                <h3 className={`font-unbounded font-bold text-base transition-all duration-200 group-hover:underline ${darkMode ? "text-white" : "text-black"}`}>
+                <div className={`font-unbounded font-bold text-base transition-all duration-200 group-hover:underline ${darkMode ? "text-white" : "text-black"}`}>
                   {article.title}
-                </h3>
+                </div>
               </div>
             </Link>
           ))}

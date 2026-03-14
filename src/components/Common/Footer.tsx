@@ -69,7 +69,7 @@ export default function Footer() {
 
             {/* Column 3: Social Links */}
             <div>
-              <h4 className="text-xs font-semibold mb-6 tracking-wider">OUR SOCIALS</h4>
+              <div className="text-xs font-semibold mb-6 tracking-wider">OUR SOCIALS</div>
               <div className="flex gap-6">
                 <a href="#" className="text-white hover:opacity-70 transition">
                   <Instagram className="h-5 w-5" />

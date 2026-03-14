@@ -189,9 +189,9 @@ export default function PostEditor({
               )}
             </button>
             <div>
-              <h1 className="text-lg font-semibold text-gray-900">
+              <div className="text-lg font-semibold text-gray-900">
                 {post.title || 'New Post'}
-              </h1>
+              </div>
               <p className="text-sm text-gray-500">
                 {autosaveStatus === 'saving'
                   ? 'Saving...'

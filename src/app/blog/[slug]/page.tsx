@@ -65,7 +65,7 @@ export default function BlogPost({ params }: BlogPageProps) {
         <Header />
         <main className="min-h-screen bg-gray-50 py-12">
           <div className="max-w-4xl mx-auto px-4 text-center">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">Post not found</h1>
+            <div className="text-3xl font-bold text-gray-900 mb-4">Post not found</div>
             <p className="text-gray-600 mb-8">The post you're looking for doesn't exist.</p>
             <Link href="/" className="text-blue-600 hover:underline">
               ← Back to home
@@ -110,9 +110,9 @@ export default function BlogPost({ params }: BlogPageProps) {
                   : ''}
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               {post?.title}
-            </h1>
+            </div>
             <div className="flex items-center justify-between pt-4 border-t border-gray-200">
               <div>
                 <p className="text-sm font-semibold text-gray-900">By {post?.author}</p>
@@ -145,7 +145,7 @@ export default function BlogPost({ params }: BlogPageProps) {
                 {post?.author.charAt(0)}
               </div>
               <div>
-                <h3 className="text-lg font-bold text-gray-900">{post?.author}</h3>
+                <div className="text-lg font-bold text-gray-900">{post?.author}</div>
                 <p className="text-gray-600">Travel enthusiast and content creator</p>
               </div>
             </div>
@@ -154,7 +154,7 @@ export default function BlogPost({ params }: BlogPageProps) {
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
             <section className="mb-12">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">Related Posts</h2>
+              <div className="text-3xl font-bold text-gray-900 mb-8">Related Posts</div>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {relatedPosts.map((relatedPost) => (
                   <Link
@@ -175,9 +175,9 @@ export default function BlogPost({ params }: BlogPageProps) {
                       <span className="text-xs font-semibold text-orange-600 uppercase">
                         {relatedPost.category}
                       </span>
-                      <h3 className="text-lg font-bold text-gray-900 mt-2 group-hover:text-orange-600 transition line-clamp-2">
+                      <div className="text-lg font-bold text-gray-900 mt-2 group-hover:text-orange-600 transition line-clamp-2">
                         {relatedPost.title}
-                      </h3>
+                      </div>
                       <p className="text-sm text-gray-600 mt-2 line-clamp-2">
                         {relatedPost.excerpt}
                       </p>

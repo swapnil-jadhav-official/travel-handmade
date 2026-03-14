@@ -47,9 +47,9 @@ export default function ChangeMaker({
 
             {/* Title - Positioned absolutely at bottom left */}
             <div className="absolute top-[402px] left-[74px] w-[249px] h-[34px]">
-              <h3 className="font-unbounded font-medium text-base text-white leading-[18px] tracking-[0.48px]">
+              <div className="font-unbounded font-medium text-base text-white leading-[18px] tracking-[0.48px]">
                 {videoTestimonial.videoTitle}
-              </h3>
+              </div>
             </div>
 
             {/* Subtitle - Positioned absolutely */}

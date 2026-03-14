@@ -43,9 +43,9 @@ export default function HeroCarousel({
         {/* Title Overlay */}
         {images[activeIndex] && (
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 px-4 w-full">
-            <h1 className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto">
+            <div className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto">
               {images[activeIndex].title}
-            </h1>
+            </div>
           </div>
         )}
 

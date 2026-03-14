@@ -63,7 +63,7 @@ export default function AdminDashboard(): React.ReactElement {
       <div className="space-y-8 p-8">
         {/* Header */}
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+          <div className="text-3xl font-bold text-gray-900">Dashboard</div>
           <p className="text-gray-600">Manage your blog posts</p>
         </div>
 
@@ -91,9 +91,9 @@ export default function AdminDashboard(): React.ReactElement {
 
         {/* Recent Posts */}
         <div>
-          <h2 className="mb-4 text-xl font-bold text-gray-900">
+          <div className="mb-4 text-xl font-bold text-gray-900">
             Recent Posts
-          </h2>
+          </div>
           {posts.length === 0 ? (
             <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center text-gray-600">
               No posts yet. Create your first post to get started.

@@ -36,13 +36,13 @@ export default function SetupPage(): React.ReactElement {
     <div className="flex-1 overflow-auto">
       <div className="space-y-6 p-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Setup</h1>
+          <div className="text-3xl font-bold text-gray-900">Setup</div>
           <p className="text-gray-600">Initialize your blog with default categories</p>
         </div>
 
         <div className="max-w-2xl rounded-lg border border-gray-200 bg-white p-8">
           <div className="mb-6">
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Seed Initial Categories</h2>
+            <div className="text-xl font-bold text-gray-900 mb-2">Seed Initial Categories</div>
             <p className="text-gray-600 mb-4">
               This will add 6 default categories to your blog. If any already exist, they will be skipped.
             </p>

@@ -79,9 +79,9 @@ export default function FoodDrinks({
                   </p>
 
                   {/* Title */}
-                  <h3 className="font-unbounded font-bold text-2xl text-white leading-tight">
+                  <div className="font-unbounded font-bold text-2xl text-white leading-tight">
                     {article.title}
-                  </h3>
+                  </div>
                 </div>
               </div>
             </Link>
