@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import type { Article } from '@/types';
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { Article } from "@/types";
 
 interface FoodDrinksProps {
   articles: Article[];
@@ -27,9 +27,9 @@ export default function FoodDrinks({
     <section className="w-full px-8 py-16">
       {/* Header with Navigation */}
       <div className="flex items-center justify-between mb-12 border-b border-black pb-2">
-        <h2 className="font-unbounded font-light text-3xl uppercase tracking-wide text-black">
+        <div className="font-unbounded font-light text-3xl uppercase tracking-wide text-black">
           Food + Drinks
-        </h2>
+        </div>
         <div className="flex gap-4">
           <button
             onClick={handlePrevious}
@@ -54,7 +54,10 @@ export default function FoodDrinks({
           const index = (currentIndex + offset) % articles.length;
           const article = articles[index];
           return (
-            <Link key={`${article.id}-${offset}`} href={`/blog/${article.slug}`}>
+            <Link
+              key={`${article.id}-${offset}`}
+              href={`/blog/${article.slug}`}
+            >
               <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-96">
                 {/* Background Image */}
                 <Image
@@ -71,7 +74,8 @@ export default function FoodDrinks({
                 <div className="absolute inset-0 flex flex-col justify-end p-8">
                   {/* Author and Reading Time */}
                   <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-4">
-                    {article.category?.replace(/-/g, ' + ').toUpperCase()} | {article.date}
+                    {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
+                    {article.date}
                   </p>
 
                   {/* Title */}

@@ -5,13 +5,13 @@ interface SectionHeaderProps {
 
 export default function SectionHeader({
   title,
-  className = '',
+  className = "",
 }: SectionHeaderProps): React.ReactElement {
   return (
     <div className={`border-b border-black pb-2 ${className}`}>
-      <h2 className="font-unbounded font-light text-3xl uppercase tracking-wide text-black">
+      <div className="font-unbounded font-light text-3xl uppercase tracking-wide text-black">
         {title}
-      </h2>
+      </div>
     </div>
   );
 }

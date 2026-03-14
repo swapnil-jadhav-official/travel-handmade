@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import type { Article } from '@/types';
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import type { Article } from "@/types";
 
 interface AdventureWildlifeProps {
   articles: Article[];
@@ -49,15 +49,16 @@ export default function AdventureWildlife({
           {/* Content Overlay */}
           <div className="absolute inset-0 flex flex-col justify-between p-8">
             {/* Section Header at Top */}
-            <h2 className="font-unbounded font-light text-3xl uppercase tracking-wide text-white border-b border-white pb-2">
+            <div className="font-unbounded font-light text-3xl uppercase tracking-wide text-white border-b border-white pb-2">
               Adventure + Wildlife
-            </h2>
+            </div>
 
             {/* Article Content at Bottom */}
             <div>
               {/* Metadata */}
               <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-4">
-                {currentArticle.category?.replace(/-/g, ' + ').toUpperCase()} | {currentArticle.date}
+                {currentArticle.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
+                {currentArticle.date}
               </p>
 
               {/* Title */}
