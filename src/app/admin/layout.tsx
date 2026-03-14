@@ -34,7 +34,7 @@ export default function AdminLayout({
   return (
     <div className="flex h-screen bg-white">
       <AdminSidebar />
-      <main className="flex-1 flex flex-col overflow-hidden">
+      <main className="flex-1 flex flex-col overflow-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         {children}
       </main>
     </div>

@@ -79,10 +79,10 @@ export interface Testimonial {
   quote: string;
   author: string;
   image: string;
-  articleTitle?: string;
   videoUrl?: string;
   videoTitle?: string;
-  videoSubtitle?: string;
+  articleTitle?: string;
+  articleUrl?: string;
 }
 
 export interface Traveller {
@@ -91,6 +91,8 @@ export interface Traveller {
   traveller_name: string;
   image: string;
   slug: string;
+  articleName?: string;
+  articleUrl?: string;
 }
 
 export interface BlogPost {

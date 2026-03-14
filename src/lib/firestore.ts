@@ -12,10 +12,12 @@ import {
   Timestamp,
 } from 'firebase/firestore';
 import { db } from './firebase';
-import { BlogPost, Post, PostStatus, Category } from '@/types';
+import { BlogPost, Post, PostStatus, Category, Testimonial, Traveller } from '@/types';
 
 const POSTS_COLLECTION = 'posts';
 const CATEGORIES_COLLECTION = 'categories';
+const TESTIMONIALS_COLLECTION = 'testimonials';
+const TRAVELLERS_COLLECTION = 'travellers';
 
 // Helper function to convert Firestore Timestamp to ISO string
 const convertTimestamp = (timestamp: any): string => {
@@ -324,6 +326,110 @@ export async function getPostsByAuthorTyped(authorId: string): Promise<Post[]> {
     });
   } catch (error) {
     console.error('Error fetching posts by author:', error);
+    throw error;
+  }
+}
+
+// ===== Testimonial operations (Change Maker) =====
+
+export async function createTestimonial(data: Omit<Testimonial, 'id'>): Promise<string> {
+  try {
+    const docRef = await addDoc(collection(db, TESTIMONIALS_COLLECTION), {
+      ...data,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error creating testimonial:', error);
+    throw error;
+  }
+}
+
+export async function getTestimonials(): Promise<Testimonial[]> {
+  try {
+    const q = query(collection(db, TESTIMONIALS_COLLECTION), orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Testimonial[];
+  } catch (error) {
+    console.error('Error fetching testimonials:', error);
+    throw error;
+  }
+}
+
+export async function updateTestimonial(id: string, data: Partial<Testimonial>): Promise<void> {
+  try {
+    const docRef = doc(db, TESTIMONIALS_COLLECTION, id);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: Timestamp.now(),
+    });
+  } catch (error) {
+    console.error('Error updating testimonial:', error);
+    throw error;
+  }
+}
+
+export async function deleteTestimonial(id: string): Promise<void> {
+  try {
+    await deleteDoc(doc(db, TESTIMONIALS_COLLECTION, id));
+  } catch (error) {
+    console.error('Error deleting testimonial:', error);
+    throw error;
+  }
+}
+
+// ===== Traveller operations =====
+
+export async function createTraveller(data: Omit<Traveller, 'id'>): Promise<string> {
+  try {
+    const docRef = await addDoc(collection(db, TRAVELLERS_COLLECTION), {
+      ...data,
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
+    return docRef.id;
+  } catch (error) {
+    console.error('Error creating traveller:', error);
+    throw error;
+  }
+}
+
+export async function getTravellers(): Promise<Traveller[]> {
+  try {
+    const q = query(collection(db, TRAVELLERS_COLLECTION), orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Traveller[];
+  } catch (error) {
+    console.error('Error fetching travellers:', error);
+    throw error;
+  }
+}
+
+export async function updateTraveller(id: string, data: Partial<Traveller>): Promise<void> {
+  try {
+    const docRef = doc(db, TRAVELLERS_COLLECTION, id);
+    await updateDoc(docRef, {
+      ...data,
+      updatedAt: Timestamp.now(),
+    });
+  } catch (error) {
+    console.error('Error updating traveller:', error);
+    throw error;
+  }
+}
+
+export async function deleteTraveller(id: string): Promise<void> {
+  try {
+    await deleteDoc(doc(db, TRAVELLERS_COLLECTION, id));
+  } catch (error) {
+    console.error('Error deleting traveller:', error);
     throw error;
   }
 }

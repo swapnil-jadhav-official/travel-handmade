@@ -180,3 +180,22 @@ body {
   padding: 24px 0px;
   gap: 10px;
 }
+
+/* Hide Scrollbar while keeping scroll functionality */
+main {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+main::-webkit-scrollbar {
+  display: none;
+}
+
+nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+nav::-webkit-scrollbar {
+  display: none;
+}

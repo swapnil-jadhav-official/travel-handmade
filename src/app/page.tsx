@@ -12,29 +12,48 @@ import Retreats from '@/components/sections/Retreats';
 import Wellness from '@/components/sections/Wellness';
 import ChangeMaker from '@/components/sections/ChangeMaker';
 import TravellerSection from '@/components/sections/Traveller';
-import { getAllPostsTyped } from '@/lib/firestore';
-import { testimonials, travellers, heroImages as defaultHeroImages } from '@/data/mockData';
+import { getAllPostsTyped, getTestimonials, getTravellers } from '@/lib/firestore';
+import { getSiteSettings } from '@/lib/settings';
+import { heroImages as defaultHeroImages } from '@/data/mockData';
+import type { Testimonial, Traveller } from '@/types';
 import type { Post } from '@/types';
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([]);
+  const [travellersList, setTravellersList] = useState<Traveller[]>([]);
+  const [featuredVideo, setFeaturedVideo] = useState<{ url?: string; title?: string; creator?: string } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchData = async () => {
       try {
-        const allPosts = await getAllPostsTyped();
+        const [allPosts, testimonials, travellerData, settings] = await Promise.all([
+          getAllPostsTyped(),
+          getTestimonials(),
+          getTravellers(),
+          getSiteSettings(),
+        ]);
         // Filter only published posts
         const publishedPosts = allPosts.filter((p) => p.status === 'published');
         setPosts(publishedPosts);
+        setTestimonialsList(testimonials);
+        setTravellersList(travellerData);
+        if (settings?.featuredVideoUrl) {
+          setFeaturedVideo({
+            url: settings.featuredVideoUrl,
+            title: settings.featuredVideoTitle,
+            creator: settings.featuredVideoCreator,
+          });
+        }
       } catch (error) {
-        console.error('Failed to fetch posts:', error);
+        console.error('Failed to fetch data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPosts();
+    fetchData();
   }, []);
 
   // Convert Post to Article format (map featuredImage to image)
@@ -96,10 +115,10 @@ export default function Home() {
         {!loading && wellnessArticles.length > 0 && <Wellness articles={wellnessArticles} />}
 
         {/* Change Maker */}
-        <ChangeMaker testimonials={testimonials} />
+        {!loading && testimonialsList.length > 0 && <ChangeMaker testimonials={testimonialsList} featuredVideo={featuredVideo} />}
 
         {/* Traveller */}
-        <TravellerSection travellers={travellers} />
+        {!loading && travellersList.length > 0 && <TravellerSection travellers={travellersList} />}
       </main>
       <Footer />
     </div>

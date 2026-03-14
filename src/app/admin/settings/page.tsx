@@ -9,6 +9,9 @@ import { X } from 'lucide-react';
 export default function SettingsPage(): React.ReactElement {
   const [settings, setSettings] = useState<SiteSettings>({});
   const [logoUrl, setLogoUrl] = useState('');
+  const [featuredVideoUrl, setFeaturedVideoUrl] = useState('');
+  const [featuredVideoTitle, setFeaturedVideoTitle] = useState('');
+  const [featuredVideoCreator, setFeaturedVideoCreator] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState('');
@@ -23,6 +26,9 @@ export default function SettingsPage(): React.ReactElement {
         if (data) {
           setSettings(data);
           setLogoUrl(data.logoUrl || '');
+          setFeaturedVideoUrl(data.featuredVideoUrl || '');
+          setFeaturedVideoTitle(data.featuredVideoTitle || '');
+          setFeaturedVideoCreator(data.featuredVideoCreator || '');
         }
       } catch (err) {
         console.error('Failed to fetch settings:', err);
@@ -67,6 +73,9 @@ export default function SettingsPage(): React.ReactElement {
     try {
       await updateSiteSettings({
         logoUrl,
+        featuredVideoUrl: featuredVideoUrl.trim() || undefined,
+        featuredVideoTitle: featuredVideoTitle.trim() || undefined,
+        featuredVideoCreator: featuredVideoCreator.trim() || undefined,
       });
       setMessage('Settings saved successfully!');
       setTimeout(() => setMessage(''), 3000);
@@ -106,8 +115,55 @@ export default function SettingsPage(): React.ReactElement {
             </div>
           )}
 
+          {/* Featured Video Section */}
+          <div className="border-t border-gray-200 pt-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-6">Featured Video (Stories Left Card)</h2>
+
+            {/* Video URL */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                YouTube Video URL
+              </label>
+              <input
+                type="url"
+                value={featuredVideoUrl}
+                onChange={(e) => setFeaturedVideoUrl(e.target.value)}
+                placeholder="https://youtube.com/watch?v=..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              />
+            </div>
+
+            {/* Video Title */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Video Title
+              </label>
+              <input
+                type="text"
+                value={featuredVideoTitle}
+                onChange={(e) => setFeaturedVideoTitle(e.target.value)}
+                placeholder="Enter video title..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              />
+            </div>
+
+            {/* Creator Name */}
+            <div className="mb-6">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Creator/Traveller Name
+              </label>
+              <input
+                type="text"
+                value={featuredVideoCreator}
+                onChange={(e) => setFeaturedVideoCreator(e.target.value)}
+                placeholder="Enter creator name..."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              />
+            </div>
+          </div>
+
           {/* Logo Upload */}
-          <div>
+          <div className="border-t border-gray-200 pt-8">
             <label className="block text-sm font-medium text-gray-700 mb-4">
               Site Logo
             </label>

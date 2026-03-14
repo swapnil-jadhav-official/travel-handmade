@@ -76,7 +76,7 @@ export default function AdminSidebar(): React.ReactElement {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-2 px-3 py-6">
+      <nav className="flex-1 space-y-2 px-3 py-6 overflow-y-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
         <NavLink
           href="/admin"
           icon={LayoutDashboard}
@@ -101,6 +101,18 @@ export default function AdminSidebar(): React.ReactElement {
           label="New Post"
           active={isActive('/admin/posts/new')}
         />
+        <NavLink
+          href="/admin/testimonials"
+          icon={FileText}
+          label="Testimonials"
+          active={isActive('/admin/testimonials')}
+        />
+        <NavLink
+          href="/admin/travellers"
+          icon={Users}
+          label="Travellers"
+          active={isActive('/admin/travellers')}
+        />
 
         {canManageUsers() && (
           <NavLink
@@ -110,13 +122,13 @@ export default function AdminSidebar(): React.ReactElement {
             active={isActive('/admin/authors')}
           />
         )}
-      </nav>
 
-      {/* User Section & Footer */}
-      <div className="border-t border-gray-800 px-3 py-6 space-y-4">
+        {/* Divider */}
+        <div className="my-4 border-t border-gray-800" />
+
         {/* User Info */}
         {userProfile && (
-          <div className="px-3 py-3 bg-white/5 rounded-lg">
+          <div className="px-3 py-3 bg-white/5 rounded-lg mb-2">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold flex-shrink-0">
                 {userProfile.avatarUrl ? (
@@ -139,7 +151,6 @@ export default function AdminSidebar(): React.ReactElement {
           </div>
         )}
 
-        {/* Nav Links */}
         <NavLink
           href="/admin/profile"
           icon={UserCircle}
@@ -163,7 +174,10 @@ export default function AdminSidebar(): React.ReactElement {
             />
           </>
         )}
+      </nav>
 
+      {/* Footer */}
+      <div className="border-t border-gray-800 px-3 py-4 space-y-3">
         {/* Logout Button */}
         <button
           onClick={handleLogout}
@@ -174,7 +188,7 @@ export default function AdminSidebar(): React.ReactElement {
         </button>
 
         {/* View Site Link */}
-        <div className="px-4 pt-2 border-t border-gray-800">
+        <div className="px-4">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-gray-300 hover:text-white"
