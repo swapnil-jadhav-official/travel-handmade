@@ -12,6 +12,7 @@ export default function ProfilePage(): React.ReactElement {
 
   const [displayName, setDisplayName] = useState(userProfile?.displayName || '');
   const [bio, setBio] = useState(userProfile?.bio || '');
+  const [details, setDetails] = useState(userProfile?.details || '');
   const [city, setCity] = useState(userProfile?.city || '');
   const [country, setCountry] = useState(userProfile?.country || '');
   const [twitterUrl, setTwitterUrl] = useState(userProfile?.socialLinks?.twitter || '');
@@ -54,6 +55,7 @@ export default function ProfilePage(): React.ReactElement {
       await updateUserProfile(user.uid, {
         displayName,
         bio,
+        details,
         city,
         country,
         avatarUrl,
@@ -169,6 +171,25 @@ export default function ProfilePage(): React.ReactElement {
             />
             <p className="text-xs text-gray-500 mt-1">
               {bio.length}/500 characters
+            </p>
+          </div>
+
+          {/* Author Details */}
+          <div>
+            <label htmlFor="details" className="block text-sm font-medium text-gray-700 mb-2">
+              Author Details
+            </label>
+            <textarea
+              id="details"
+              value={details}
+              onChange={(e) => setDetails(e.target.value.slice(0, 1000))}
+              rows={5}
+              maxLength={1000}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none"
+              placeholder="Write your detailed author bio, background, and expertise..."
+            />
+            <p className="text-xs text-gray-500 mt-1">
+              {details.length}/1000 characters
             </p>
           </div>
 

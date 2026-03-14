@@ -179,6 +179,7 @@ export default function PostEditor({
             }
             onFeaturedImageRemove={() => handleFieldChange('featuredImage', '')}
             onAuthorChange={(authorName) => handleFieldChange('authorName', authorName)}
+            onAuthorIdChange={(authorId) => handleFieldChange('authorId', authorId)}
             onAuthorLocationChange={(location) =>
               handleFieldChange('authorLocation', location)
             }

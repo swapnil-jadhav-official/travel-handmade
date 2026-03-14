@@ -22,6 +22,7 @@ interface PostMetaPanelProps {
   onFeaturedImageChange: (url: string) => void;
   onFeaturedImageRemove: () => void;
   onAuthorChange: (author: string) => void;
+  onAuthorIdChange?: (authorId: string) => void;
   onAuthorLocationChange: (location: string) => void;
   onAuthorCityChange?: (city: string) => void;
   onAuthorCountryChange?: (country: string) => void;
@@ -51,6 +52,7 @@ export default function PostMetaPanel({
   onFeaturedImageChange,
   onFeaturedImageRemove,
   onAuthorChange,
+  onAuthorIdChange,
   onAuthorLocationChange,
   onAuthorCityChange,
   onAuthorCountryChange,
@@ -153,6 +155,7 @@ export default function PostMetaPanel({
               const selectedAuthor = authors.find(a => a.displayName === e.target.value);
               onAuthorChange(e.target.value);
               if (selectedAuthor) {
+                onAuthorIdChange?.(selectedAuthor.uid);
                 onAuthorCityChange?.(selectedAuthor.city || '');
                 onAuthorCountryChange?.(selectedAuthor.country || '');
               }

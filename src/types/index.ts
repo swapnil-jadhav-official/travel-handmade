@@ -10,6 +10,7 @@ export interface UserProfile {
   email: string;
   displayName: string;
   bio?: string;
+  details?: string;         // Author details/description
   avatarUrl?: string;       // Cloudinary URL
   city?: string;
   country?: string;
