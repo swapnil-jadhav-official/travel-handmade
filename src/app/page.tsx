@@ -94,19 +94,7 @@ export default function Home() {
         {!loading && wellnessArticles.length > 0 && <Wellness articles={wellnessArticles} />}
 
         {/* Change Maker */}
-        {!loading && changeMakerArticles.length > 0 && (
-          <ChangeMaker
-            testimonials={
-              posts.filter((p) => p.category === 'changemaker').slice(0, 3).map((post) => ({
-                id: post.id,
-                quote: post.excerpt,
-                author: post.author,
-                image: post.featuredImage || '',
-                role: post.category,
-              })) || testimonials
-            }
-          />
-        )}
+        <ChangeMaker testimonials={testimonials} />
 
         {/* Traveller */}
         <TravellerSection travellers={travellers} />

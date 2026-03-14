@@ -304,21 +304,20 @@ export const wellnessArticles = [
 export const testimonials = [
   {
     id: '1',
-    quote: 'Travel is the only thing you buy that makes you richer.',
+    quote: 'To travel consciously is to understand that you are never just passing through.',
     author: 'Sarah Anderson',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&h=400&fit=crop',
+    articleTitle: 'The Art of Conscious Wandering',
+    image: '/quote-img-1.png',
+    videoUrl: '/videoplayback.mp4',
+    videoTitle: 'Why Heritage Tourism Is the Next Luxury',
+    videoSubtitle: 'In Conversation With Hotelier Evangelist Priya Paul',
   },
   {
     id: '2',
-    quote: 'The world is a book and those who do not travel read only one page.',
+    quote: 'If your presence changes a place, make sure it changes it forward.',
     author: 'Mike Chen',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop',
-  },
-  {
-    id: '3',
-    quote: 'Adventure is worthwhile in itself.',
-    author: 'Jessica Lee',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&h=400&fit=crop',
+    articleTitle: 'Cultural Immersion Guide',
+    image: '/quote-img-2.png',
   },
 ];
 

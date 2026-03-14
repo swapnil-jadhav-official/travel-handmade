@@ -50,6 +50,10 @@ export interface Testimonial {
   quote: string;
   author: string;
   image: string;
+  articleTitle?: string;
+  videoUrl?: string;
+  videoTitle?: string;
+  videoSubtitle?: string;
 }
 
 export interface Traveller {
