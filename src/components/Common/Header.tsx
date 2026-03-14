@@ -4,26 +4,34 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { getCategories } from '@/lib/firestore';
+import { getSiteSettings } from '@/lib/settings';
 import type { Category } from '@/types';
 
 export default function Header() {
   const [navigationItems, setNavigationItems] = useState<Category[]>([]);
+  const [logoUrl, setLogoUrl] = useState('/th-logo.png');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchNavigation = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const categories = await getCategories();
+        const [categories, settings] = await Promise.all([
+          getCategories(),
+          getSiteSettings(),
+        ]);
         setNavigationItems(categories);
+        if (settings?.logoUrl) {
+          setLogoUrl(settings.logoUrl);
+        }
       } catch (error) {
-        console.error('Failed to fetch navigation categories:', error);
+        console.error('Failed to fetch navigation data:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchNavigation();
+    fetchData();
   }, []);
 
   return (
@@ -31,14 +39,22 @@ export default function Header() {
       <nav className="max-w-full px-12 py-5 flex items-center justify-between h-20">
         {/* Logo */}
         <Link href="/" className="shrink-0">
-          <Image
-            src="/th-logo.png"
-            alt="Travel Handmade"
-            width={120}
-            height={50}
-            priority
-            className="h-auto w-auto"
-          />
+          {logoUrl.startsWith('http') ? (
+            <img
+              src={logoUrl}
+              alt="Travel Handmade"
+              className="h-12 w-auto"
+            />
+          ) : (
+            <Image
+              src={logoUrl}
+              alt="Travel Handmade"
+              width={120}
+              height={50}
+              priority
+              className="h-auto w-auto"
+            />
+          )}
         </Link>
 
         {/* Navigation Items */}

@@ -5,22 +5,30 @@ import Image from 'next/image';
 import { Instagram, Twitter, Linkedin, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getCategories } from '@/lib/firestore';
+import { getSiteSettings } from '@/lib/settings';
 import type { Category } from '@/types';
 
 export default function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
+  const [logoUrl, setLogoUrl] = useState('/th-logo.png');
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const data = await getCategories();
-        setCategories(data);
+        const [categoriesData, settingsData] = await Promise.all([
+          getCategories(),
+          getSiteSettings(),
+        ]);
+        setCategories(categoriesData);
+        if (settingsData?.logoUrl) {
+          setLogoUrl(settingsData.logoUrl);
+        }
       } catch (error) {
-        console.error('Failed to fetch categories:', error);
+        console.error('Failed to fetch footer data:', error);
       }
     };
 
-    fetchCategories();
+    fetchData();
   }, []);
 
   return (
@@ -30,13 +38,21 @@ export default function Footer() {
         <div className="flex gap-24 mb-16">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-            <Image
-              src="/th-logo.png"
-              alt="Travel Handmade"
-              width={120}
-              height={50}
-              className="h-auto w-auto mb-6"
-            />
+            {logoUrl.startsWith('http') ? (
+              <img
+                src={logoUrl}
+                alt="Travel Handmade"
+                className="h-12 object-contain mb-6"
+              />
+            ) : (
+              <Image
+                src={logoUrl}
+                alt="Travel Handmade"
+                width={120}
+                height={50}
+                className="h-auto w-auto mb-6"
+              />
+            )}
             <p className="text-xs text-gray-400">© 2026 Travel Handmade.</p>
           </div>
 

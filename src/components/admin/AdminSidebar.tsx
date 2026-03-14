@@ -3,7 +3,9 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter, usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { getSiteSettings } from '@/lib/settings';
 import {
   LayoutDashboard,
   FileText,
@@ -20,6 +22,22 @@ export default function AdminSidebar(): React.ReactElement {
   const router = useRouter();
   const pathname = usePathname();
   const { userProfile, signOut, isSuperAdmin, canManageUsers } = useAuth();
+  const [logoUrl, setLogoUrl] = useState('/th-logo.png');
+
+  useEffect(() => {
+    const fetchLogo = async () => {
+      try {
+        const settings = await getSiteSettings();
+        if (settings?.logoUrl) {
+          setLogoUrl(settings.logoUrl);
+        }
+      } catch (error) {
+        console.error('Failed to fetch logo:', error);
+      }
+    };
+
+    fetchLogo();
+  }, []);
 
   const isActive = (path: string): boolean => {
     if (path === '/admin') return pathname === '/admin';
@@ -39,14 +57,22 @@ export default function AdminSidebar(): React.ReactElement {
     <aside className="w-64 border-r border-gray-200 bg-black text-white flex flex-col">
       {/* Header - Logo */}
       <div className="border-b border-gray-800 px-6 py-6 flex items-center justify-center">
-        <Image
-          src="/th-logo.png"
-          alt="Travel Handmade"
-          width={120}
-          height={60}
-          priority
-          className="object-contain"
-        />
+        {logoUrl.startsWith('http') ? (
+          <img
+            src={logoUrl}
+            alt="Travel Handmade"
+            className="h-16 object-contain"
+          />
+        ) : (
+          <Image
+            src={logoUrl}
+            alt="Travel Handmade"
+            width={120}
+            height={60}
+            priority
+            className="object-contain"
+          />
+        )}
       </div>
 
       {/* Navigation */}
@@ -122,12 +148,20 @@ export default function AdminSidebar(): React.ReactElement {
         />
 
         {isSuperAdmin() && (
-          <NavLink
-            href="/admin/setup"
-            icon={Settings}
-            label="Setup"
-            active={isActive('/admin/setup')}
-          />
+          <>
+            <NavLink
+              href="/admin/settings"
+              icon={Settings}
+              label="Site Settings"
+              active={isActive('/admin/settings')}
+            />
+            <NavLink
+              href="/admin/setup"
+              icon={Settings}
+              label="Setup"
+              active={isActive('/admin/setup')}
+            />
+          </>
         )}
 
         {/* Logout Button */}
