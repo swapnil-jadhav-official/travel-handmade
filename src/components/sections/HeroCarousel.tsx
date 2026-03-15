@@ -52,12 +52,12 @@ export default function HeroCarousel({
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 px-4 w-full">
             {images[activeIndex].link ? (
               <Link href={`/blog/${images[activeIndex].link}`}>
-                <div className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto hover:text-white/80 transition-colors cursor-pointer">
+                <div className="font-unbounded font-medium text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto hover:text-white/80 transition-colors cursor-pointer">
                   {images[activeIndex].title}
                 </div>
               </Link>
             ) : (
-              <div className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto">
+              <div className="font-unbounded font-medium text-[20px] sm:text-[24px] md:text-[28px] lg:text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto">
                 {images[activeIndex].title}
               </div>
             )}

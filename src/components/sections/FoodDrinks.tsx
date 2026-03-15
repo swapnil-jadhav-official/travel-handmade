@@ -24,32 +24,32 @@ export default function FoodDrinks({
   };
 
   return (
-    <section className="w-full px-8 py-16">
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
       {/* Header with Navigation */}
-      <div className="flex items-center justify-between mb-12 border-b border-black pb-2">
-        <div className="font-unbounded font-light text-3xl uppercase tracking-wide text-black">
+      <div className="flex items-center justify-between mb-8 sm:mb-10 md:mb-12 border-b border-black pb-2 sm:pb-3">
+        <div className="font-unbounded font-light text-lg sm:text-xl md:text-2xl lg:text-3xl uppercase tracking-wide text-black">
           Food + Drinks
         </div>
-        <div className="flex gap-4">
+        <div className="flex gap-2 sm:gap-4">
           <button
             onClick={handlePrevious}
-            className="p-2 hover:bg-black/10 rounded transition"
+            className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
             aria-label="Previous"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
           <button
             onClick={handleNext}
-            className="p-2 hover:bg-black/10 rounded transition"
+            className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
             aria-label="Next"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </div>
       </div>
 
-      {/* Carousel Cards - 3 at a time */}
-      <div className="grid grid-cols-3 gap-8">
+      {/* Carousel Cards - 1 on mobile, 2 on tablet, 3 on desktop */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
         {[0, 1, 2].map((offset) => {
           const index = (currentIndex + offset) % articles.length;
           const article = articles[index];
@@ -58,7 +58,7 @@ export default function FoodDrinks({
               key={`${article.id}-${offset}`}
               href={`/blog/${article.slug}`}
             >
-              <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-96">
+              <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-64 sm:h-80 md:h-96">
                 {/* Background Image */}
                 <Image
                   src={article.image}
@@ -71,15 +71,15 @@ export default function FoodDrinks({
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
 
                 {/* Content Overlay */}
-                <div className="absolute inset-0 flex flex-col justify-end p-8">
+                <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
                   {/* Author and Reading Time */}
-                  <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-4">
+                  <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-2 sm:mb-3 md:mb-4 line-clamp-1">
                     {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
                     {article.date}
                   </p>
 
                   {/* Title */}
-                  <div className="font-unbounded font-bold text-2xl text-white leading-tight">
+                  <div className="font-unbounded font-semibold text-lg sm:text-xl md:text-2xl text-white leading-tight line-clamp-3">
                     {article.title}
                   </div>
                 </div>

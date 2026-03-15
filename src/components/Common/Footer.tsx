@@ -32,17 +32,17 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-black text-white mt-16 w-full">
-      <div className="w-full px-12 py-16">
+    <footer className="bg-black text-white mt-8 sm:mt-12 md:mt-16 w-full">
+      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
         {/* Main Footer Content */}
-        <div className="flex gap-24 mb-16">
+        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 md:gap-12 lg:gap-24 mb-8 sm:mb-12 md:mb-16">
           {/* Logo Section */}
           <div className="flex-shrink-0">
             {logoUrl.startsWith('http') ? (
               <img
                 src={logoUrl}
                 alt="Travel Handmade"
-                className="h-12 object-contain mb-6"
+                className="h-8 sm:h-10 md:h-12 object-contain mb-4 sm:mb-6"
               />
             ) : (
               <Image
@@ -50,17 +50,17 @@ export default function Footer() {
                 alt="Travel Handmade"
                 width={120}
                 height={50}
-                className="h-auto w-auto mb-6"
+                className="h-8 sm:h-10 md:h-12 w-auto mb-4 sm:mb-6"
               />
             )}
             <p className="text-xs text-gray-400">© 2026 Travel Handmade.</p>
           </div>
 
           {/* Links Columns */}
-          <div className="flex-1 grid grid-cols-3 gap-16">
+          <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-12 lg:gap-16">
             {/* Column 1: Main Links */}
             <div>
-              <ul className="space-y-3 text-xs tracking-wide">
+              <ul className="space-y-2 sm:space-y-3 text-xs tracking-wide">
                 <li><Link href="/" className="text-white hover:opacity-70 transition">HOME</Link></li>
                 <li><Link href="#" className="text-white hover:opacity-70 transition">ABOUT US</Link></li>
                 <li><Link href="#" className="text-white hover:opacity-70 transition">NEWSLETTER</Link></li>
@@ -71,10 +71,10 @@ export default function Footer() {
 
             {/* Column 2: Categories */}
             <div>
-              <ul className="space-y-3 text-xs tracking-wide">
+              <ul className="space-y-2 sm:space-y-3 text-xs tracking-wide">
                 {categories.map((cat) => (
                   <li key={cat.id}>
-                    <Link href={`/category/${cat.slug}`} className="text-white hover:opacity-70 transition uppercase">
+                    <Link href={`/category/${cat.slug}`} className="text-white hover:opacity-70 transition uppercase text-xs">
                       {cat.name}
                     </Link>
                   </li>
@@ -84,20 +84,20 @@ export default function Footer() {
             </div>
 
             {/* Column 3: Social Links */}
-            <div>
-              <div className="text-xs font-semibold mb-6 tracking-wider">OUR SOCIALS</div>
-              <div className="flex gap-6">
+            <div className="col-span-2 sm:col-span-1">
+              <div className="text-xs font-semibold mb-4 sm:mb-6 tracking-wider">OUR SOCIALS</div>
+              <div className="flex gap-4 sm:gap-6">
                 <a href="#" className="text-white hover:opacity-70 transition">
-                  <Instagram className="h-5 w-5" />
+                  <Instagram className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
                 <a href="#" className="text-white hover:opacity-70 transition">
-                  <Twitter className="h-5 w-5" />
+                  <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
                 <a href="#" className="text-white hover:opacity-70 transition">
-                  <Heart className="h-5 w-5" />
+                  <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
                 <a href="#" className="text-white hover:opacity-70 transition">
-                  <Linkedin className="h-5 w-5" />
+                  <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
               </div>
             </div>
@@ -108,8 +108,8 @@ export default function Footer() {
         <div className="border-t border-gray-700"></div>
 
         {/* Copyright Text */}
-        <div className="pt-8 text-center text-xs text-gray-400">
-          <p>All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade</p>
+        <div className="pt-6 sm:pt-8 text-center text-xs text-gray-400">
+          <p className="leading-relaxed">All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade</p>
         </div>
       </div>
     </footer>

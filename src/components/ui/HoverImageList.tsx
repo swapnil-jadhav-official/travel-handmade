@@ -24,13 +24,13 @@ export default function HoverImageList({
 
   return (
     <div
-      className={`flex flex-col gap-16 lg:flex-row lg:gap-20 ${
+      className={`flex flex-col gap-8 sm:gap-10 md:gap-12 lg:flex-row lg:gap-16 ${
         imagePosition === "left" ? "lg:flex-row-reverse" : ""
       }`}
     >
       {/* Article List */}
       <div className="flex-1">
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4 md:space-y-5">
           {articles.map((article, index) => (
             <Link key={article.id} href={`/blog/${article.slug}`}>
               <div
@@ -38,18 +38,18 @@ export default function HoverImageList({
                 onFocus={() => setActiveIndex(index)}
                 role="button"
                 tabIndex={0}
-                className={`group cursor-pointer py-5 transition-colors duration-200 ${
+                className={`group cursor-pointer py-3 sm:py-4 md:py-5 transition-colors duration-200 ${
                   index !== articles.length - 1 ? "border-b border-black/20" : ""
                 }`}
               >
                 {/* Author (shown in dark mode instead of metadata) */}
                 {darkMode && article.author ? (
-                  <div className="mb-2">
-                    <p className={`font-work-sans text-xs ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                  <div className="mb-2 sm:mb-3">
+                    <p className={`font-work-sans text-xs sm:text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
                       {article.author.toUpperCase()}
                     </p>
                     {(article.authorCity || article.authorCountry || article.authorLocation) && (
-                      <p className={`font-unbounded font-bold text-base ${darkMode ? "text-white" : "text-black"}`}>
+                      <p className={`font-unbounded font-bold text-sm sm:text-base md:text-lg ${darkMode ? "text-white" : "text-black"}`}>
                         {article.authorCity && article.authorCountry
                           ? `${article.authorCity}, ${article.authorCountry}`
                           : article.authorCity || article.authorCountry || article.authorLocation}
@@ -59,7 +59,7 @@ export default function HoverImageList({
                 ) : (
                   /* Metadata (optional, shown when not in dark mode or no author) */
                   showMeta && (
-                    <p className={`mb-2 font-work-sans text-xs ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`mb-2 sm:mb-3 font-work-sans text-xs sm:text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
                       {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
                       {article.date}
                     </p>
@@ -67,7 +67,7 @@ export default function HoverImageList({
                 )}
 
                 {/* Title */}
-                <div className={`font-unbounded font-bold text-base transition-all duration-200 group-hover:underline ${darkMode ? "text-white" : "text-black"}`}>
+                <div className={`font-unbounded font-bold text-sm sm:text-base md:text-lg lg:text-xl transition-all duration-200 group-hover:underline ${darkMode ? "text-white" : "text-black"}`}>
                   {article.title}
                 </div>
               </div>
@@ -86,7 +86,7 @@ export default function HoverImageList({
                 alt={activeArticle.title}
                 width={600}
                 height={384}
-                className="h-96 w-full object-cover transition-all duration-500 group-hover:scale-105"
+                className="h-64 sm:h-80 md:h-96 w-full object-cover transition-all duration-500 group-hover:scale-105"
               />
             </div>
           </Link>

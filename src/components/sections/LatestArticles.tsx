@@ -10,8 +10,8 @@ export default function LatestArticles({
   articles,
 }: LatestArticlesProps): React.ReactElement {
   return (
-    <section className="w-full px-8 py-16">
-      <SectionHeader title="Latest Articles" className="mb-12" />
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+      <SectionHeader title="Latest Articles" className="mb-8 sm:mb-10 md:mb-12" />
       <HoverImageList
         articles={articles}
         imagePosition="right"

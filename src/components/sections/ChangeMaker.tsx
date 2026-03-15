@@ -46,13 +46,13 @@ export default function ChangeMaker({
   const embedUrl = featuredVideo?.url ? getYouTubeEmbedUrl(featuredVideo.url) : null;
 
   return (
-    <section className="w-full px-8 py-16">
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-16">
       <SectionHeader title="Change Maker" className="mb-12" />
 
       <div className="flex flex-col gap-12 lg:flex-row lg:gap-16">
         {/* Left: Video Section (Fixed) - 35% - Exact Figma Replica */}
         {featuredVideo?.url && embedUrl && (
-          <div className="relative w-[371px] h-[483px] mx-auto lg:w-[35%] lg:h-[483px] lg:max-w-none overflow-hidden">
+          <div className="relative w-[250px] h-80 sm:w-[300px] sm:h-96 md:w-[340px] md:h-96 mx-auto lg:w-[35%] lg:h-[483px] lg:max-w-none overflow-hidden">
             {/* Video - YouTube Embed */}
             <iframe
               className="absolute w-full h-full top-0 left-0 border-0"
@@ -83,24 +83,24 @@ export default function ChangeMaker({
         )}
 
         {/* Right: Quote Card (Rotating) - Exact Figma Replica */}
-        <div className="relative lg:w-[65%] overflow-hidden h-[483px] bg-black">
+        <div className="relative w-full sm:w-full md:w-full lg:w-[65%] overflow-hidden h-80 sm:h-96 md:h-96 lg:h-[483px] bg-black">
           {/* Dark Gray Background (65% width) */}
           <div className="absolute inset-0 w-[65%] bg-[#2f2f2f]" />
 
           {/* Quote Content - Centered vertically */}
-          <blockquote className="absolute top-1/2 left-14 transform -translate-y-1/2 w-80 text-white">
+          <blockquote className="absolute top-1/2 left-4 sm:left-6 md:left-8 lg:left-14 transform -translate-y-1/2 w-52 sm:w-64 md:w-72 lg:w-80 text-white">
             {/* Quotation Mark */}
-            <span className="font-unbounded text-[96px] leading-none tracking-[2.88px] block">
+            <span className="font-unbounded text-[48px] sm:text-[64px] md:text-[80px] lg:text-[96px] leading-none tracking-[2.88px] block">
               &rdquo;
             </span>
 
             {/* Quote Text */}
-            <p className="font-unbounded font-medium text-[32px] leading-[110%] tracking-[0.96px] mt-0">
+            <p className="font-unbounded font-medium text-[16px] sm:text-[20px] md:text-[26px] lg:text-[32px] leading-[110%] tracking-[0.96px] mt-0">
               {active.quote}
             </p>
 
             {/* Author & Article */}
-            <footer className="font-work-sans text-[10px] leading-[11px] tracking-[0.3px] mt-5 uppercase">
+            <footer className="font-work-sans text-[7px] sm:text-[8px] md:text-[9px] lg:text-[10px] leading-[11px] tracking-[0.3px] mt-5 uppercase">
               {active.articleTitle && active.articleUrl ? (
                 <>
                   <a

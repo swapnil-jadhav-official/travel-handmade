@@ -28,13 +28,13 @@ export default function AdventureWildlife({
 
   const currentArticle = articles[currentIndex];
 
-  if (!currentArticle) return <section className="w-full px-8 py-16" />;
+  if (!currentArticle) return <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16" />;
 
   return (
-    <section className="w-full px-8 py-16">
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
       {/* Featured Card */}
       <Link href={`/blog/${currentArticle.slug}`}>
-        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-[500px]">
+        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-64 sm:h-80 md:h-96 lg:h-[500px]">
           {/* Background Image */}
           <Image
             src={currentArticle.image}
@@ -47,22 +47,22 @@ export default function AdventureWildlife({
           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
 
           {/* Content Overlay */}
-          <div className="absolute inset-0 flex flex-col justify-between p-8">
+          <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 md:p-8">
             {/* Section Header at Top */}
-            <div className="font-unbounded font-light text-3xl uppercase tracking-wide text-white border-b border-white pb-2">
+            <div className="font-unbounded font-light text-lg sm:text-2xl md:text-3xl uppercase tracking-wide text-white border-b border-white pb-2">
               Adventure + Wildlife
             </div>
 
             {/* Article Content at Bottom */}
             <div>
               {/* Metadata */}
-              <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-4">
+              <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-2 sm:mb-3 md:mb-4 line-clamp-1">
                 {currentArticle.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
                 {currentArticle.date}
               </p>
 
               {/* Title */}
-              <div className="font-unbounded font-bold text-2xl text-white leading-tight">
+              <div className="font-unbounded font-bold text-lg sm:text-xl md:text-2xl text-white leading-tight line-clamp-3">
                 {currentArticle.title}
               </div>
             </div>
