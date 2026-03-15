@@ -12,6 +12,7 @@ interface PostMetaPanelProps {
   slug: string;
   excerpt: string;
   featuredImage?: string;
+  category: string;
   author: string;
   authorLocation?: string;
   authorCity?: string;
@@ -21,6 +22,7 @@ interface PostMetaPanelProps {
   onExcerptChange: (excerpt: string) => void;
   onFeaturedImageChange: (url: string) => void;
   onFeaturedImageRemove: () => void;
+  onCategoryChange: (category: string) => void;
   onAuthorChange: (author: string) => void;
   onAuthorIdChange?: (authorId: string) => void;
   onAuthorLocationChange: (location: string) => void;
@@ -42,6 +44,7 @@ export default function PostMetaPanel({
   slug,
   excerpt,
   featuredImage,
+  category,
   author,
   authorLocation,
   authorCity,
@@ -51,6 +54,7 @@ export default function PostMetaPanel({
   onExcerptChange,
   onFeaturedImageChange,
   onFeaturedImageRemove,
+  onCategoryChange,
   onAuthorChange,
   onAuthorIdChange,
   onAuthorLocationChange,
@@ -140,6 +144,20 @@ export default function PostMetaPanel({
           placeholder="Brief summary of the post"
           maxLength={160}
           className="h-20 w-full resize-none rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
+        />
+      </div>
+
+      {/* Category */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Category
+        </label>
+        <input
+          type="text"
+          value={category}
+          onChange={(e) => onCategoryChange(e.target.value)}
+          placeholder="e.g., Travel, Food, Culture"
+          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
         />
       </div>
 

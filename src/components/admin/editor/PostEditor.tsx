@@ -167,6 +167,7 @@ export default function PostEditor({
             slug={post.slug || ''}
             excerpt={post.excerpt || ''}
             featuredImage={post.featuredImage}
+            category={post.category || ''}
             author={post.authorName || ''}
             authorLocation={post.authorLocation}
             authorCity={post.authorCity}
@@ -178,6 +179,7 @@ export default function PostEditor({
               handleFieldChange('featuredImage', url)
             }
             onFeaturedImageRemove={() => handleFieldChange('featuredImage', '')}
+            onCategoryChange={(category) => handleFieldChange('category', category)}
             onAuthorChange={(authorName) => handleFieldChange('authorName', authorName)}
             onAuthorIdChange={(authorId) => handleFieldChange('authorId', authorId)}
             onAuthorLocationChange={(location) =>

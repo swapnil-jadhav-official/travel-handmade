@@ -112,7 +112,7 @@ export default function BlogPost({ params }: BlogPageProps) {
             {/* Dark Overlay */}
             <div className="absolute inset-0 bg-black/70" />
             {/* Title and Category Overlay */}
-            <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 px-4 w-full">
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 px-4 w-full py-12">
               <div className="text-center">
                 <p className="font-unbounded font-light text-sm text-white uppercase tracking-widest mb-3">
                   {post?.category}
@@ -121,10 +121,24 @@ export default function BlogPost({ params }: BlogPageProps) {
                   {post?.title}
                 </div>
                 {post?.excerpt && (
-                  <p className="text-sm font-light text-white/90 text-center max-w-2xl mx-auto">
+                  <p className="text-sm font-light text-white/90 text-center max-w-2xl mx-auto mb-6">
                     {post.excerpt}
                   </p>
                 )}
+                {/* Author & Date */}
+                <p className="text-xs text-white uppercase tracking-widest">
+                  BY {authorProfile?.displayName || post?.authorName || post?.author || 'Unknown'}
+                  {post?.publishedAt && (
+                    <>
+                      {' | '}
+                      {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric',
+                      }).toUpperCase()}
+                    </>
+                  )}
+                </p>
               </div>
             </div>
           </div>
