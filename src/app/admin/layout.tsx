@@ -9,7 +9,7 @@ export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
-}): React.ReactElement {
+}): React.ReactElement | null {
   const router = useRouter();
   const { user, loading } = useAuth();
 
