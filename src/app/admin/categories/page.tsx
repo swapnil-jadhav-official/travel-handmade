@@ -83,7 +83,7 @@ export default function CategoriesPage(): React.ReactElement {
   };
 
   const handleCancel = () => {
-    setFormData({ name: '', slug: '', description: '', color: '#C55626' });
+    setFormData({ name: '', slug: '', description: '', color: '#C55626', featuredImage: '' });
     setEditingId(null);
     setShowForm(false);
   };

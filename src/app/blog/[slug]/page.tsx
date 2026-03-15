@@ -4,6 +4,7 @@ import { useEffect, useState, use } from "react";
 import Link from "next/link";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
+import BlogContent from "@/components/BlogContent";
 import { getAllPostsTyped } from "@/lib/firestore";
 import { getUserProfile } from "@/lib/users";
 import type { Post, UserProfile } from "@/types";
@@ -149,10 +150,7 @@ export default function BlogPost({ params }: BlogPageProps) {
         {/* Article Content */}
         <article className="max-w-4xl mx-auto px-6 py-12 lg:px-8">
           {/* Article Body */}
-          <div
-            className="prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_h1]:text-2xl [&_h2]:text-xl [&_h3]:text-lg"
-            dangerouslySetInnerHTML={{ __html: post?.content || "" }}
-          />
+          <BlogContent html={post?.content || ""} />
 
           {/* Author Bio */}
           <div className="mb-12">

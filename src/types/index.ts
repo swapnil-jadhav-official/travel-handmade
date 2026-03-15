@@ -115,4 +115,5 @@ export interface Category {
   slug: string;
   description?: string;
   color?: string;
+  featuredImage?: string;
 }

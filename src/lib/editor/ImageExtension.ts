@@ -1,4 +1,6 @@
 import Image from '@tiptap/extension-image';
+import { ReactNodeViewRenderer } from '@tiptap/react';
+import { ImageNode } from '@/components/admin/editor/ImageNode';
 
 export const ImageExtension = Image.extend({
   addAttributes() {
@@ -7,17 +9,25 @@ export const ImageExtension = Image.extend({
       caption: {
         default: '',
         parseHTML: (element) => {
-          const caption = element.getAttribute('data-caption') || '';
-          const captionElement = element.nextElementSibling;
-          if (captionElement?.classList.contains('image-caption')) {
-            return captionElement.textContent || '';
-          }
-          return caption;
+          return element.getAttribute('data-caption') || '';
         },
+        renderHTML: (attributes) => {
+          return {
+            'data-caption': attributes.caption,
+          };
+        },
+      },
+      alt: {
+        default: '',
+        parseHTML: (element) => element.getAttribute('alt') || '',
         renderHTML: (attributes) => ({
-          'data-caption': attributes.caption,
+          alt: attributes.alt,
         }),
       },
     };
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(ImageNode);
   },
 });

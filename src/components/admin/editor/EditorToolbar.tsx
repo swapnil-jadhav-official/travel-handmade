@@ -74,11 +74,14 @@ export default function EditorToolbar({
         try {
           // Upload to Cloudinary first
           const cloudinaryUrl = await uploadImageToCloudinary(file);
-          // Insert the image
+          // Prompt for caption
+          const caption = prompt('Add a caption for this image (optional):');
+          // Insert the image with caption
           editor
             .chain()
             .focus()
             .setImage({ src: cloudinaryUrl })
+            .updateAttributes('image', { caption: caption || '' })
             .run();
         } catch (error) {
           console.error('Failed to upload image:', error);
