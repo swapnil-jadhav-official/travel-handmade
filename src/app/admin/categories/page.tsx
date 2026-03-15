@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Trash2, Plus } from 'lucide-react';
+import { Trash2, Plus, Upload } from 'lucide-react';
 import { getCategories, deleteCategory, createCategory, updateCategory } from '@/lib/firestore';
+import { uploadImageToCloudinary } from '@/lib/cloudinary';
 import type { Category } from '@/types';
 
 export default function CategoriesPage(): React.ReactElement {
@@ -11,7 +12,8 @@ export default function CategoriesPage(): React.ReactElement {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', slug: '', description: '', color: '#C55626' });
+  const [uploading, setUploading] = useState(false);
+  const [formData, setFormData] = useState({ name: '', slug: '', description: '', color: '#C55626', featuredImage: '' });
 
   useEffect(() => {
     fetchCategories();
@@ -48,7 +50,7 @@ export default function CategoriesPage(): React.ReactElement {
         const newId = await createCategory(formData);
         setCategories([...categories, { id: newId, ...formData }]);
       }
-      setFormData({ name: '', slug: '', description: '', color: '#C55626' });
+      setFormData({ name: '', slug: '', description: '', color: '#C55626', featuredImage: '' });
       setEditingId(null);
       setShowForm(false);
     } catch (error) {
@@ -63,6 +65,7 @@ export default function CategoriesPage(): React.ReactElement {
       slug: category.slug,
       description: category.description || '',
       color: category.color || '#C55626',
+      featuredImage: category.featuredImage || '',
     });
     setEditingId(category.id);
     setShowForm(true);
@@ -83,6 +86,29 @@ export default function CategoriesPage(): React.ReactElement {
     setFormData({ name: '', slug: '', description: '', color: '#C55626' });
     setEditingId(null);
     setShowForm(false);
+  };
+
+  const handleImageUpload = async () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        setUploading(true);
+        try {
+          const cloudinaryUrl = await uploadImageToCloudinary(file);
+          setFormData({ ...formData, featuredImage: cloudinaryUrl });
+        } catch (error) {
+          console.error('Failed to upload image:', error);
+          alert('Failed to upload image');
+        } finally {
+          setUploading(false);
+        }
+      }
+    };
+    input.click();
   };
 
   return (
@@ -145,6 +171,30 @@ export default function CategoriesPage(): React.ReactElement {
                   placeholder="e.g., Explore destinations and lifestyle"
                   className="h-20 w-full resize-none rounded border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
                 />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Featured Image
+                </label>
+                <button
+                  type="button"
+                  onClick={handleImageUpload}
+                  disabled={uploading}
+                  className="flex items-center gap-2 rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Upload className="h-4 w-4" />
+                  {uploading ? 'Uploading...' : 'Upload Image'}
+                </button>
+                {formData.featuredImage && (
+                  <div className="mt-3 rounded overflow-hidden">
+                    <img
+                      src={formData.featuredImage}
+                      alt="Preview"
+                      className="h-48 w-full object-cover"
+                    />
+                  </div>
+                )}
               </div>
 
               <div>

@@ -54,20 +54,32 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     <>
       <Header />
       <main className="bg-gray-50 min-h-screen">
-        {/* Category Header */}
-        <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-16">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <div className="text-4xl md:text-5xl font-bold mb-4">
-              {category?.name || 'Category'}
+        {/* Category Hero Section */}
+        <div className="relative w-full h-[600px] bg-gray-200 overflow-hidden">
+          {/* Background Image */}
+          {category?.featuredImage && (
+            <img
+              src={category.featuredImage}
+              alt={category.name}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          )}
+
+          {/* Dark Overlay */}
+          <div className="absolute inset-0 bg-black/70" />
+
+          {/* Title & Description Overlay */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-4 w-full py-16 pb-32">
+            <div className="text-center">
+              <div className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto mb-4">
+                {(category?.name || 'Category').toUpperCase()}
+              </div>
+              {category?.description && (
+                <p className="text-sm font-light text-white/90 text-center max-w-2xl mx-auto mb-4">
+                  {category.description}
+                </p>
+              )}
             </div>
-            <p className="text-lg opacity-90">
-              {category?.description || 'Explore posts in this category'}
-            </p>
-            {posts.length > 0 && (
-              <p className="text-sm opacity-75 mt-4">
-                {posts.length} {posts.length === 1 ? 'post' : 'posts'} found
-              </p>
-            )}
           </div>
         </div>
 
@@ -89,7 +101,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   <Link
                     key={post.id}
                     href={`/blog/${post.slug}`}
-                    className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition transform hover:scale-105 group"
+                    className="bg-white overflow-hidden transition transform hover:scale-105 group"
                   >
                     {post.featuredImage && (
                       <div className="relative h-56 w-full bg-gray-200 overflow-hidden">
@@ -101,29 +113,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                       </div>
                     )}
                     <div className="p-6">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="text-xs font-semibold text-orange-600 uppercase">
-                          {post.category}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {post.publishedAt
-                            ? new Date(post.publishedAt).toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                year: 'numeric',
-                              })
-                            : ''}
-                        </span>
-                      </div>
-                      <div className="text-xl font-bold text-gray-900 mb-2 group-hover:text-orange-600 transition line-clamp-2">
+                      <span className="text-xs text-gray-500 block mb-2 uppercase">{post.author}</span>
+                      <div className="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition line-clamp-2">
                         {post.title}
-                      </div>
-                      <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                        {post.excerpt}
-                      </p>
-                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <span className="text-xs text-gray-500">By {post.author}</span>
-                        <span className="text-xs text-gray-500">{post.views || 0} views</span>
                       </div>
                     </div>
                   </Link>

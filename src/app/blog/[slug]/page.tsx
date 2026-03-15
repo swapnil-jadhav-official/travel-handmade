@@ -25,8 +25,10 @@ export default function BlogPost({ params }: BlogPageProps) {
         setLoading(true);
         // Get all posts from Firestore
         const allPosts = await getAllPostsTyped();
+
         // Filter only published posts
         const publishedPosts = allPosts.filter((p) => p.status === "published");
+
         const foundPost = publishedPosts.find((p) => p.slug === slug);
 
         if (foundPost) {
@@ -52,7 +54,7 @@ export default function BlogPost({ params }: BlogPageProps) {
           setRelatedPosts(related);
         }
       } catch (error) {
-        console.error("[BlogPost] Error fetching post:", error);
+        console.error("Error fetching post:", error);
       } finally {
         setLoading(false);
       }
@@ -147,12 +149,10 @@ export default function BlogPost({ params }: BlogPageProps) {
         {/* Article Content */}
         <article className="max-w-4xl mx-auto px-6 py-12 lg:px-8">
           {/* Article Body */}
-          <div className="prose prose-lg max-w-none mb-12">
-            <div
-              className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: post?.content || "" }}
-            />
-          </div>
+          <div
+            className="prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_h1]:text-2xl [&_h2]:text-xl [&_h3]:text-lg"
+            dangerouslySetInnerHTML={{ __html: post?.content || "" }}
+          />
 
           {/* Author Bio */}
           <div className="mb-12">

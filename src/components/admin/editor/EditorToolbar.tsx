@@ -74,9 +74,12 @@ export default function EditorToolbar({
         try {
           // Upload to Cloudinary first
           const cloudinaryUrl = await uploadImageToCloudinary(file);
-          // Then insert the permanent URL into the editor
-          editor.chain().focus().setImage({ src: cloudinaryUrl }).run();
-          console.log('Image uploaded to Cloudinary:', cloudinaryUrl);
+          // Insert the image
+          editor
+            .chain()
+            .focus()
+            .setImage({ src: cloudinaryUrl })
+            .run();
         } catch (error) {
           console.error('Failed to upload image:', error);
           alert('Failed to upload image');

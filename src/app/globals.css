@@ -96,11 +96,44 @@ body {
   cursor: pointer;
 }
 
-.ProseMirror img {
+.ProseMirror img,
+.prose img {
   max-width: 100%;
   height: auto;
-  border-radius: 0.5rem;
   margin: 0.5rem 0;
+  display: block;
+  border-radius: 0 !important;
+}
+
+/* Image grid support - 2x2 layout */
+.ProseMirror img.img-half {
+  width: 48%;
+  display: inline-block;
+  margin-right: 2%;
+  margin-bottom: 0.5rem;
+}
+
+.ProseMirror img.img-half:nth-child(even) {
+  margin-right: 0;
+}
+
+/* Image full width */
+.ProseMirror img.img-full {
+  width: 100%;
+  display: block;
+}
+
+/* 2 images per row layout */
+img[data-layout="2"] {
+  width: 48%;
+  display: inline-block;
+  margin-right: 4%;
+  margin-bottom: 0.5rem;
+  vertical-align: top;
+}
+
+img[data-layout="2"]:nth-of-type(2n) {
+  margin-right: 0;
 }
 
 /* ===== Typography System (Figma Design) ===== */

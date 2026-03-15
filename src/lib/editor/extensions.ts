@@ -1,5 +1,4 @@
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
 import Placeholder from '@tiptap/extension-placeholder';
 import TextAlign from '@tiptap/extension-text-align';
 import Color from '@tiptap/extension-color';
@@ -7,6 +6,7 @@ import Highlight from '@tiptap/extension-highlight';
 import CharacterCount from '@tiptap/extension-character-count';
 import Youtube from '@tiptap/extension-youtube';
 import Typography from '@tiptap/extension-typography';
+import { ImageExtension } from './ImageExtension';
 
 export const editorExtensions = [
   StarterKit.configure({
@@ -52,10 +52,11 @@ export const editorExtensions = [
     },
   }),
 
-  Image.configure({
+  ImageExtension.configure({
     allowBase64: false,
+    inline: false,
     HTMLAttributes: {
-      class: 'max-w-full rounded-lg',
+      class: 'max-w-full transition-all duration-200',
     },
   }),
 

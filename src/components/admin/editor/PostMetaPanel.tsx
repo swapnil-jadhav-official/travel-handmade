@@ -14,9 +14,6 @@ interface PostMetaPanelProps {
   featuredImage?: string;
   category: string;
   author: string;
-  authorLocation?: string;
-  authorCity?: string;
-  authorCountry?: string;
   onTitleChange: (title: string) => void;
   onSlugChange: (slug: string) => void;
   onExcerptChange: (excerpt: string) => void;
@@ -25,9 +22,6 @@ interface PostMetaPanelProps {
   onCategoryChange: (category: string) => void;
   onAuthorChange: (author: string) => void;
   onAuthorIdChange?: (authorId: string) => void;
-  onAuthorLocationChange: (location: string) => void;
-  onAuthorCityChange?: (city: string) => void;
-  onAuthorCountryChange?: (country: string) => void;
 }
 
 const generateSlug = (text: string): string => {
@@ -46,9 +40,6 @@ export default function PostMetaPanel({
   featuredImage,
   category,
   author,
-  authorLocation,
-  authorCity,
-  authorCountry,
   onTitleChange,
   onSlugChange,
   onExcerptChange,
@@ -57,9 +48,6 @@ export default function PostMetaPanel({
   onCategoryChange,
   onAuthorChange,
   onAuthorIdChange,
-  onAuthorLocationChange,
-  onAuthorCityChange,
-  onAuthorCountryChange,
 }: PostMetaPanelProps): React.ReactElement {
   const [uploading, setUploading] = useState(false);
   const [authors, setAuthors] = useState<UserProfile[]>([]);
@@ -174,8 +162,6 @@ export default function PostMetaPanel({
               onAuthorChange(e.target.value);
               if (selectedAuthor) {
                 onAuthorIdChange?.(selectedAuthor.uid);
-                onAuthorCityChange?.(selectedAuthor.city || '');
-                onAuthorCountryChange?.(selectedAuthor.country || '');
               }
             }}
             className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-black focus:outline-none"
@@ -192,48 +178,6 @@ export default function PostMetaPanel({
             {author || userProfile?.displayName}
           </div>
         )}
-      </div>
-
-      {/* Author City & Country */}
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Author City
-          </label>
-          <input
-            type="text"
-            value={authorCity || ''}
-            onChange={(e) => onAuthorCityChange?.(e.target.value)}
-            placeholder="e.g., Bangkok"
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Author Country
-          </label>
-          <input
-            type="text"
-            value={authorCountry || ''}
-            onChange={(e) => onAuthorCountryChange?.(e.target.value)}
-            placeholder="e.g., Thailand"
-            className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
-          />
-        </div>
-      </div>
-
-      {/* Author Location (Legacy) */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Author Location (Legacy)
-        </label>
-        <input
-          type="text"
-          value={authorLocation || ''}
-          onChange={(e) => onAuthorLocationChange(e.target.value)}
-          placeholder="e.g., Thailand, New Zealand"
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
-        />
       </div>
 
       {/* Featured Image */}

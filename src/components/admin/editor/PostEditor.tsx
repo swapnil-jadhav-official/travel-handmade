@@ -32,8 +32,6 @@ export default function PostEditor({
       tags: [],
       authorId: user?.uid || '',
       authorName: userProfile?.displayName || '',
-      authorCity: userProfile?.city || '',
-      authorCountry: userProfile?.country || '',
       status: 'draft' as PostStatus,
       visibility: 'public' as PostVisibility,
       views: 0,
@@ -169,9 +167,6 @@ export default function PostEditor({
             featuredImage={post.featuredImage}
             category={post.category || ''}
             author={post.authorName || ''}
-            authorLocation={post.authorLocation}
-            authorCity={post.authorCity}
-            authorCountry={post.authorCountry}
             onTitleChange={(title) => handleFieldChange('title', title)}
             onSlugChange={(slug) => handleFieldChange('slug', slug)}
             onExcerptChange={(excerpt) => handleFieldChange('excerpt', excerpt)}
@@ -182,11 +177,6 @@ export default function PostEditor({
             onCategoryChange={(category) => handleFieldChange('category', category)}
             onAuthorChange={(authorName) => handleFieldChange('authorName', authorName)}
             onAuthorIdChange={(authorId) => handleFieldChange('authorId', authorId)}
-            onAuthorLocationChange={(location) =>
-              handleFieldChange('authorLocation', location)
-            }
-            onAuthorCityChange={(city) => handleFieldChange('authorCity', city)}
-            onAuthorCountryChange={(country) => handleFieldChange('authorCountry', country)}
           />
         </div>
       )}
