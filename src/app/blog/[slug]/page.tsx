@@ -112,8 +112,10 @@ export default function BlogPost({ params }: BlogPageProps) {
               alt={post.title}
               className="absolute inset-0 h-full w-full object-cover"
             />
-            {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-black/70" />
+            {/* Gradient Overlay - Dark at bottom, transparent at top */}
+            <div className="absolute inset-0" style={{
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.7) 100%)'
+            }} />
             {/* Title and Category Overlay */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 px-4 w-full py-12">
               <div className="text-center">

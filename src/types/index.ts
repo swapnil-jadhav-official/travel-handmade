@@ -72,6 +72,7 @@ export interface HeroImage {
   id: string;
   image: string;
   title: string;
+  link?: string; // Blog slug for navigation
 }
 
 export interface Testimonial {

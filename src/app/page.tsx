@@ -78,6 +78,7 @@ export default function Home() {
       id: post.id,
       image: post.featuredImage!,
       title: post.title,
+      link: post.slug,
     }));
 
   // Organize posts by category

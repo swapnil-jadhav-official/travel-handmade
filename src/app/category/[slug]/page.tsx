@@ -65,8 +65,10 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             />
           )}
 
-          {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/70" />
+          {/* Gradient Overlay - Dark at bottom, transparent at top */}
+          <div className="absolute inset-0" style={{
+            background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.7) 100%)'
+          }} />
 
           {/* Title & Description Overlay */}
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-4 w-full py-16 pb-32">
