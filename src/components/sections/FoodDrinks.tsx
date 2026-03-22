@@ -24,10 +24,10 @@ export default function FoodDrinks({
   };
 
   return (
-    <section className="w-full min-h-screen flex flex-col py-12 sm:py-16 md:py-20">
+    <section className="w-full h-screen flex flex-col pt-0 pb-12 sm:pb-16 md:pb-20">
       {/* Header with Navigation */}
-      <div className="px-4 sm:px-6 md:px-8 lg:px-12 mb-10 sm:mb-12 md:mb-16 border-b border-black pb-2 sm:pb-3">
-        <div className="flex items-center justify-between">
+      <div className="mb-10 sm:mb-12 md:mb-16 px-4 sm:px-6 md:px-8 lg:px-12">
+        <div className="flex items-center justify-between border-b border-black pb-2 sm:pb-3">
           <div className="heading-main-category">
             Food + Drinks
           </div>
@@ -60,7 +60,7 @@ export default function FoodDrinks({
               key={`${article.id}-${offset}`}
               href={`/blog/${article.slug}`}
             >
-              <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-screen">
+              <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-full">
                 {/* Background Image */}
                 <Image
                   src={article.image}
