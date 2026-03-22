@@ -32,7 +32,7 @@ export default function TravelLiving({
   return (
     <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
       {/* Header with Navigation */}
-      <div className="flex items-center justify-between mb-10 sm:mb-12 md:mb-16 border-b border-black pb-2 sm:pb-3">
+      <div className="flex items-center justify-between mb-14 sm:mb-16 md:mb-20 border-b border-black pb-2 sm:pb-3">
         <div className="heading-main-category">
           Travel + Living
         </div>
@@ -62,7 +62,7 @@ export default function TravelLiving({
             href={`/blog/${article.slug}`}
             className={`${idx === 0 ? "hidden sm:block flex-[2]" : "flex-1"}`}
           >
-            <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-64 sm:h-80 md:h-96">
+            <div className={`relative overflow-hidden bg-gray-300 cursor-pointer group ${idx === 0 ? "aspect-826/484" : "aspect-413/484"}`}>
               {/* Background Image */}
               <Image
                 src={article.image}

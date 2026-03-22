@@ -73,7 +73,7 @@ export default function FoodDrinks({
                 {/* Content Overlay */}
                 <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
                   {/* Category */}
-                  <p className="text-subcategory text-white/90 mb-2 sm:mb-3 md:mb-4 line-clamp-1">
+                  <p className="text-subcategory text-white/90 mb-3 sm:mb-4 line-clamp-1">
                     {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
                     {article.date}
                   </p>
