@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import SectionHeader from "@/components/ui/SectionHeader";
 import type { Article } from "@/types";
 
 interface TravelLivingProps {
@@ -30,27 +29,29 @@ export default function TravelLiving({
   ];
 
   return (
-    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
+    <section className="w-full py-12 sm:py-16 md:py-20">
       {/* Header with Navigation */}
-      <div className="flex items-center justify-between mb-14 sm:mb-16 md:mb-20 border-b border-black pb-2 sm:pb-3">
-        <div className="heading-main-category">
-          Travel + Living
-        </div>
-        <div className="flex gap-2 sm:gap-4">
-          <button
-            onClick={handlePrevious}
-            className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
-            aria-label="Previous"
-          >
-            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
-          <button
-            onClick={handleNext}
-            className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
-            aria-label="Next"
-          >
-            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
+      <div className="px-4 sm:px-6 md:px-8 lg:px-12 mb-14 sm:mb-16 md:mb-20">
+        <div className="flex items-center justify-between pb-1 border-b border-black">
+          <div className="heading-main-category">
+            Travel + Living
+          </div>
+          <div className="flex gap-2 sm:gap-4">
+            <button
+              onClick={handlePrevious}
+              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
+              aria-label="Previous"
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+            <button
+              onClick={handleNext}
+              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
+              aria-label="Next"
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          </div>
         </div>
       </div>
 
@@ -68,7 +69,7 @@ export default function TravelLiving({
                 src={article.image}
                 alt={article.title}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover transition-transform duration-300"
               />
 
               {/* Dark Overlay */}
@@ -76,16 +77,19 @@ export default function TravelLiving({
 
               {/* Content Overlay */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
-                {/* Category */}
-                <p className="text-subcategory text-white/90 mb-2 sm:mb-3 md:mb-4 line-clamp-1">
-                  {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
-                  {article.date}
-                </p>
-
                 {/* Title */}
                 <div className="heading-post-title text-white line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
                   {article.title}
                 </div>
+
+                {/* Author and Read Time */}
+                {(article.author || article.readTime) && (
+                  <p className="text-subcategory text-white/90 mt-2 sm:mt-3 md:mt-4 line-clamp-1">
+                    {article.author}
+                    {article.author && article.readTime && " | "}
+                    {article.readTime}
+                  </p>
+                )}
               </div>
             </div>
           </Link>

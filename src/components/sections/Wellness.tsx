@@ -14,10 +14,10 @@ export default function Wellness({
   const visibleArticles = articles.slice(0, 2);
 
   return (
-    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
+    <section className="w-full py-12 sm:py-16 md:py-20">
       {/* Header */}
-      <div className="mb-14 sm:mb-16 md:mb-20 border-b border-black pb-2 sm:pb-3">
-        <div className="heading-main-category">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-12 mb-14 sm:mb-16 md:mb-20">
+        <div className="heading-main-category pb-1 border-b border-black">
           Wellness
         </div>
       </div>
@@ -44,16 +44,19 @@ export default function Wellness({
 
               {/* Content Overlay */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
-                {/* Category */}
-                <p className="text-subcategory text-white/90 mb-3 sm:mb-4 line-clamp-1">
-                  {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
-                  {article.date}
-                </p>
-
                 {/* Title */}
                 <div className="heading-post-title text-white line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
                   {article.title}
                 </div>
+
+                {/* Author and Read Time */}
+                {(article.author || article.readTime) && (
+                  <p className="text-subcategory text-white/90 mt-3 sm:mt-4 line-clamp-1">
+                    {article.author}
+                    {article.author && article.readTime && " | "}
+                    {article.readTime}
+                  </p>
+                )}
               </div>
             </div>
           </Link>

@@ -28,10 +28,10 @@ export default function AdventureWildlife({
 
   const currentArticle = articles[currentIndex];
 
-  if (!currentArticle) return <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20" />;
+  if (!currentArticle) return <section className="w-full py-12 sm:py-16 md:py-20" />;
 
   return (
-    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
+    <section className="w-full py-12 sm:py-16 md:py-20">
       {/* Featured Card */}
       <Link href={`/blog/${currentArticle.slug}`}>
         <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-64 sm:h-80 md:h-96 lg:h-125">
@@ -49,8 +49,10 @@ export default function AdventureWildlife({
           {/* Content Overlay */}
           <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 md:p-8">
             {/* Section Header at Top */}
-            <div className="heading-main-category-dark border-b border-white pb-2">
-              Adventure + Wildlife
+            <div className="px-4 sm:px-6 md:px-8 lg:px-12">
+              <div className="heading-main-category-dark border-b border-white pb-1">
+                Adventure + Wildlife
+              </div>
             </div>
 
             {/* Article Content at Bottom */}
@@ -60,11 +62,14 @@ export default function AdventureWildlife({
                 {currentArticle.title}
               </div>
 
-              {/* Metadata */}
-              <p className="text-subcategory text-white/90 line-clamp-1">
-                {currentArticle.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
-                {currentArticle.date}
-              </p>
+              {/* Author and Read Time */}
+              {(currentArticle.author || currentArticle.readTime) && (
+                <p className="text-subcategory text-white/90 line-clamp-1">
+                  {currentArticle.author}
+                  {currentArticle.author && currentArticle.readTime && " | "}
+                  {currentArticle.readTime}
+                </p>
+              )}
             </div>
           </div>
         </div>

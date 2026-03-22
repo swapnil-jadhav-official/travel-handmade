@@ -43,6 +43,7 @@ export interface Post {
   authorLocation?: string;
   authorCity?: string;      // Author's city (denormalized for fast reads)
   authorCountry?: string;   // Author's country (denormalized for fast reads)
+  readTime?: string;        // Reading time (e.g., "5 min read")
   status: PostStatus;
   visibility: PostVisibility;
   password?: string;
@@ -63,6 +64,7 @@ export interface Article {
   category?: string;
   date?: string;
   author?: string;
+  readTime?: string;
   authorLocation?: string;
   authorCity?: string;
   authorCountry?: string;

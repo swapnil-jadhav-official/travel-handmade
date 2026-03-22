@@ -64,7 +64,8 @@ export default function Home() {
     slug: post.slug,
     category: post.category,
     date: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : '',
-    author: post.author,
+    author: post.authorName,  // Use authorName instead of deprecated author field
+    readTime: post.readTime,
     authorLocation: post.authorLocation,
     authorCity: post.authorCity,
     authorCountry: post.authorCountry,

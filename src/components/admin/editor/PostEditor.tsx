@@ -15,6 +15,13 @@ interface PostEditorProps {
   initialPost?: Post;
 }
 
+// Calculate read time based on word count (assuming 200 words per minute)
+const calculateReadTime = (content: string): string => {
+  const wordCount = content.trim().split(/\s+/).length;
+  const readTimeMinutes = Math.ceil(wordCount / 200);
+  return readTimeMinutes === 1 ? '1 min read' : `${readTimeMinutes} min read`;
+};
+
 export default function PostEditor({
   postId,
   initialPost,
@@ -74,6 +81,14 @@ export default function PostEditor({
     },
     []
   );
+
+  // Auto-calculate read time when content changes
+  useEffect(() => {
+    if (post.content) {
+      const readTime = calculateReadTime(post.content);
+      setPost((prev) => ({ ...prev, readTime }));
+    }
+  }, [post.content]);
 
   const handleSaveDraft = async (): Promise<void> => {
     try {
@@ -167,6 +182,7 @@ export default function PostEditor({
             featuredImage={post.featuredImage}
             category={post.category || ''}
             author={post.authorName || ''}
+            readTime={post.readTime || ''}
             onTitleChange={(title) => handleFieldChange('title', title)}
             onSlugChange={(slug) => handleFieldChange('slug', slug)}
             onExcerptChange={(excerpt) => handleFieldChange('excerpt', excerpt)}
@@ -176,6 +192,7 @@ export default function PostEditor({
             onFeaturedImageRemove={() => handleFieldChange('featuredImage', '')}
             onCategoryChange={(category) => handleFieldChange('category', category)}
             onAuthorChange={(authorName) => handleFieldChange('authorName', authorName)}
+            onReadTimeChange={(readTime) => handleFieldChange('readTime', readTime)}
             onAuthorIdChange={(authorId) => handleFieldChange('authorId', authorId)}
           />
         </div>

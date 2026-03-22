@@ -14,6 +14,7 @@ interface PostMetaPanelProps {
   featuredImage?: string;
   category: string;
   author: string;
+  readTime?: string;
   onTitleChange: (title: string) => void;
   onSlugChange: (slug: string) => void;
   onExcerptChange: (excerpt: string) => void;
@@ -21,6 +22,7 @@ interface PostMetaPanelProps {
   onFeaturedImageRemove: () => void;
   onCategoryChange: (category: string) => void;
   onAuthorChange: (author: string) => void;
+  onReadTimeChange?: (readTime: string) => void;
   onAuthorIdChange?: (authorId: string) => void;
 }
 
@@ -40,6 +42,7 @@ export default function PostMetaPanel({
   featuredImage,
   category,
   author,
+  readTime,
   onTitleChange,
   onSlugChange,
   onExcerptChange,
@@ -47,6 +50,7 @@ export default function PostMetaPanel({
   onFeaturedImageRemove,
   onCategoryChange,
   onAuthorChange,
+  onReadTimeChange,
   onAuthorIdChange,
 }: PostMetaPanelProps): React.ReactElement {
   const [uploading, setUploading] = useState(false);
