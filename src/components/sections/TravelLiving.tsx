@@ -29,9 +29,9 @@ export default function TravelLiving({
   ];
 
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20">
+    <section className="w-full h-screen flex flex-col py-8 sm:py-10 md:py-12">
       {/* Header with Navigation */}
-      <div className="px-4 sm:px-6 md:px-8 lg:px-12 mb-14 sm:mb-16 md:mb-20">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-12 mb-6 sm:mb-8 md:mb-10">
         <div className="flex items-center justify-between pb-1 border-b border-black">
           <div className="heading-main-category">
             Travel + Living
@@ -56,7 +56,7 @@ export default function TravelLiving({
       </div>
 
       {/* Carousel Cards */}
-      <div className="flex gap-4 sm:gap-6 md:gap-8">
+      <div className="flex-1 flex gap-4 sm:gap-6 md:gap-8">
         {visibleArticles.map((article, idx) => (
           <Link
             key={`${article.id}-${idx}`}

@@ -42,8 +42,8 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="bg-black text-white sticky top-0 z-50">
-      <nav className="max-w-full px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-5 flex items-center justify-between h-auto min-h-16 sm:min-h-20">
+    <header className="bg-black text-white sticky top-0 z-50 max-h-67">
+      <nav className="max-w-full px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-5 flex items-center justify-between h-auto max-h-67">
         {/* Logo */}
         <Link href="/" className="shrink-0">
           {logoUrl.startsWith('http') ? (
