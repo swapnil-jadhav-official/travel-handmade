@@ -28,13 +28,13 @@ export default function AdventureWildlife({
 
   const currentArticle = articles[currentIndex];
 
-  if (!currentArticle) return <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16" />;
+  if (!currentArticle) return <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20" />;
 
   return (
-    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
       {/* Featured Card */}
       <Link href={`/blog/${currentArticle.slug}`}>
-        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-64 sm:h-80 md:h-96 lg:h-[500px]">
+        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-64 sm:h-80 md:h-96 lg:h-125">
           {/* Background Image */}
           <Image
             src={currentArticle.image}

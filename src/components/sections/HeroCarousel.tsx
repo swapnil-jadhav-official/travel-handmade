@@ -13,8 +13,10 @@ interface HeroCarouselProps {
 const AUTO_ROTATE_INTERVAL = 5000;
 
 export default function HeroCarousel({
-  images,
+  images: rawImages,
 }: HeroCarouselProps): React.ReactElement {
+  // Limit to max 3 images
+  const images = rawImages.slice(0, 3);
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function HeroCarousel({
 
   return (
     <section className="relative w-full overflow-hidden bg-gray-300">
-      <div className="relative h-[600px]">
+      <div className="relative w-full h-screen">
         {/* Images */}
         {images.map((image, index) => (
           <Image
@@ -52,12 +54,12 @@ export default function HeroCarousel({
           <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 px-4 w-full">
             {images[activeIndex].link ? (
               <Link href={`/blog/${images[activeIndex].link}`}>
-                <div className="heading-post-title text-white text-center max-w-4xl mx-auto hover:text-white/80 transition-colors cursor-pointer">
+                <div className="heading-post-title text-white text-center max-w-5xl mx-auto line-clamp-3 hover:text-white/80 transition-colors cursor-pointer">
                   {images[activeIndex].title}
                 </div>
               </Link>
             ) : (
-              <div className="heading-post-title text-white text-center max-w-4xl mx-auto">
+              <div className="heading-post-title text-white text-center max-w-5xl mx-auto line-clamp-3">
                 {images[activeIndex].title}
               </div>
             )}
@@ -80,10 +82,10 @@ export default function HeroCarousel({
               key={index}
               onClick={() => setActiveIndex(index)}
               aria-label={`Go to slide ${index + 1}`}
-              className={`rounded-full transition-all duration-300 ${
+              className={`h-2 w-2 rounded-full transition-all duration-300 ${
                 index === activeIndex
-                  ? 'h-3 w-3 bg-white'
-                  : 'h-2 w-2 bg-white/50 hover:bg-white/75'
+                  ? 'bg-white'
+                  : 'bg-white/50 hover:bg-white/75'
               }`}
             />
           ))}

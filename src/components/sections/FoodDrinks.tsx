@@ -24,9 +24,9 @@ export default function FoodDrinks({
   };
 
   return (
-    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
       {/* Header with Navigation */}
-      <div className="flex items-center justify-between mb-8 sm:mb-10 md:mb-12 border-b border-black pb-2 sm:pb-3">
+      <div className="flex items-center justify-between mb-10 sm:mb-12 md:mb-16 border-b border-black pb-2 sm:pb-3">
         <div className="heading-main-category">
           Food + Drinks
         </div>

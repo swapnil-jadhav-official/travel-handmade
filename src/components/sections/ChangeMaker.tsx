@@ -46,8 +46,8 @@ export default function ChangeMaker({
   const embedUrl = featuredVideo?.url ? getYouTubeEmbedUrl(featuredVideo.url) : null;
 
   return (
-    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-16">
-      <SectionHeader title="Change Maker" className="mb-12" />
+    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
+      <SectionHeader title="Change Maker" className="mb-10 sm:mb-12 md:mb-16" />
 
       <div className="flex flex-col gap-12 lg:flex-row lg:gap-16">
         {/* Left: Video Section (Fixed) - 35% - Exact Figma Replica */}
