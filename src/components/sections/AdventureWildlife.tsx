@@ -49,22 +49,22 @@ export default function AdventureWildlife({
           {/* Content Overlay */}
           <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 md:p-8">
             {/* Section Header at Top */}
-            <div className="font-unbounded font-light text-lg sm:text-2xl md:text-3xl uppercase tracking-wide text-white border-b border-white pb-2">
+            <div className="heading-main-category-dark border-b border-white pb-2">
               Adventure + Wildlife
             </div>
 
             {/* Article Content at Bottom */}
             <div>
+              {/* Title */}
+              <div className="heading-post-title text-white mb-2 sm:mb-3 md:mb-4 line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
+                {currentArticle.title}
+              </div>
+
               {/* Metadata */}
-              <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-2 sm:mb-3 md:mb-4 line-clamp-1">
+              <p className="text-subcategory text-white/90 line-clamp-1">
                 {currentArticle.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
                 {currentArticle.date}
               </p>
-
-              {/* Title */}
-              <div className="font-unbounded font-bold text-lg sm:text-xl md:text-2xl text-white leading-tight line-clamp-3">
-                {currentArticle.title}
-              </div>
             </div>
           </div>
         </div>

@@ -59,7 +59,7 @@ export default function HoverImageList({
                 ) : (
                   /* Metadata (optional, shown when not in dark mode or no author) */
                   showMeta && (
-                    <p className={`mb-2 sm:mb-3 font-work-sans text-xs sm:text-sm ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
+                    <p className={`mb-2 sm:mb-3 text-subcategory ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
                       {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
                       {article.date}
                     </p>
@@ -67,7 +67,7 @@ export default function HoverImageList({
                 )}
 
                 {/* Title */}
-                <div className={`font-unbounded font-bold text-sm sm:text-base md:text-lg lg:text-xl transition-all duration-200 group-hover:underline ${darkMode ? "text-white" : "text-black"}`}>
+                <div className={`heading-article-title transition-all duration-200 group-hover:underline ${darkMode ? "text-white" : "text-black"}`}>
                   {article.title}
                 </div>
               </div>

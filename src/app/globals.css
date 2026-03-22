@@ -204,6 +204,197 @@ img[data-layout="2"]:nth-of-type(2n) {
   color: #000000;
 }
 
+/* ===== Responsive Typography Classes (Figma Design) ===== */
+
+/* Main Category Title - Unbounded Light All Caps 18px (lg) */
+.heading-main-category {
+  font-family: var(--font-unbounded);
+  font-weight: 300;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: black;
+}
+
+@media (min-width: 640px) {
+  .heading-main-category {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-main-category {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-main-category {
+    font-size: 18px;
+  }
+}
+
+/* Main Category Title - Dark variant for dark backgrounds */
+.heading-main-category-dark {
+  font-family: var(--font-unbounded);
+  font-weight: 300;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+}
+
+@media (min-width: 640px) {
+  .heading-main-category-dark {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-main-category-dark {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-main-category-dark {
+    font-size: 18px;
+  }
+}
+
+/* Article Title - Unbounded Medium 14px (lg) */
+.heading-article-title {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: 10px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  .heading-article-title {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-article-title {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-article-title {
+    font-size: 14px;
+  }
+}
+
+/* Post Title - Unbounded Medium 30px (lg) */
+.heading-post-title {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  .heading-post-title {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-post-title {
+    font-size: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-post-title {
+    font-size: 30px;
+  }
+}
+
+/* Header Menu Items - Unbounded Regular All Caps (lg) */
+.heading-nav {
+  font-family: var(--font-unbounded);
+  font-weight: 400;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 640px) {
+  .heading-nav {
+    font-size: 8.5px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-nav {
+    font-size: 9px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-nav {
+    font-size: 10px;
+  }
+}
+
+/* Subcategory - Work Sans Regular All Caps 8px (lg) */
+.text-subcategory {
+  font-family: var(--font-work-sans);
+  font-weight: 400;
+  font-size: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 640px) {
+  .text-subcategory {
+    font-size: 5.5px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-subcategory {
+    font-size: 6px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-subcategory {
+    font-size: 8px;
+  }
+}
+
+/* Article Paragraph - Work Sans Regular 13px (lg) */
+.text-article-paragraph {
+  font-family: var(--font-work-sans);
+  font-weight: 400;
+  font-size: 11px;
+}
+
+@media (min-width: 640px) {
+  .text-article-paragraph {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-article-paragraph {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-article-paragraph {
+    font-size: 13px;
+  }
+}
+
 /* Divider Line */
 .divider-line {
   border-top: 1px solid #E9E9E9;

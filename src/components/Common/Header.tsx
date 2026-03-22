@@ -65,7 +65,7 @@ export default function Header() {
             <Link
               key={item.slug}
               href={`/category/${item.slug}`}
-              className="text-xs sm:text-sm font-normal tracking-wider uppercase hover:opacity-70 transition whitespace-nowrap"
+              className="heading-nav hover:opacity-70 transition whitespace-nowrap"
             >
               {item.name}
             </Link>
@@ -90,7 +90,7 @@ export default function Header() {
               <Link
                 key={item.slug}
                 href={`/category/${item.slug}`}
-                className="block text-sm sm:text-base font-normal tracking-wider uppercase hover:opacity-70 transition py-2"
+                className="block heading-nav hover:opacity-70 transition py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}

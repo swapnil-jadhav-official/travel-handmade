@@ -32,7 +32,7 @@ export default function Wellness({
     <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
       {/* Header with Navigation */}
       <div className="flex items-center justify-between mb-8 sm:mb-10 md:mb-12 border-b border-black pb-2 sm:pb-3">
-        <div className="font-unbounded font-light text-lg sm:text-xl md:text-2xl lg:text-3xl uppercase tracking-wide text-black">
+        <div className="heading-main-category">
           Wellness
         </div>
         <div className="flex gap-2 sm:gap-4">

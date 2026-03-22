@@ -33,7 +33,7 @@ export default function TravelLiving({
     <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
       {/* Header with Navigation */}
       <div className="flex items-center justify-between mb-8 sm:mb-10 md:mb-12 border-b border-black pb-2 sm:pb-3">
-        <div className="font-unbounded font-light text-lg sm:text-xl md:text-2xl lg:text-3xl uppercase tracking-wide text-black">
+        <div className="heading-main-category">
           Travel + Living
         </div>
         <div className="flex gap-2 sm:gap-4">
@@ -76,14 +76,14 @@ export default function TravelLiving({
 
               {/* Content Overlay */}
               <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
-                {/* Author and Reading Time */}
-                <p className="text-xs font-semibold text-white/90 uppercase tracking-wider mb-2 sm:mb-3 md:mb-4 line-clamp-1">
+                {/* Category */}
+                <p className="text-subcategory text-white/90 mb-2 sm:mb-3 md:mb-4 line-clamp-1">
                   {article.category?.replace(/-/g, " + ").toUpperCase()} |{" "}
                   {article.date}
                 </p>
 
                 {/* Title */}
-                <div className="font-unbounded font-semibold text-lg sm:text-xl md:text-2xl text-white leading-tight line-clamp-3">
+                <div className="heading-post-title text-white line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
                   {article.title}
                 </div>
               </div>
