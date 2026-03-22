@@ -44,7 +44,7 @@ export default function HoverImageList({
               >
                 {/* Author (shown in dark mode instead of metadata) */}
                 {darkMode && article.author ? (
-                  <div className="mb-4 sm:mb-6">
+                  <div className="mb-3 sm:mb-4">
                     <p className={`text-subcategory ${darkMode ? "text-gray-400" : "text-gray-600"}`}>
                       {article.author.toUpperCase()}
                     </p>
