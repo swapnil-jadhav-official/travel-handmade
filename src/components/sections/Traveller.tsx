@@ -10,11 +10,13 @@ export default function TravellerSection({
   travellers,
 }: TravellerProps): React.ReactElement {
   return (
-    <section className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
-      <SectionHeader title="Traveller" className="mb-10 sm:mb-12 md:mb-16" />
+    <section className="w-full min-h-screen flex flex-col py-12 sm:py-16 md:py-20">
+      <div className="px-4 sm:px-6 md:px-8 lg:px-12 mb-10 sm:mb-12 md:mb-16">
+        <SectionHeader title="Traveller" />
+      </div>
 
       {/* 4-Column Grid (lg), 2-Column (md), 1-Column (mobile) */}
-      <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-4">
+      <div className="flex-1 px-4 sm:px-6 md:px-8 lg:px-12 grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-4">
         {travellers.map((traveller, index) => (
           <ProfileCard key={traveller.id} traveller={traveller} index={index} />
         ))}

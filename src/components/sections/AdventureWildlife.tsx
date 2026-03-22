@@ -34,7 +34,7 @@ export default function AdventureWildlife({
     <section className="w-full py-12 sm:py-16 md:py-20">
       {/* Featured Card */}
       <Link href={`/blog/${currentArticle.slug}`}>
-        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-64 sm:h-80 md:h-96 lg:h-125">
+        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-screen">
           {/* Background Image */}
           <Image
             src={currentArticle.image}

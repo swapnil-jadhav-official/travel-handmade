@@ -29,7 +29,7 @@ export default function ProfileCard({
         <img
           src={traveller.image}
           alt={traveller.country}
-          className="h-[480px] w-full object-cover transition-transform duration-300 group-hover:scale-110"
+          className="h-screen w-full object-cover transition-transform duration-300 group-hover:scale-110"
         />
 
         {/* Overlay on Hover */}
