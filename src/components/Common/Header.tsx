@@ -4,30 +4,35 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { X, Menu } from 'lucide-react';
-import { getCategories } from '@/lib/firestore';
 import { getSiteSettings } from '@/lib/settings';
 import type { Category } from '@/types';
 
 export default function Header() {
-  const [navigationItems, setNavigationItems] = useState<Category[]>([]);
   const [logoUrl, setLogoUrl] = useState('/th-logo.png');
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Fixed navigation order matching Figma design
+  const navigationItems: Category[] = [
+    { id: '1', name: 'Travel + Living', slug: 'travel-living' },
+    { id: '2', name: 'Adventure + Wildlife', slug: 'adventure-wildlife' },
+    { id: '3', name: 'Food + Drinks', slug: 'food-drinks' },
+    { id: '4', name: 'Retreats', slug: 'retreats' },
+    { id: '5', name: 'Wellness', slug: 'wellness' },
+    { id: '6', name: 'Changemaker', slug: 'changemaker' },
+    { id: '7', name: 'Traveller', slug: 'traveller' },
+  ];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const [categories, settings] = await Promise.all([
-          getCategories(),
-          getSiteSettings(),
-        ]);
-        setNavigationItems(categories);
+        const settings = await getSiteSettings();
         if (settings?.logoUrl) {
           setLogoUrl(settings.logoUrl);
         }
       } catch (error) {
-        console.error('Failed to fetch navigation data:', error);
+        console.error('Failed to fetch settings:', error);
       } finally {
         setLoading(false);
       }
@@ -60,7 +65,7 @@ export default function Header() {
         </Link>
 
         {/* Desktop Navigation Items */}
-        <div className="hidden lg:flex gap-6 xl:gap-12 items-center justify-center flex-1 ml-8 lg:ml-16 xl:ml-20">
+        <div className="hidden lg:flex gap-6 xl:gap-12 items-center justify-end flex-1">
           {!loading && navigationItems.length > 0 && navigationItems.map((item) => (
             <Link
               key={item.slug}

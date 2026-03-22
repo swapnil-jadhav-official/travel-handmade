@@ -343,6 +343,32 @@ img[data-layout="2"]:nth-of-type(2n) {
   }
 }
 
+/* Location - Unbounded Regular 14px (lg) */
+.heading-location {
+  font-family: var(--font-unbounded);
+  font-weight: 400;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+@media (min-width: 640px) {
+  .heading-location {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-location {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-location {
+    font-size: 14px;
+  }
+}
+
 /* Subcategory - Work Sans Regular All Caps 8px (lg) */
 .text-subcategory {
   font-family: var(--font-work-sans);
