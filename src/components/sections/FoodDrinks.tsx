@@ -68,13 +68,17 @@ export default function FoodDrinks({
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
-                <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
-                  <p className="text-subcategory text-white/90 mb-2 line-clamp-1">
-                    {article.category?.replace(/-/g, " + ").toUpperCase()} | {article.date}
-                  </p>
-                  <div className="heading-post-title text-white line-clamp-3">
+                <div className="absolute inset-0 flex flex-col items-center justify-end p-6 sm:p-8 text-center">
+                  <div className="heading-post-title text-white line-clamp-4 max-w-[20rem]">
                     {article.title}
                   </div>
+                  {(article.author || article.readTime) && (
+                    <p className="text-subcategory text-white/80 mt-3 line-clamp-1">
+                      {article.author}
+                      {article.author && article.readTime && " | "}
+                      {article.readTime}
+                    </p>
+                  )}
                 </div>
               </div>
             </Link>

@@ -48,8 +48,8 @@ export default function ChangeMaker({
       <div className="flex flex-col gap-10 lg:flex-row lg:gap-16 lg:items-stretch">
         {/* Left: Video */}
         {featuredVideo?.url && embedUrl && (
-          <div className="w-full lg:w-[35%] flex-shrink-0 flex flex-col gap-3">
-            <div className="relative w-full aspect-video lg:aspect-auto lg:flex-1 overflow-hidden">
+          <div className="w-full lg:w-[35%] flex-shrink-0">
+            <div className="relative w-full aspect-video lg:aspect-auto lg:h-full overflow-hidden">
               <iframe
                 className="absolute inset-0 w-full h-full border-0"
                 src={embedUrl}
@@ -57,17 +57,22 @@ export default function ChangeMaker({
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />
+              {/* Text overlay at bottom */}
+              {(featuredVideo.title || featuredVideo.creator) && (
+                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-5 pointer-events-none">
+                  {featuredVideo.title && (
+                    <div className="heading-article-title text-white mb-1">
+                      {featuredVideo.title}
+                    </div>
+                  )}
+                  {featuredVideo.creator && (
+                    <p className="text-subcategory text-white/70">
+                      {featuredVideo.creator}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
-            {featuredVideo.title && (
-              <div className="heading-article-title text-black">
-                {featuredVideo.title}
-              </div>
-            )}
-            {featuredVideo.creator && (
-              <p className="text-subcategory text-black/60">
-                {featuredVideo.creator}
-              </p>
-            )}
           </div>
         )}
 
