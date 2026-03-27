@@ -33,8 +33,8 @@ export default function ProfileCard({
 
         {/* Overlay on Hover */}
         {isHovered && traveller.articleName && (
-          <div className="absolute inset-0 bg-black/60 flex items-end justify-center">
-            <div className="heading-article-title text-white text-center line-clamp-3 px-8 py-6 lg:py-8">
+          <div className="absolute inset-0 bg-black/60 flex items-end justify-center pb-6 lg:pb-8">
+            <div className="heading-article-title text-white text-center max-w-[8rem] mx-auto">
               {traveller.articleName}
             </div>
           </div>
