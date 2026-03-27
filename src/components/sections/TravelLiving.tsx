@@ -29,13 +29,11 @@ export default function TravelLiving({
   ];
 
   return (
-    <section className="w-full h-screen flex flex-col py-8 sm:py-10 md:py-12">
+    <section className="w-full flex flex-col py-10 lg:py-12 lg:h-dvh">
       {/* Header with Navigation */}
-      <div className="px-4 sm:px-6 md:px-8 lg:px-12 mb-6 sm:mb-8 md:mb-10">
-        <div className="flex items-center justify-between pb-1 border-b border-black">
-          <div className="heading-main-category">
-            Travel + Living
-          </div>
+      <div className="px-6 sm:px-8 lg:px-12 mb-8 sm:mb-10 lg:mb-12">
+        <div className="flex items-center justify-between pb-3 border-b border-black">
+          <div className="heading-main-category">Travel + Living</div>
           <div className="flex gap-2 sm:gap-4">
             <button
               onClick={handlePrevious}
@@ -55,36 +53,29 @@ export default function TravelLiving({
         </div>
       </div>
 
-      {/* Carousel Cards */}
-      <div className="flex-1 flex gap-4 sm:gap-6 md:gap-8">
+      {/* Cards */}
+      <div className="flex-1 flex gap-4 sm:gap-6 lg:gap-8 px-6 sm:px-8 lg:px-0">
         {visibleArticles.map((article, idx) => (
           <Link
             key={`${article.id}-${idx}`}
             href={`/blog/${article.slug}`}
-            className={`${idx === 0 ? "hidden sm:block flex-[2]" : "flex-1"}`}
+            className={idx === 0 ? "hidden sm:block flex-[2]" : "flex-1"}
           >
-            <div className={`relative overflow-hidden bg-gray-300 cursor-pointer group ${idx === 0 ? "aspect-826/484" : "aspect-413/484"}`}>
-              {/* Background Image */}
+            <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-64 sm:h-80 lg:h-full">
               <Image
                 src={article.image}
                 alt={article.title}
                 fill
-                className="object-cover transition-transform duration-300"
+                sizes={idx === 0 ? "(min-width: 1024px) 66vw, (min-width: 640px) 66vw, 0px" : "(min-width: 640px) 33vw, 100vw"}
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
-
-              {/* Dark Overlay */}
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
-
-              {/* Content Overlay */}
-              <div className="absolute inset-0 flex flex-col justify-end p-4 sm:p-6 md:p-8">
-                {/* Title */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
                 <div className="heading-post-title text-white line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
                   {article.title}
                 </div>
-
-                {/* Author and Read Time */}
                 {(article.author || article.readTime) && (
-                  <p className="text-subcategory text-white/90 mt-2 sm:mt-3 md:mt-4 line-clamp-1">
+                  <p className="text-subcategory text-white/90 mt-2 sm:mt-3 line-clamp-1">
                     {article.author}
                     {article.author && article.readTime && " | "}
                     {article.readTime}

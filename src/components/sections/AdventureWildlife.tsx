@@ -28,41 +28,36 @@ export default function AdventureWildlife({
 
   const currentArticle = articles[currentIndex];
 
-  if (!currentArticle) return <section className="w-full py-12 sm:py-16 md:py-20" />;
+  if (!currentArticle) return <section className="w-full h-dvh" />;
 
   return (
-    <section className="w-full py-12 sm:py-16 md:py-20">
-      {/* Featured Card */}
+    <section className="w-full">
       <Link href={`/blog/${currentArticle.slug}`}>
-        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-screen">
+        <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-dvh">
           {/* Background Image */}
           <Image
             src={currentArticle.image}
             alt={currentArticle.title}
             fill
+            sizes="100vw"
             className="object-cover transition-transform duration-300 group-hover:scale-105"
           />
 
           {/* Dark Overlay */}
           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
 
-          {/* Content Overlay */}
-          <div className="absolute inset-0 flex flex-col justify-between p-4 sm:p-6 md:p-8">
-            {/* Section Header at Top */}
-            <div className="px-4 sm:px-6 md:px-8 lg:px-12">
-              <div className="heading-main-category-dark border-b border-white pb-1">
-                Adventure + Wildlife
-              </div>
+          {/* Content */}
+          <div className="absolute inset-0 flex flex-col justify-between px-6 sm:px-8 lg:px-12 py-10 lg:py-12">
+            {/* Section Header */}
+            <div className="heading-main-category-dark border-b border-white pb-3">
+              Adventure + Wildlife
             </div>
 
-            {/* Article Content at Bottom */}
-            <div>
-              {/* Title */}
-              <div className="heading-post-title text-white mb-2 sm:mb-3 md:mb-4 line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
+            {/* Article Content */}
+            <div className="mb-16 lg:mb-20">
+              <div className="heading-post-title text-white mb-2 sm:mb-3 line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
                 {currentArticle.title}
               </div>
-
-              {/* Author and Read Time */}
               {(currentArticle.author || currentArticle.readTime) && (
                 <p className="text-subcategory text-white/90 line-clamp-1">
                   {currentArticle.author}

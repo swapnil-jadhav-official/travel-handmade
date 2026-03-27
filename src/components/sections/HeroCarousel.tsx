@@ -29,7 +29,7 @@ export default function HeroCarousel({
 
   return (
     <section className="relative w-full overflow-hidden bg-gray-300">
-      <div className="relative w-full h-[calc(100vh-67px)]">
+      <div className="relative w-full h-[calc(100dvh-67px)]">
         {/* Images */}
         {images.map((image, index) => (
           <Image

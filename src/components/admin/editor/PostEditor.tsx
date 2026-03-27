@@ -157,6 +157,7 @@ export default function PostEditor({
         router.push(`/admin/posts`);
       } else {
         console.log('[PostEditor] Publishing existing post:', postId);
+        await updatePostTyped(postId, post);
         await publishPost(postId);
         console.log('[PostEditor] Post published successfully');
 

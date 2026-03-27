@@ -33,9 +33,9 @@ export default function Footer() {
 
   return (
     <footer className="bg-black text-white mt-8 sm:mt-12 md:mt-16 w-full">
-      <div className="w-full px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-12 md:py-16">
+      <div className="w-full px-6 sm:px-8 lg:px-12 py-10 sm:py-12 md:py-16">
         {/* Main Footer Content */}
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 md:gap-12 lg:gap-24 mb-8 sm:mb-12 md:mb-16">
+        <div className="flex flex-col sm:flex-row gap-8 md:gap-12 lg:gap-24 mb-10 sm:mb-12 md:mb-16">
           {/* Logo Section */}
           <div className="flex-shrink-0">
             {logoUrl.startsWith('http') ? (
@@ -53,39 +53,39 @@ export default function Footer() {
                 className="h-8 sm:h-10 md:h-12 w-auto mb-4 sm:mb-6"
               />
             )}
-            <p className="text-xs text-gray-400">© 2026 Travel Handmade.</p>
+            <p className="text-subcategory text-gray-400">© 2026 Travel Handmade.</p>
           </div>
 
           {/* Links Columns */}
           <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-12 lg:gap-16">
             {/* Column 1: Main Links */}
             <div>
-              <ul className="space-y-2 sm:space-y-3 text-xs tracking-wide">
-                <li><Link href="/" className="text-white hover:opacity-70 transition">HOME</Link></li>
-                <li><Link href="#" className="text-white hover:opacity-70 transition">ABOUT US</Link></li>
-                <li><Link href="#" className="text-white hover:opacity-70 transition">NEWSLETTER</Link></li>
-                <li><Link href="#" className="text-white hover:opacity-70 transition">CONTACT US</Link></li>
-                <li><Link href="#" className="text-white hover:opacity-70 transition">PRIVACY</Link></li>
+              <ul className="space-y-3 sm:space-y-4">
+                <li><Link href="/" className="heading-nav text-white hover:opacity-70 transition">HOME</Link></li>
+                <li><Link href="#" className="heading-nav text-white hover:opacity-70 transition">ABOUT US</Link></li>
+                <li><Link href="#" className="heading-nav text-white hover:opacity-70 transition">NEWSLETTER</Link></li>
+                <li><Link href="#" className="heading-nav text-white hover:opacity-70 transition">CONTACT US</Link></li>
+                <li><Link href="#" className="heading-nav text-white hover:opacity-70 transition">PRIVACY</Link></li>
               </ul>
             </div>
 
             {/* Column 2: Categories */}
             <div>
-              <ul className="space-y-2 sm:space-y-3 text-xs tracking-wide">
+              <ul className="space-y-3 sm:space-y-4">
                 {categories.map((cat) => (
                   <li key={cat.id}>
-                    <Link href={`/category/${cat.slug}`} className="text-white hover:opacity-70 transition uppercase text-xs">
+                    <Link href={`/category/${cat.slug}`} className="heading-nav text-white hover:opacity-70 transition uppercase">
                       {cat.name}
                     </Link>
                   </li>
                 ))}
-                <li><Link href="#" className="text-white hover:opacity-70 transition">TRAVELLER</Link></li>
+                <li><Link href="#" className="heading-nav text-white hover:opacity-70 transition">TRAVELLER</Link></li>
               </ul>
             </div>
 
             {/* Column 3: Social Links */}
             <div className="col-span-2 sm:col-span-1">
-              <div className="text-xs font-semibold mb-4 sm:mb-6 tracking-wider">OUR SOCIALS</div>
+              <div className="heading-nav text-white mb-4 sm:mb-6">OUR SOCIALS</div>
               <div className="flex gap-4 sm:gap-6">
                 <a href="#" className="text-white hover:opacity-70 transition">
                   <Instagram className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -105,11 +105,13 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div className="border-t border-gray-700"></div>
+        <div className="border-t border-gray-700" />
 
-        {/* Copyright Text */}
-        <div className="pt-6 sm:pt-8 text-center text-xs text-gray-400">
-          <p className="leading-relaxed">All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade</p>
+        {/* Copyright */}
+        <div className="pt-6 sm:pt-8 text-center">
+          <p className="text-subcategory text-gray-400 leading-relaxed">
+            All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade
+          </p>
         </div>
       </div>
     </footer>

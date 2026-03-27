@@ -13,29 +13,29 @@ export default function LatestArticles({
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section className="w-full h-screen flex flex-col lg:flex-row">
+    <section className="w-full flex flex-col lg:flex-row lg:h-dvh">
       {/* Left Side: Title + List */}
-      <div className="flex-1 px-4 sm:px-6 md:px-8 lg:px-12 py-8 sm:py-10 md:py-12 flex flex-col overflow-hidden">
-        <div className="pb-2 sm:pb-3 border-b border-black mb-6 sm:mb-8 md:mb-10">
+      <div className="flex-1 px-6 sm:px-8 lg:px-12 py-10 lg:py-12 flex flex-col">
+        <div className="pb-3 border-b border-black mb-8">
           <div className="heading-main-category text-black">
             Latest Articles
           </div>
         </div>
-        <div className="space-y-4 sm:space-y-5 md:space-y-6 flex-1">
+        <div className="flex-1 flex flex-col justify-between">
           {articles.map((article, index) => (
             <Link key={article.id} href={`/blog/${article.slug}`}>
               <div
                 onMouseEnter={() => setActiveIndex(index)}
-                className={`group cursor-pointer py-3 sm:py-4 md:py-5 transition-colors duration-200 ${
-                  index !== articles.length - 1 ? "border-b border-black/20" : ""
+                className={`group cursor-pointer py-4 lg:py-5 transition-all duration-200 ${
+                  index !== articles.length - 1 ? 'border-b border-black/20' : ''
                 }`}
               >
                 {article.category && (
-                  <p className="text-subcategory text-gray-600 mb-4 sm:mb-6">
-                    {article.category?.replace(/-/g, " + ").toUpperCase()} | {article.date}
+                  <p className="text-subcategory text-gray-500 mb-2 lg:mb-3">
+                    {article.category?.replace(/-/g, ' + ').toUpperCase()} | {article.date}
                   </p>
                 )}
-                <div className="heading-article-title line-clamp-2 text-black">
+                <div className="heading-article-title line-clamp-2 text-black group-hover:opacity-60 transition-opacity duration-200">
                   {article.title}
                 </div>
               </div>
@@ -44,16 +44,17 @@ export default function LatestArticles({
         </div>
       </div>
 
-      {/* Right Side: Featured Image - Full Viewport Height */}
-      <div className="hidden lg:flex w-96 flex-shrink-0 h-screen p-8 sm:p-10 md:p-12">
+      {/* Right Side: Featured Image (desktop only) */}
+      <div className="hidden lg:block w-[400px] xl:w-[480px] flex-shrink-0 p-10 xl:p-12">
         {articles[activeIndex] && (
-          <div className="w-full h-full bg-gray-200 overflow-hidden">
+          <div className="relative w-full h-full bg-gray-200 overflow-hidden">
             <Image
+              key={articles[activeIndex].id}
               src={articles[activeIndex].image}
               alt={articles[activeIndex].title}
-              width={373}
-              height={539}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(min-width: 1280px) 480px, 400px"
+              className="object-cover"
             />
           </div>
         )}

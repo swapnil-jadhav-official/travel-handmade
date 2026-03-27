@@ -158,6 +158,8 @@ export async function getPostTyped(postId: string): Promise<Post | null> {
       const data: Post = {
         id: docSnap.id,
         ...rawData,
+        // Fall back to deprecated `author` field for old posts
+        authorName: rawData.authorName || rawData.author || '',
         createdAt: convertTimestamp(rawData.createdAt),
         updatedAt: convertTimestamp(rawData.updatedAt),
         publishedAt: rawData.publishedAt ? convertTimestamp(rawData.publishedAt) : undefined,
@@ -185,6 +187,8 @@ export async function getAllPostsTyped(): Promise<Post[]> {
       return {
         id: doc.id,
         ...data,
+        // Fall back to deprecated `author` field for old posts
+        authorName: data.authorName || data.author || '',
         createdAt: convertTimestamp(data.createdAt),
         updatedAt: convertTimestamp(data.updatedAt),
         publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
