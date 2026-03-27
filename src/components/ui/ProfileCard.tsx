@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import type { Traveller } from '@/types';
 
 interface ProfileCardProps {
@@ -34,9 +35,15 @@ export default function ProfileCard({
         {/* Overlay on Hover */}
         {isHovered && traveller.articleName && (
           <div className="absolute inset-0 bg-black/60 flex items-end justify-center pb-6 lg:pb-8">
-            <div className="heading-article-title text-white text-center max-w-[8rem] mx-auto">
-              {traveller.articleName}
-            </div>
+            {traveller.articleUrl ? (
+              <Link href={traveller.articleUrl} className="heading-article-title text-white text-center max-w-[8rem] mx-auto hover:opacity-75 transition-opacity">
+                {traveller.articleName}
+              </Link>
+            ) : (
+              <div className="heading-article-title text-white text-center max-w-[8rem] mx-auto">
+                {traveller.articleName}
+              </div>
+            )}
           </div>
         )}
       </div>
