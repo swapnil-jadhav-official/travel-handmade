@@ -175,7 +175,7 @@ export default function PostEditor({
     <div className="flex h-full w-full overflow-hidden">
       {/* Left Panel - Meta */}
       {showLeftPanel && (
-        <div className="w-72 overflow-hidden border-r border-gray-200">
+        <div className="w-72 overflow-y-auto border-r border-gray-200">
           <PostMetaPanel
             title={post.title || ''}
             slug={post.slug || ''}
@@ -215,20 +215,15 @@ export default function PostEditor({
                 <ChevronRight className="h-5 w-5 text-gray-600" />
               )}
             </button>
-            <div>
-              <div className="text-lg font-semibold text-gray-900">
-                {post.title || 'New Post'}
-              </div>
-              <p className="text-sm text-gray-500">
-                {autosaveStatus === 'saving'
-                  ? 'Saving...'
-                  : autosaveStatus === 'saved'
-                    ? 'All changes saved'
-                    : isDirty
-                      ? 'Unsaved changes'
-                      : ''}
-              </p>
-            </div>
+            <p className="text-sm text-gray-500">
+              {autosaveStatus === 'saving'
+                ? 'Saving...'
+                : autosaveStatus === 'saved'
+                  ? 'All changes saved'
+                  : isDirty
+                    ? 'Unsaved changes'
+                    : ''}
+            </p>
           </div>
           <div className="flex gap-3 items-center">
             <button
@@ -266,7 +261,7 @@ export default function PostEditor({
 
       {/* Right Panel - Publish */}
       {showRightPanel && (
-        <div className="w-80 overflow-hidden border-l border-gray-200">
+        <div className="w-80 overflow-y-auto border-l border-gray-200">
           <PostPublishPanel
             status={post.status || ('draft' as PostStatus)}
             visibility={post.visibility || ('public' as PostVisibility)}

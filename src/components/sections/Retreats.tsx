@@ -33,13 +33,6 @@ export default function Retreats({
                     {article.author.toUpperCase()}
                   </p>
                 )}
-                {(article.authorCity || article.authorCountry || article.authorLocation) && (
-                  <p className="heading-location text-white mb-1 lg:mb-2">
-                    {article.authorCity && article.authorCountry
-                      ? `${article.authorCity}, ${article.authorCountry}`
-                      : article.authorCity || article.authorCountry || article.authorLocation}
-                  </p>
-                )}
                 <div className="heading-article-title line-clamp-2 text-white group-hover:opacity-60 transition-opacity duration-200">
                   {article.title}
                 </div>

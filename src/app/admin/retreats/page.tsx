@@ -1,30 +1,25 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Trash2, Edit } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { getAllPostsTyped, deletePost, getPostsByAuthorTyped } from '@/lib/firestore';
+import { getAllPostsTyped, deletePost } from '@/lib/firestore';
 import type { Post } from '@/types';
 
-export default function PostsPage(): React.ReactElement {
+export default function RetreatsPage(): React.ReactElement {
   const { user, isEditorOrAbove } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeCategory, setActiveCategory] = useState<string>('all');
 
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
       try {
-        if (isEditorOrAbove()) {
-          const data = await getAllPostsTyped();
-          setPosts(data);
-        } else if (user) {
-          const data = await getPostsByAuthorTyped(user.uid);
-          setPosts(data);
-        }
+        const data = await getAllPostsTyped();
+        const retreats = data.filter((p) => p.category === 'retreats');
+        setPosts(retreats);
       } catch (error) {
-        console.error('Failed to fetch posts:', error);
+        console.error('Failed to fetch retreats:', error);
       } finally {
         setLoading(false);
       }
@@ -44,69 +39,27 @@ export default function PostsPage(): React.ReactElement {
     }
   };
 
-  const categories = useMemo(() => {
-    const cats = Array.from(new Set(posts.map((p) => p.category).filter(Boolean)));
-    return cats.sort();
-  }, [posts]);
-
-  const filtered = useMemo(() => {
-    if (activeCategory === 'all') return posts;
-    return posts.filter((p) => p.category === activeCategory);
-  }, [posts, activeCategory]);
-
   return (
     <div className="flex-1 overflow-auto">
       <div className="space-y-6 p-8">
         <div className="flex items-center justify-between">
           <div>
-            <div className="text-3xl font-bold text-gray-900">Posts</div>
-            <p className="text-gray-600">Manage all your blog posts</p>
+            <div className="text-3xl font-bold text-gray-900">Retreats</div>
+            <p className="text-gray-600">Manage posts in the Retreats section</p>
           </div>
           <Link
             href="/admin/posts/new"
             className="rounded bg-black px-4 py-2 text-white hover:bg-gray-900"
           >
-            New Post
+            New Retreat Post
           </Link>
         </div>
 
-        {/* Category filter chips */}
-        {!loading && posts.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            <button
-              onClick={() => setActiveCategory('all')}
-              className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors ${
-                activeCategory === 'all'
-                  ? 'bg-black text-white'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              All ({posts.length})
-            </button>
-            {categories.map((cat) => {
-              const count = posts.filter((p) => p.category === cat).length;
-              return (
-                <button
-                  key={cat}
-                  onClick={() => setActiveCategory(cat)}
-                  className={`rounded-full px-4 py-1.5 text-xs font-medium transition-colors capitalize ${
-                    activeCategory === cat
-                      ? 'bg-black text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {cat.replace(/-/g, ' ')} ({count})
-                </button>
-              );
-            })}
-          </div>
-        )}
-
         {loading ? (
           <div className="text-center text-gray-500">Loading...</div>
-        ) : filtered.length === 0 ? (
+        ) : posts.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center text-gray-600">
-            {posts.length === 0 ? 'No posts yet. Create your first post.' : 'No posts in this category.'}
+            No retreat posts yet. Create a new post and set its category to <strong>Retreats</strong>.
           </div>
         ) : (
           <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -115,14 +68,14 @@ export default function PostsPage(): React.ReactElement {
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Image</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Title</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Category</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Author</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Status</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Date</th>
                   <th className="px-6 py-3 text-right text-sm font-medium text-gray-700">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {filtered.map((post) => (
+                {posts.map((post) => (
                   <tr key={post.id} className="border-b border-gray-200 hover:bg-gray-50">
                     <td className="px-6 py-4">
                       {post.featuredImage ? (
@@ -138,9 +91,7 @@ export default function PostsPage(): React.ReactElement {
                       )}
                     </td>
                     <td className="px-6 py-4 text-sm font-medium text-gray-900">{post.title}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600 capitalize">
-                      {post.category?.replace(/-/g, ' ')}
-                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">{post.authorName || '—'}</td>
                     <td className="px-6 py-4 text-sm">
                       <span
                         className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${

@@ -56,7 +56,7 @@ export default function TestimonialsPage(): React.ReactElement {
     <div className="flex-1 flex flex-col overflow-auto">
       <div className="max-w-6xl mx-auto w-full p-8">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Change Maker Testimonials</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Change Maker</h1>
           <Link
             href="/admin/testimonials/new"
             className="flex items-center gap-2 px-4 py-2 bg-black text-white rounded-lg font-medium hover:bg-gray-900"

@@ -16,6 +16,7 @@ import {
   Users,
   UserCircle,
   LogOut,
+  Tent,
 } from 'lucide-react';
 
 export default function AdminSidebar(): React.ReactElement {
@@ -102,9 +103,15 @@ export default function AdminSidebar(): React.ReactElement {
           active={isActive('/admin/posts/new')}
         />
         <NavLink
+          href="/admin/retreats"
+          icon={Tent}
+          label="Retreats"
+          active={isActive('/admin/retreats')}
+        />
+        <NavLink
           href="/admin/testimonials"
           icon={FileText}
-          label="Testimonials"
+          label="Change Maker"
           active={isActive('/admin/testimonials')}
         />
         <NavLink

@@ -195,7 +195,7 @@ export default function TravellerEditor(): React.ReactElement {
               value={traveller_name}
               onChange={handleNameChange}
               placeholder="Enter traveller name..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-900"
             />
           </div>
 
@@ -209,7 +209,7 @@ export default function TravellerEditor(): React.ReactElement {
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               placeholder="Enter country..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-900"
             />
           </div>
 
@@ -223,7 +223,7 @@ export default function TravellerEditor(): React.ReactElement {
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
               placeholder="auto-generated-slug"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-900"
             />
             <p className="text-xs text-gray-500 mt-1">Auto-generated from name, but you can customize it</p>
           </div>
@@ -238,7 +238,7 @@ export default function TravellerEditor(): React.ReactElement {
               value={articleName}
               onChange={(e) => setArticleName(e.target.value)}
               placeholder="Enter article name..."
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-900"
             />
           </div>
 
@@ -253,7 +253,7 @@ export default function TravellerEditor(): React.ReactElement {
                 value={articleUrl}
                 onChange={(e) => setArticleUrl(e.target.value)}
                 placeholder="https://..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent text-gray-900"
               />
             </div>
           )}
