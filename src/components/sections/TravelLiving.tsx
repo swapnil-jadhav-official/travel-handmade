@@ -37,14 +37,14 @@ export default function TravelLiving({
           <div className="flex gap-2 sm:gap-4">
             <button
               onClick={handlePrevious}
-              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
+              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition text-black"
               aria-label="Previous"
             >
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
             <button
               onClick={handleNext}
-              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition"
+              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition text-black"
               aria-label="Next"
             >
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
