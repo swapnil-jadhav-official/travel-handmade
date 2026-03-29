@@ -10,7 +10,7 @@ interface HeroCarouselProps {
   images: HeroImage[];
 }
 
-const AUTO_ROTATE_INTERVAL = 5000;
+const AUTO_ROTATE_INTERVAL = 10000;
 
 export default function HeroCarousel({
   images: rawImages,
@@ -51,15 +51,15 @@ export default function HeroCarousel({
 
         {/* Title Overlay */}
         {images[activeIndex] && (
-          <div className="absolute bottom-20 left-1/2 -translate-x-1/2 z-10 px-4 w-full">
+          <div className="absolute inset-0 z-10 flex items-center justify-center px-6 pt-72">
             {images[activeIndex].link ? (
               <Link href={`/blog/${images[activeIndex].link}`}>
-                <div className="heading-post-title text-white text-center max-w-5xl mx-auto line-clamp-3 hover:text-white/80 transition-colors cursor-pointer">
+                <div className="heading-post-title text-white text-center max-w-3xl mx-auto line-clamp-3 hover:text-white/80 transition-colors cursor-pointer">
                   {images[activeIndex].title}
                 </div>
               </Link>
             ) : (
-              <div className="heading-post-title text-white text-center max-w-5xl mx-auto line-clamp-3">
+              <div className="heading-post-title text-white text-center max-w-3xl mx-auto line-clamp-3">
                 {images[activeIndex].title}
               </div>
             )}

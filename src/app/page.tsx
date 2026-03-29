@@ -23,6 +23,7 @@ export default function Home() {
   const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([]);
   const [travellersList, setTravellersList] = useState<Traveller[]>([]);
   const [featuredVideo, setFeaturedVideo] = useState<{ url?: string; title?: string; creator?: string } | null>(null);
+  const [siteSettings, setSiteSettings] = useState<{ heroPostIds?: string[] } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -39,6 +40,7 @@ export default function Home() {
         setPosts(publishedPosts);
         setTestimonialsList(testimonials);
         setTravellersList(travellerData);
+        setSiteSettings(settings);
         if (settings?.featuredVideoUrl) {
           setFeaturedVideo({
             url: settings.featuredVideoUrl,
@@ -71,15 +73,16 @@ export default function Home() {
     authorCountry: post.authorCountry,
   }));
 
-  // Create hero images from latest posts with featured images
-  const heroImages = posts
-    .filter((p) => p.featuredImage)
-    .slice(0, 5)
+  // Create hero images from manually selected posts only
+  const heroPostIds = siteSettings?.heroPostIds || [];
+  const heroImages = heroPostIds
+    .map((id) => posts.find((p) => p.id === id))
+    .filter(Boolean)
     .map((post) => ({
-      id: post.id,
-      image: post.featuredImage!,
-      title: post.title,
-      link: post.slug,
+      id: post!.id,
+      image: post!.featuredImage!,
+      title: post!.title,
+      link: post!.slug,
     }));
 
   // Organize posts by category
