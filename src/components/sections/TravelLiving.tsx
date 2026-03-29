@@ -54,7 +54,7 @@ export default function TravelLiving({
       </div>
 
       {/* Cards */}
-      <div className="flex-1 flex gap-4 sm:gap-6 lg:gap-8 px-6 sm:px-8 lg:px-0">
+      <div className="flex-1 flex gap-4 sm:gap-8 lg:gap-12 px-6 sm:px-8 lg:px-0">
         {visibleArticles.map((article, idx) => (
           <Link
             key={`${article.id}-${idx}`}
@@ -70,12 +70,12 @@ export default function TravelLiving({
                 className="object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
-              <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-8">
+              <div className="absolute inset-0 flex flex-col justify-center items-start px-6 sm:px-8 pb-6 sm:pb-8 pt-56">
                 <div className="heading-post-title text-white line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
                   {article.title}
                 </div>
                 {(article.author || article.readTime) && (
-                  <p className="text-subcategory text-white/90 mt-2 sm:mt-3 line-clamp-1">
+                  <p className="text-subcategory text-white/90 mt-4 sm:mt-5 line-clamp-1">
                     {article.author}
                     {article.author && article.readTime && " | "}
                     {article.readTime}

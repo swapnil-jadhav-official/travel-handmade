@@ -33,7 +33,7 @@ export default function Retreats({
                     {article.author.toUpperCase()}
                   </p>
                 )}
-                <div className="heading-article-title line-clamp-2 text-white group-hover:opacity-60 transition-opacity duration-200">
+                <div className="heading-article-title line-clamp-3 text-white group-hover:opacity-60 transition-opacity duration-200">
                   {article.title}
                 </div>
               </div>
@@ -43,7 +43,7 @@ export default function Retreats({
       </div>
 
       {/* Right Side: Featured Image (desktop only) */}
-      <div className="hidden lg:block w-[400px] xl:w-[480px] flex-shrink-0 p-10 xl:p-12">
+      <div className="hidden lg:block w-[530px] xl:w-[610px] flex-shrink-0 pl-24 xl:pl-28">
         {articles[activeIndex] && (
           <div className="relative w-full h-full bg-gray-800 overflow-hidden">
             <Image

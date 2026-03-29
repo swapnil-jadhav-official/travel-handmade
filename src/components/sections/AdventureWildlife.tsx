@@ -55,7 +55,7 @@ export default function AdventureWildlife({
 
             {/* Article Content */}
             <div className="mb-16 lg:mb-20">
-              <div className="heading-post-title text-white mb-2 sm:mb-3 line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
+              <div className="heading-post-title text-white mb-5 line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg">
                 {currentArticle.title}
               </div>
               {(currentArticle.author || currentArticle.readTime) && (

@@ -49,7 +49,7 @@ export default function FoodDrinks({
       </div>
 
       {/* Cards — 1 on mobile, 3 on desktop */}
-      <div className="flex-1 px-6 sm:px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      <div className="flex-1 px-6 sm:px-8 lg:px-12 grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-12">
         {[0, 1, 2].map((offset) => {
           const index = (currentIndex + offset) % articles.length;
           const article = articles[index];
@@ -68,12 +68,12 @@ export default function FoodDrinks({
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
-                <div className="absolute inset-0 flex flex-col items-center justify-end p-6 sm:p-8 text-center">
-                  <div className="heading-post-title text-white line-clamp-4 max-w-[20rem]">
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-8 pb-6 sm:pb-8 pt-80">
+                  <div className="heading-article-title text-white line-clamp-4 max-w-[20rem]">
                     {article.title}
                   </div>
                   {(article.author || article.readTime) && (
-                    <p className="text-subcategory text-white/80 mt-3 line-clamp-1">
+                    <p className="text-subcategory text-white/80 mt-5 line-clamp-1">
                       {article.author}
                       {article.author && article.readTime && " | "}
                       {article.readTime}

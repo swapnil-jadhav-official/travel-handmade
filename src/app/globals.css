@@ -285,7 +285,7 @@ img[data-layout="2"]:nth-of-type(2n) {
 
 @media (min-width: 1024px) {
   .heading-article-title {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -369,30 +369,30 @@ img[data-layout="2"]:nth-of-type(2n) {
   }
 }
 
-/* Subcategory - Work Sans Regular All Caps 8px (lg) */
+/* Subcategory - Work Sans Regular All Caps 10px (lg) */
 .text-subcategory {
   font-family: var(--font-work-sans);
   font-weight: 400;
-  font-size: 5px;
+  font-size: 7px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 @media (min-width: 640px) {
   .text-subcategory {
-    font-size: 5.5px;
+    font-size: 7.5px;
   }
 }
 
 @media (min-width: 768px) {
   .text-subcategory {
-    font-size: 6px;
+    font-size: 8px;
   }
 }
 
 @media (min-width: 1024px) {
   .text-subcategory {
-    font-size: 8px;
+    font-size: 10px;
   }
 }
 

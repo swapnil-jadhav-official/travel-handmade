@@ -45,9 +45,14 @@ export default function LatestArticles({
       </div>
 
       {/* Right Side: Featured Image (desktop only) */}
-      <div className="hidden lg:block w-[400px] xl:w-[480px] flex-shrink-0 p-10 xl:p-12">
+      <div className="hidden lg:flex flex-col w-[490px] xl:w-[570px] flex-shrink-0 pl-16 pr-10 xl:pl-20 xl:pr-12 py-10 lg:py-12">
+        {/* Invisible spacer — aligns image top with the border line */}
+        <div className="pb-3 flex-shrink-0">
+          <div className="heading-main-category opacity-0 select-none">Latest Articles</div>
+        </div>
+        {/* Image fills remaining height */}
         {articles[activeIndex] && (
-          <div className="relative w-full h-full bg-gray-200 overflow-hidden">
+          <div className="relative flex-1 bg-gray-200 overflow-hidden">
             <Image
               key={articles[activeIndex].id}
               src={articles[activeIndex].image}

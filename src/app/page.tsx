@@ -97,7 +97,7 @@ export default function Home() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
-      <main className="flex-1 w-full">
+      <main className="flex-1 w-full space-y-8 lg:space-y-12">
         {/* Hero Carousel */}
         <HeroCarousel images={heroImages.length > 0 ? heroImages : defaultHeroImages} />
 
