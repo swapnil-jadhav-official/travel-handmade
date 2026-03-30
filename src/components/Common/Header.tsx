@@ -8,7 +8,7 @@ import { getSiteSettings } from '@/lib/settings';
 import type { Category } from '@/types';
 
 export default function Header() {
-  const [logoUrl, setLogoUrl] = useState('/th-logo.png');
+  const [logoUrl, setLogoUrl] = useState('/th-logo-new.png');
   const [loading, setLoading] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -46,7 +46,7 @@ export default function Header() {
       <nav className="max-w-full px-4 sm:px-6 md:px-8 lg:px-12 py-4 sm:py-5 flex items-center justify-between h-auto max-h-67">
         {/* Logo */}
         <Link href="/" className="shrink-0">
-          {logoUrl.startsWith('http') ? (
+          {!loading && (logoUrl.startsWith('http') ? (
             <img
               src={logoUrl}
               alt="Travel Handmade"
@@ -61,7 +61,7 @@ export default function Header() {
               priority
               className="h-8 sm:h-10 md:h-12 w-auto"
             />
-          )}
+          ))}
         </Link>
 
         {/* Desktop Navigation Items */}

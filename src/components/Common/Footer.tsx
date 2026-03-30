@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Instagram, Twitter, Linkedin, Heart } from 'lucide-react';
+import { InstagramIcon, XIcon, LinkedinIcon, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getCategories } from '@/lib/firestore';
 import { getSiteSettings } from '@/lib/settings';
@@ -10,7 +10,8 @@ import type { Category } from '@/types';
 
 export default function Footer() {
   const [categories, setCategories] = useState<Category[]>([]);
-  const [logoUrl, setLogoUrl] = useState('/th-logo.png');
+  const [logoUrl, setLogoUrl] = useState('/th-logo-new.png');
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,6 +26,8 @@ export default function Footer() {
         }
       } catch (error) {
         console.error('Failed to fetch footer data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -38,7 +41,7 @@ export default function Footer() {
         <div className="flex flex-col sm:flex-row gap-8 md:gap-12 lg:gap-24 mb-10 sm:mb-12 md:mb-16">
           {/* Logo Section */}
           <div className="flex-shrink-0">
-            {logoUrl.startsWith('http') ? (
+            {!loading && (logoUrl.startsWith('http') ? (
               <img
                 src={logoUrl}
                 alt="Travel Handmade"
@@ -52,7 +55,7 @@ export default function Footer() {
                 height={50}
                 className="h-8 sm:h-10 md:h-12 w-auto mb-4 sm:mb-6"
               />
-            )}
+            ))}
           </div>
 
           {/* Links Columns */}
@@ -87,16 +90,16 @@ export default function Footer() {
               <div className="heading-nav text-white mb-4 sm:mb-6">OUR SOCIALS</div>
               <div className="flex gap-4 sm:gap-6">
                 <a href="#" className="text-white hover:opacity-70 transition">
-                  <Instagram className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <InstagramIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
                 <a href="#" className="text-white hover:opacity-70 transition">
-                  <Twitter className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <XIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
                 <a href="#" className="text-white hover:opacity-70 transition">
                   <Heart className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
                 <a href="#" className="text-white hover:opacity-70 transition">
-                  <Linkedin className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <LinkedinIcon className="h-4 w-4 sm:h-5 sm:w-5" />
                 </a>
               </div>
             </div>
