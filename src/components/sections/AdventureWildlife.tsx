@@ -40,11 +40,11 @@ export default function AdventureWildlife({
             alt={currentArticle.title}
             fill
             sizes="100vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="object-cover"
           />
 
           {/* Dark Overlay */}
-          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
 
           {/* Content */}
           <div className="absolute inset-0 flex flex-col justify-between px-6 sm:px-8 lg:px-12 py-10 lg:py-12">

@@ -67,9 +67,9 @@ export default function TravelLiving({
                 alt={article.title}
                 fill
                 sizes={idx === 0 ? "(min-width: 1024px) 66vw, (min-width: 640px) 66vw, 0px" : "(min-width: 640px) 33vw, 100vw"}
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                className="object-cover"
               />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
               <div className="absolute inset-0 flex flex-col justify-center items-start px-6 sm:px-8 pb-6 sm:pb-8 pt-56">
                 <div className="heading-post-title text-white line-clamp-3 max-w-xs sm:max-w-sm md:max-w-md">
                   {article.title}

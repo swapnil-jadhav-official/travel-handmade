@@ -65,9 +65,9 @@ export default function FoodDrinks({
                   alt={article.title}
                   fill
                   sizes="(min-width: 1024px) 33vw, 100vw"
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover"
                 />
-                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition" />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-8 pb-6 sm:pb-8 pt-80">
                   <div className="heading-article-title text-white line-clamp-4 max-w-[20rem]">
                     {article.title}

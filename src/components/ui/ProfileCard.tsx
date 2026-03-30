@@ -29,12 +29,12 @@ export default function ProfileCard({
         <img
           src={traveller.image}
           alt={traveller.country}
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+          className="absolute inset-0 h-full w-full object-cover"
         />
 
         {/* Overlay on Hover */}
         {isHovered && traveller.articleName && (
-          <div className="absolute inset-0 bg-black/60 flex items-end justify-center pb-6 lg:pb-8">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70 flex items-end justify-center pb-6 lg:pb-8">
             {traveller.articleUrl ? (
               <Link href={traveller.articleUrl} className="heading-article-title text-white text-center max-w-[8rem] mx-auto hover:opacity-75 transition-opacity">
                 {traveller.articleName}

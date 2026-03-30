@@ -53,7 +53,6 @@ export default function Footer() {
                 className="h-8 sm:h-10 md:h-12 w-auto mb-4 sm:mb-6"
               />
             )}
-            <p className="text-subcategory text-gray-400">© 2026 Travel Handmade.</p>
           </div>
 
           {/* Links Columns */}
@@ -108,9 +107,9 @@ export default function Footer() {
         <div className="border-t border-gray-700" />
 
         {/* Copyright */}
-        <div className="pt-6 sm:pt-8 text-center">
-          <p className="text-subcategory text-gray-400 leading-relaxed">
-            All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade
+        <div className="pt-6 sm:pt-8">
+          <p className="text-subcategory text-gray-400 leading-relaxed text-center">
+            © 2026 Travel Handmade. All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade
           </p>
         </div>
       </div>

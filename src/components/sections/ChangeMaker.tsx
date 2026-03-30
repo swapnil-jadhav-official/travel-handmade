@@ -42,10 +42,10 @@ export default function ChangeMaker({
   const embedUrl = featuredVideo?.url ? getYouTubeEmbedUrl(featuredVideo.url) : null;
 
   return (
-    <section className="w-full px-6 sm:px-8 lg:px-12 py-12 sm:py-16 md:py-20">
-      <SectionHeader title="Change Maker" className="mb-10 sm:mb-12 md:mb-16" />
+    <section className="w-full flex flex-col px-6 sm:px-8 lg:px-12 py-10 lg:py-12 lg:h-dvh">
+      <SectionHeader title="Change Maker" className="mb-8 sm:mb-10 lg:mb-12" />
 
-      <div className="flex flex-col gap-10 lg:flex-row lg:gap-16 lg:items-stretch">
+      <div className="flex-1 flex flex-col gap-10 lg:flex-row lg:gap-16">
         {/* Left: Video */}
         {featuredVideo?.url && embedUrl && (
           <div className="w-full lg:w-[35%] flex-shrink-0">
@@ -77,19 +77,21 @@ export default function ChangeMaker({
         )}
 
         {/* Right: Quote Card */}
-        <div className="relative w-full lg:flex-1 overflow-hidden h-72 sm:h-96 lg:h-auto lg:min-h-[420px] bg-black">
+        <div className="relative w-full lg:flex-1 overflow-hidden h-72 sm:h-96 lg:h-auto bg-black">
           {/* Dark gray background (65% width) */}
           <div className="absolute inset-0 w-[65%] bg-[#2f2f2f]" />
 
+          {/* Quote icon pinned to top */}
+          <span className="absolute top-2 sm:top-4 lg:top-6 left-4 sm:left-6 lg:left-14 font-unbounded text-[48px] sm:text-[64px] lg:text-[96px] leading-none tracking-[2.88px] text-white pointer-events-none select-none">
+            &rdquo;
+          </span>
+
           {/* Quote Content */}
           <blockquote className="absolute top-1/2 left-4 sm:left-6 lg:left-14 -translate-y-1/2 w-52 sm:w-64 lg:w-80 text-white">
-            <span className="font-unbounded text-[48px] sm:text-[64px] lg:text-[96px] leading-none tracking-[2.88px] block">
-              &rdquo;
-            </span>
-            <p className="font-unbounded font-medium text-[16px] sm:text-[22px] lg:text-[32px] leading-[110%] tracking-[0.96px] mt-0">
+            <p className="font-unbounded font-medium text-[16px] sm:text-[22px] lg:text-[32px] leading-[110%] tracking-[0.96px]">
               {active.quote}
             </p>
-            <footer className="font-work-sans text-[7px] sm:text-[8px] lg:text-[10px] leading-[11px] tracking-[0.3px] mt-5 uppercase">
+            <footer className="text-subcategory mt-5">
               {active.articleTitle && active.articleUrl ? (
                 <>
                   <a

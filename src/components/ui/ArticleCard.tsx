@@ -18,7 +18,7 @@ export default function ArticleCard({
           <img
             src={article.image}
             alt={article.title}
-            className="h-72 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-72 w-full object-cover"
           />
         </div>
 

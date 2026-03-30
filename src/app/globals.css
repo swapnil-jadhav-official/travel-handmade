@@ -267,26 +267,26 @@ img[data-layout="2"]:nth-of-type(2n) {
 .heading-article-title {
   font-family: var(--font-unbounded);
   font-weight: 500;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 110%;
   letter-spacing: -0.02em;
 }
 
 @media (min-width: 640px) {
   .heading-article-title {
-    font-size: 11px;
+    font-size: 13px;
   }
 }
 
 @media (min-width: 768px) {
   .heading-article-title {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
 @media (min-width: 1024px) {
   .heading-article-title {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 
@@ -348,25 +348,25 @@ img[data-layout="2"]:nth-of-type(2n) {
 .heading-location {
   font-family: var(--font-unbounded);
   font-weight: 400;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 0;
 }
 
 @media (min-width: 640px) {
   .heading-location {
-    font-size: 11px;
+    font-size: 14px;
   }
 }
 
 @media (min-width: 768px) {
   .heading-location {
-    font-size: 12px;
+    font-size: 16px;
   }
 }
 
 @media (min-width: 1024px) {
   .heading-location {
-    font-size: 14px;
+    font-size: 20px;
   }
 }
 
