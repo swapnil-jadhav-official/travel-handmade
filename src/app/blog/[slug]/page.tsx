@@ -50,7 +50,7 @@ export default function BlogPost({ params }: BlogPageProps) {
             .filter(
               (p) => p.category === foundPost.category && p.id !== foundPost.id,
             )
-            .slice(0, 3);
+            .slice(0, 4);
 
           setRelatedPosts(related);
         }
@@ -104,50 +104,45 @@ export default function BlogPost({ params }: BlogPageProps) {
     <>
       <Header />
       <main className="bg-white">
-        {/* Hero Image with Title Overlay */}
+        {/* Hero Image — full viewport minus header */}
         {post?.featuredImage ? (
-          <div className="relative w-full h-[600px] bg-gray-200 overflow-hidden">
+          <div className="relative w-full bg-gray-200 overflow-hidden" style={{ height: 'calc(100dvh - 67px)' }}>
             <img
               src={post.featuredImage}
               alt={post.title}
               className="absolute inset-0 h-full w-full object-cover"
             />
-            {/* Gradient Overlay - Dark at bottom, transparent at top */}
-            <div className="absolute inset-0" style={{
-              background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.7) 100%)'
-            }} />
-            {/* Title and Category Overlay */}
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 px-4 w-full py-12">
-              <div className="text-center">
-                <p className="font-unbounded font-light text-sm text-white uppercase tracking-widest mb-3">
-                  {post?.category}
-                </p>
-                <div className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto mb-4">
-                  {post?.title}
-                </div>
-                {post?.excerpt && (
-                  <p className="text-sm font-light text-white/90 text-center max-w-2xl mx-auto mb-6">
-                    {post.excerpt}
-                  </p>
-                )}
-                {/* Author & Date */}
-                <p className="text-xs text-white uppercase tracking-widest">
-                  BY {authorProfile?.displayName || post?.authorName || post?.author || 'Unknown'}
-                  {post?.publishedAt && (
-                    <>
-                      {' | '}
-                      {new Date(post.publishedAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric',
-                      }).toUpperCase()}
-                    </>
-                  )}
-                </p>
-              </div>
-            </div>
+            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/50" />
           </div>
         ) : null}
+
+        {/* Post Meta — below hero */}
+        <div className="px-6 sm:px-12 lg:px-24 py-10 lg:py-14 border-b border-black/10 text-center">
+          {post?.category && (
+            <p className="heading-main-category text-black mb-4">{post.category}</p>
+          )}
+          <div className="heading-post-title text-black max-w-4xl mx-auto mb-5">
+            {post?.title}
+          </div>
+          {post?.excerpt && (
+            <p className="text-article-paragraph text-black/70 max-w-3xl mx-auto mb-6">
+              {post.excerpt}
+            </p>
+          )}
+          <p className="text-subcategory text-black/60">
+            BY {authorProfile?.displayName || post?.authorName || post?.author || 'Unknown'}
+            {post?.publishedAt && (
+              <>
+                {' | '}
+                {new Date(post.publishedAt).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'short',
+                  day: 'numeric',
+                }).toUpperCase()}
+              </>
+            )}
+          </p>
+        </div>
 
         {/* Article Content */}
         <article className="max-w-4xl mx-auto px-6 py-12 lg:px-8">
@@ -155,11 +150,11 @@ export default function BlogPost({ params }: BlogPageProps) {
           <BlogContent html={post?.content || ""} />
 
           {/* Author Bio */}
-          <div className="mb-12">
-            <div className="flex gap-6">
+          <div className="mb-12 pt-10 border-t border-black/20">
+            <div className="flex flex-col sm:flex-row gap-6">
               {/* Author Avatar */}
               <div className="flex-shrink-0">
-                <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-2xl overflow-hidden">
+                <div className="w-24 h-24 sm:w-36 sm:h-36 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-2xl sm:text-3xl overflow-hidden">
                   {authorProfile?.avatarUrl ? (
                     <img src={authorProfile.avatarUrl} alt={post?.author} className="w-full h-full object-cover" />
                   ) : (
@@ -169,23 +164,20 @@ export default function BlogPost({ params }: BlogPageProps) {
               </div>
               {/* Author Info */}
               <div className="flex-1">
-                <div className="flex items-baseline gap-2 mb-3">
-                  <div className="text-sm text-black">
-                    {authorProfile?.displayName || post?.author || post?.authorName}
-                  </div>
-                  <span className="text-sm text-black">
-                    {authorProfile?.socialLinks?.instagram ? (
-                      <a href={authorProfile.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                        @{authorProfile.socialLinks.instagram.split('/').pop()}
-                      </a>
-                    ) : (
-                      `@${(authorProfile?.displayName || post?.author)?.toLowerCase().replace(/\s+/g, '')}`
-                    )}
-                  </span>
+                <div className="text-sm font-light text-black mb-3">
+                  Words: {authorProfile?.displayName || post?.author || post?.authorName}
+                  {' // '}
+                  {authorProfile?.socialLinks?.instagram ? (
+                    <a href={authorProfile.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                      @{authorProfile.socialLinks.instagram.split('/').pop()}
+                    </a>
+                  ) : (
+                    `@${(authorProfile?.displayName || post?.author)?.toLowerCase().replace(/\s+/g, '')}`
+                  )}
                 </div>
                 {/* Author Details */}
                 {(authorProfile?.details || authorProfile?.bio) && (
-                  <p className="text-sm text-black leading-relaxed">
+                  <p className="text-sm font-light text-black leading-relaxed">
                     {authorProfile.details || authorProfile.bio}
                   </p>
                 )}
@@ -198,13 +190,15 @@ export default function BlogPost({ params }: BlogPageProps) {
         {/* Related Posts - Full Width */}
         {relatedPosts.length > 0 && (
           <section className="w-full">
-            <div className="w-full px-6 py-4 lg:px-8 border-t border-b border-gray-900/20">
-              <div className="text-xl font-light uppercase">
-                Related Stories
+            <div className="w-full px-6 sm:px-8 lg:px-12">
+              <div className="py-4 border-b border-gray-900/20">
+                <div className="text-xl font-light uppercase">
+                  Related Stories
+                </div>
               </div>
             </div>
-            <div className="w-full px-6 py-12 lg:px-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-7xl mx-auto">
+            <div className="w-full px-6 sm:px-8 lg:px-12 py-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {relatedPosts.map((relatedPost) => (
                   <Link
                     key={relatedPost.id}
