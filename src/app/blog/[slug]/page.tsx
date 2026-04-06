@@ -189,7 +189,7 @@ export default function BlogPost({ params }: BlogPageProps) {
 
         {/* Related Posts - Full Width */}
         {relatedPosts.length > 0 && (
-          <section className="w-full">
+          <section className="w-full" style={{ backgroundColor: '#F5F4F4' }}>
             <div className="w-full px-6 sm:px-8 lg:px-12">
               <div className="py-4 border-b border-gray-900/20">
                 <div className="text-xl font-light uppercase">
@@ -197,7 +197,7 @@ export default function BlogPost({ params }: BlogPageProps) {
                 </div>
               </div>
             </div>
-            <div className="w-full px-6 sm:px-8 lg:px-12 py-12">
+            <div className="w-full px-6 sm:px-8 lg:px-12 py-12 pb-16 lg:pb-20">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {relatedPosts.map((relatedPost) => (
                   <Link

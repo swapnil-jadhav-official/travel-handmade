@@ -13,7 +13,7 @@ export default function CategoriesPage(): React.ReactElement {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
-  const [formData, setFormData] = useState({ name: '', slug: '', description: '', color: '#C55626', featuredImage: '' });
+  const [formData, setFormData] = useState({ name: '', slug: '', description: '', subDescription: '', subDescriptionLabel: '', color: '#C55626', featuredImage: '' });
 
   useEffect(() => {
     fetchCategories();
@@ -50,7 +50,7 @@ export default function CategoriesPage(): React.ReactElement {
         const newId = await createCategory(formData);
         setCategories([...categories, { id: newId, ...formData }]);
       }
-      setFormData({ name: '', slug: '', description: '', color: '#C55626', featuredImage: '' });
+      setFormData({ name: '', slug: '', description: '', subDescription: '', subDescriptionLabel: '', color: '#C55626', featuredImage: '' });
       setEditingId(null);
       setShowForm(false);
     } catch (error) {
@@ -64,6 +64,8 @@ export default function CategoriesPage(): React.ReactElement {
       name: category.name,
       slug: category.slug,
       description: category.description || '',
+      subDescription: category.subDescription || '',
+      subDescriptionLabel: category.subDescriptionLabel || '',
       color: category.color || '#C55626',
       featuredImage: category.featuredImage || '',
     });
@@ -83,7 +85,7 @@ export default function CategoriesPage(): React.ReactElement {
   };
 
   const handleCancel = () => {
-    setFormData({ name: '', slug: '', description: '', color: '#C55626', featuredImage: '' });
+    setFormData({ name: '', slug: '', description: '', subDescription: '', subDescriptionLabel: '', color: '#C55626', featuredImage: '' });
     setEditingId(null);
     setShowForm(false);
   };
@@ -171,6 +173,33 @@ export default function CategoriesPage(): React.ReactElement {
                   placeholder="e.g., Explore destinations and lifestyle"
                   className="h-20 w-full resize-none rounded border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
                 />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sub Description Label
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.subDescriptionLabel}
+                    onChange={(e) => setFormData({ ...formData, subDescriptionLabel: e.target.value })}
+                    placeholder="e.g., Explore"
+                    className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
+                  />
+                </div>
+                <div className="col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Sub Description <span className="text-gray-400 font-normal">(comma-separated)</span>
+                  </label>
+                  <input
+                    type="text"
+                    value={formData.subDescription}
+                    onChange={(e) => setFormData({ ...formData, subDescription: e.target.value })}
+                    placeholder="e.g., Neighbourhood Guides, Food Cultures, Mixology & Wine"
+                    className="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-black focus:outline-none"
+                  />
+                </div>
               </div>
 
               <div>
@@ -261,6 +290,9 @@ export default function CategoriesPage(): React.ReactElement {
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
                     Description
                   </th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">
+                    Sub Description
+                  </th>
                   <th className="px-6 py-3 text-right text-sm font-medium text-gray-700">
                     Actions
                   </th>
@@ -284,6 +316,9 @@ export default function CategoriesPage(): React.ReactElement {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
                       {category.description || '-'}
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600 max-w-xs truncate">
+                      {category.subDescription || '-'}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">

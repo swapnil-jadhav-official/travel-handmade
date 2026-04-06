@@ -117,6 +117,8 @@ export interface Category {
   name: string;
   slug: string;
   description?: string;
+  subDescription?: string;
+  subDescriptionLabel?: string;
   color?: string;
   featuredImage?: string;
 }

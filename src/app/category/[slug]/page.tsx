@@ -11,12 +11,14 @@ interface CategoryPageProps {
   params: Promise<{ slug: string }>;
 }
 
+const POSTS_PER_PAGE = 16;
+
 export default function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = use(params);
   const [posts, setPosts] = useState<Post[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
-  const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     const fetchCategoryPosts = async () => {
@@ -25,7 +27,6 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
         // Get all categories from Firestore
         const categoriesData = await getCategories();
-        setAllCategories(categoriesData);
 
         // Find the category by slug
         const foundCategory = categoriesData.find((c) => c.slug === slug);
@@ -38,6 +39,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
           // Filter posts by category slug
           const categoryPosts = publishedPosts.filter((p) => p.category === slug);
+          console.log('Category posts response:', categoryPosts);
           setPosts(categoryPosts);
         }
       } catch (error) {
@@ -53,9 +55,9 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <>
       <Header />
-      <main className="bg-gray-50 min-h-screen">
+      <main className="bg-white min-h-screen">
         {/* Category Hero Section */}
-        <div className="relative w-full h-[600px] bg-gray-200 overflow-hidden">
+        <div className="relative w-full bg-gray-200 overflow-hidden" style={{ height: 'calc(100dvh - 67px)' }}>
           {/* Background Image */}
           {category?.featuredImage && (
             <img
@@ -65,25 +67,41 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             />
           )}
 
-          {/* Gradient Overlay - Dark at bottom, transparent at top */}
-          <div className="absolute inset-0" style={{
-            background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.7) 100%)'
-          }} />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
 
-          {/* Title & Description Overlay */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 px-4 w-full py-16 pb-32">
-            <div className="text-center">
-              <div className="font-unbounded font-medium text-[32px] text-white text-center leading-[110%] tracking-[-0.02em] max-w-4xl mx-auto mb-4">
+          {/* Title & Description — pinned to bottom like hero carousel */}
+          <div className="absolute left-0 right-0 z-10 flex flex-col items-center px-6" style={{ bottom: '29px' }}>
+            <div className="order-first mb-[72px] w-full flex flex-col items-center text-center">
+              <div className="heading-post-title text-white text-center max-w-3xl mx-auto mb-3">
                 {(category?.name || 'Category').toUpperCase()}
               </div>
               {category?.description && (
-                <p className="text-sm font-light text-white/90 text-center max-w-2xl mx-auto mb-4">
+                <p className="text-subcategory text-white/80 text-center max-w-2xl mx-auto">
                   {category.description}
                 </p>
               )}
             </div>
           </div>
         </div>
+
+        {/* Sub Description Bar — below hero */}
+        {category?.subDescription && (
+          <div className="w-full px-6 sm:px-8 lg:px-12 py-12 lg:py-20">
+            <div className="flex items-center gap-4 flex-wrap justify-center">
+              {category.subDescriptionLabel && (
+                <span className="text-subcategory text-black uppercase">{category.subDescriptionLabel}</span>
+              )}
+              {category.subDescriptionLabel && <span className="w-8 h-px bg-black flex-shrink-0" />}
+              {category.subDescription.split(',').map((item, i, arr) => (
+                <span key={i} className="flex items-center gap-4">
+                  <span className="text-subcategory text-black uppercase">{item.trim()}</span>
+                  {i < arr.length - 1 && <span className="text-black/30">•</span>}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Posts Grid */}
         <div className="max-w-7xl mx-auto px-4 py-12">
@@ -96,63 +114,67 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 ← Back to home
               </Link>
             </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {posts.map((post) => (
-                  <Link
-                    key={post.id}
-                    href={`/blog/${post.slug}`}
-                    className="bg-white overflow-hidden transition transform hover:scale-105 group"
-                  >
-                    {post.featuredImage && (
-                      <div className="relative h-56 w-full bg-gray-200 overflow-hidden">
-                        <img
-                          src={post.featuredImage}
-                          alt={post.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition duration-300"
-                        />
-                      </div>
-                    )}
-                    <div className="p-6">
-                      <span className="text-xs text-gray-500 block mb-2 uppercase">{post.author}</span>
-                      <div className="text-lg font-semibold text-gray-900 group-hover:text-orange-600 transition line-clamp-2">
-                        {post.title}
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-
-              {/* Browse Other Categories */}
-              {allCategories.length > 0 && (
-              <div className="mt-16 pt-12 border-t border-gray-300">
-                <div className="text-2xl font-bold text-gray-900 mb-8 text-center">
-                  Browse Other Categories
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                  {allCategories
-                    .filter((c) => c.slug !== slug)
-                    .map((cat) => (
+          ) : (() => {
+              const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE);
+              const pagePosts = posts.slice(page * POSTS_PER_PAGE, (page + 1) * POSTS_PER_PAGE);
+              const progress = totalPages > 1 ? ((page + 1) / totalPages) * 100 : 100;
+              return (
+                <>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                    {pagePosts.map((post) => (
                       <Link
-                        key={cat.id}
-                        href={`/category/${cat.slug}`}
-                        className="p-4 bg-white rounded-lg text-center hover:shadow-lg transition group"
+                        key={post.id}
+                        href={`/blog/${post.slug}`}
+                        className="bg-white overflow-hidden group"
                       >
-                        <div
-                          className="h-2 rounded mb-3"
-                          style={{ backgroundColor: cat.color }}
-                        ></div>
-                        <div className="font-bold text-gray-900 group-hover:text-orange-600 transition">
-                          {cat.name}
+                        {post.featuredImage && (
+                          <div className="relative h-56 w-full bg-gray-200 overflow-hidden">
+                            <img
+                              src={post.featuredImage}
+                              alt={post.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        <div className="pt-4 pb-2">
+                          <div className="heading-card-title text-black line-clamp-2 mb-2">
+                            {post.title}
+                          </div>
+                          <span className="text-card-author text-black">{post.authorName || post.author}</span>
                         </div>
                       </Link>
                     ))}
-                </div>
-              </div>
-              )}
-            </>
-          )}
+                  </div>
+
+                  {/* Pagination */}
+                  {totalPages > 1 && (
+                    <div className="mt-16 flex items-center gap-6">
+                      <button
+                        onClick={() => { setPage((p) => p - 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        disabled={page === 0}
+                        className="heading-nav text-black disabled:opacity-20 transition"
+                      >
+                        ← PREV
+                      </button>
+                      <div className="flex-1 h-px bg-black/10 relative">
+                        <div
+                          className="absolute top-0 left-0 h-full bg-black transition-all duration-500"
+                          style={{ width: `${progress}%` }}
+                        />
+                      </div>
+                      <span className="text-card-author text-black/40">{page + 1} / {totalPages}</span>
+                      <button
+                        onClick={() => { setPage((p) => p + 1); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        disabled={page === totalPages - 1}
+                        className="heading-nav text-black disabled:opacity-20 transition"
+                      >
+                        NEXT →
+                      </button>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
         </div>
       </main>
       <Footer />
