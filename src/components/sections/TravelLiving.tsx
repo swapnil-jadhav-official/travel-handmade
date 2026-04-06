@@ -31,7 +31,7 @@ export default function TravelLiving({
   return (
     <section className="w-full flex flex-col py-10 lg:py-12 lg:h-dvh">
       {/* Header with Navigation */}
-      <div className="px-6 sm:px-8 lg:px-12 mb-8 sm:mb-10 lg:mb-12">
+      <div className="px-6 sm:px-8 lg:px-12 section-header-gap">
         <div className="flex items-center justify-between pb-3 border-b border-black">
           <div className="heading-main-category">Travel + Living</div>
           <div className="flex gap-2 sm:gap-4">

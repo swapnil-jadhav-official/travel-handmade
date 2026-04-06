@@ -11,7 +11,7 @@ export default function TravellerSection({
 }: TravellerProps): React.ReactElement {
   return (
     <section className="w-full flex flex-col lg:h-dvh">
-      <div className="px-6 sm:px-8 lg:px-12 pt-10 pb-6 lg:pt-12 lg:pb-8">
+      <div className="px-6 sm:px-8 lg:px-12 pt-10 lg:pt-12 section-header-gap">
         <SectionHeader title="Traveller" />
       </div>
 

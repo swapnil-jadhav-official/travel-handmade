@@ -16,7 +16,7 @@ export default function Retreats({
     <section className="w-full bg-black flex flex-col lg:flex-row lg:h-dvh">
       {/* Left Side: Title + List */}
       <div className="flex-1 px-6 sm:px-8 lg:px-12 py-10 lg:py-12 flex flex-col">
-        <div className="pb-3 border-b border-white mb-8">
+        <div className="pb-3 border-b border-white section-header-gap">
           <div className="heading-main-category-dark">Retreats</div>
         </div>
         <div className="flex-1 flex flex-col justify-between">

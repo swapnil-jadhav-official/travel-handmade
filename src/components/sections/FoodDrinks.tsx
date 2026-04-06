@@ -26,7 +26,7 @@ export default function FoodDrinks({
   return (
     <section className="w-full flex flex-col py-10 lg:py-12 lg:h-dvh">
       {/* Header with Navigation */}
-      <div className="mb-8 sm:mb-10 lg:mb-12 px-6 sm:px-8 lg:px-12">
+      <div className="section-header-gap px-6 sm:px-8 lg:px-12">
         <div className="flex items-center justify-between border-b border-black pb-3">
           <div className="heading-main-category">Food + Drinks</div>
           <div className="flex gap-2 sm:gap-4">

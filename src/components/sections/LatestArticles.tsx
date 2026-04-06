@@ -16,7 +16,7 @@ export default function LatestArticles({
     <section className="w-full flex flex-col lg:flex-row lg:h-dvh">
       {/* Left Side: Title + List */}
       <div className="flex-1 px-6 sm:px-8 lg:px-12 py-10 lg:py-12 flex flex-col">
-        <div className="pb-3 border-b border-black mb-8">
+        <div className="pb-3 border-b border-black section-header-gap">
           <div className="heading-main-category text-black">
             Latest Articles
           </div>

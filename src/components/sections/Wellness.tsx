@@ -16,7 +16,7 @@ export default function Wellness({
   return (
     <section className="w-full py-10 sm:py-12 lg:py-16">
       {/* Header */}
-      <div className="px-6 sm:px-8 lg:px-12 mb-8 sm:mb-10 lg:mb-12">
+      <div className="px-6 sm:px-8 lg:px-12 section-header-gap">
         <div className="heading-main-category pb-3 border-b border-black">
           Wellness
         </div>

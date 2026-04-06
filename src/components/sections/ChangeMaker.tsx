@@ -43,7 +43,7 @@ export default function ChangeMaker({
 
   return (
     <section className="w-full flex flex-col px-6 sm:px-8 lg:px-12 py-10 lg:py-12 lg:h-dvh">
-      <SectionHeader title="Change Maker" className="mb-8 sm:mb-10 lg:mb-12" />
+      <SectionHeader title="Change Maker" className="section-header-gap" />
 
       <div className="flex-1 flex flex-col gap-10 lg:flex-row lg:gap-16">
         {/* Left: Video */}

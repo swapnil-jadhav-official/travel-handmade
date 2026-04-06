@@ -28,6 +28,7 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-unbounded);
+  word-spacing: 3px;
 }
 
 /* TipTap Editor Styles */
@@ -290,30 +291,31 @@ img[data-layout="2"]:nth-of-type(2n) {
   }
 }
 
-/* Post Title - Unbounded Medium 30px (lg) */
+/* Post Title - Unbounded Medium 33px (lg) */
 .heading-post-title {
   font-family: var(--font-unbounded);
   font-weight: 500;
-  font-size: 16px;
+  font-size: 19px;
   line-height: 110%;
   letter-spacing: -0.02em;
+  word-spacing: 0.1em;
 }
 
 @media (min-width: 640px) {
   .heading-post-title {
-    font-size: 18px;
+    font-size: 21px;
   }
 }
 
 @media (min-width: 768px) {
   .heading-post-title {
-    font-size: 24px;
+    font-size: 27px;
   }
 }
 
 @media (min-width: 1024px) {
   .heading-post-title {
-    font-size: 30px;
+    font-size: 33px;
   }
 }
 
@@ -374,26 +376,26 @@ img[data-layout="2"]:nth-of-type(2n) {
 .text-subcategory {
   font-family: var(--font-work-sans);
   font-weight: 400;
-  font-size: 7px;
+  font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 @media (min-width: 640px) {
   .text-subcategory {
-    font-size: 7.5px;
+    font-size: 11px;
   }
 }
 
 @media (min-width: 768px) {
   .text-subcategory {
-    font-size: 8px;
+    font-size: 12px;
   }
 }
 
 @media (min-width: 1024px) {
   .text-subcategory {
-    font-size: 10px;
+    font-size: 14px;
   }
 }
 
@@ -419,6 +421,23 @@ img[data-layout="2"]:nth-of-type(2n) {
 @media (min-width: 1024px) {
   .text-article-paragraph {
     font-size: 13px;
+  }
+}
+
+/* Section header bottom gap */
+.section-header-gap {
+  margin-bottom: 32px;
+}
+
+@media (min-width: 640px) {
+  .section-header-gap {
+    margin-bottom: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-header-gap {
+    margin-bottom: 65px;
   }
 }
 

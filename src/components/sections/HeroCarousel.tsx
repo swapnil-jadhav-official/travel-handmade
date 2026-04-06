@@ -49,22 +49,42 @@ export default function HeroCarousel({
           background: 'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.3) 40%, rgba(0,0,0,0.7) 100%)'
         }} />
 
-        {/* Title Overlay */}
-        {images[activeIndex] && (
-          <div className="absolute inset-0 z-10 flex items-center justify-center px-6 pt-72">
-            {images[activeIndex].link ? (
-              <Link href={`/blog/${images[activeIndex].link}`}>
-                <div className="heading-post-title text-white text-center max-w-3xl mx-auto line-clamp-3 hover:text-white/80 transition-colors cursor-pointer">
+        {/* Bottom stack: title + dots pinned from bottom */}
+        <div className="absolute left-0 right-0 z-10 flex flex-col items-center px-6"
+          style={{ bottom: '29px' }}>
+          {/* Dot Indicators */}
+          <div className="flex gap-3">
+            {images.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setActiveIndex(index)}
+                aria-label={`Go to slide ${index + 1}`}
+                className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                  index === activeIndex
+                    ? 'bg-white'
+                    : 'bg-white/50 hover:bg-white/75'
+                }`}
+              />
+            ))}
+          </div>
+
+          {/* Title - 72px gap above dots on lg, smaller on mobile */}
+          {images[activeIndex] && (
+            <div className="order-first mb-8 lg:mb-[72px] w-full flex justify-center">
+              {images[activeIndex].link ? (
+                <Link href={`/blog/${images[activeIndex].link}`}>
+                  <div className="heading-post-title text-white text-center max-w-3xl mx-auto line-clamp-3 hover:text-white/80 transition-colors cursor-pointer">
+                    {images[activeIndex].title}
+                  </div>
+                </Link>
+              ) : (
+                <div className="heading-post-title text-white text-center max-w-3xl mx-auto line-clamp-3">
                   {images[activeIndex].title}
                 </div>
-              </Link>
-            ) : (
-              <div className="heading-post-title text-white text-center max-w-3xl mx-auto line-clamp-3">
-                {images[activeIndex].title}
-              </div>
-            )}
-          </div>
-        )}
+              )}
+            </div>
+          )}
+        </div>
 
         {/* Left Arrow - Middle */}
         <button
@@ -74,22 +94,6 @@ export default function HeroCarousel({
         >
           <ChevronLeft className="h-8 w-8" />
         </button>
-
-        {/* Dot Indicators - Bottom Center */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-3">
-          {images.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setActiveIndex(index)}
-              aria-label={`Go to slide ${index + 1}`}
-              className={`h-2 w-2 rounded-full transition-all duration-300 ${
-                index === activeIndex
-                  ? 'bg-white'
-                  : 'bg-white/50 hover:bg-white/75'
-              }`}
-            />
-          ))}
-        </div>
 
         {/* Right Arrow - Middle */}
         <button
