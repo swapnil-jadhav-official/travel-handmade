@@ -28,7 +28,6 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-unbounded);
-  word-spacing: 3px;
 }
 
 /* TipTap Editor Styles */
@@ -189,6 +188,7 @@ img[data-layout="2"]:nth-of-type(2n) {
 /* Subcategory 1 */
 .subcategory-1 {
   font-family: var(--font-work-sans);
+  word-spacing: normal;
   font-weight: 400;
   font-size: 9px;
   line-height: 140%;
@@ -199,6 +199,7 @@ img[data-layout="2"]:nth-of-type(2n) {
 /* Paragraph 1 */
 .paragraph-1 {
   font-family: var(--font-work-sans);
+  word-spacing: normal;
   font-weight: 400;
   font-size: 11px;
   line-height: 140%;
@@ -375,6 +376,7 @@ img[data-layout="2"]:nth-of-type(2n) {
 /* Subcategory - Work Sans Regular All Caps 10px (lg) */
 .text-subcategory {
   font-family: var(--font-work-sans);
+  word-spacing: normal;
   font-weight: 400;
   font-size: 10px;
   text-transform: uppercase;
@@ -402,6 +404,7 @@ img[data-layout="2"]:nth-of-type(2n) {
 /* Article Paragraph - Work Sans Regular 13px (lg) */
 .text-article-paragraph {
   font-family: var(--font-work-sans);
+  word-spacing: normal;
   font-weight: 400;
   font-size: 11px;
 }
@@ -427,6 +430,7 @@ img[data-layout="2"]:nth-of-type(2n) {
 /* Card Author - Work Sans Regular 10px */
 .text-card-author {
   font-family: var(--font-work-sans);
+  word-spacing: normal;
   font-weight: 400;
   font-size: 10px;
   line-height: 140%;
