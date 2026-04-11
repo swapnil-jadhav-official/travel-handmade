@@ -77,7 +77,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 {(category?.name || 'Category').toUpperCase()}
               </div>
               {category?.description && (
-                <p className="text-subcategory text-white/80 text-center max-w-2xl mx-auto">
+                <p className="text-subcategory text-white/80 text-center max-w-2xl mx-auto" style={{ textTransform: 'none' }}>
                   {category.description}
                 </p>
               )}
