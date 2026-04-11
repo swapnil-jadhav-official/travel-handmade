@@ -35,7 +35,7 @@ export default function LatestArticles({
                     {article.category?.replace(/-/g, ' + ').toUpperCase()} | {article.date}
                   </p>
                 )}
-                <div className="heading-article-title line-clamp-2 text-black group-hover:opacity-60 transition-opacity duration-200">
+                <div className="heading-article-title text-black group-hover:opacity-60 transition-opacity duration-200">
                   {article.title}
                 </div>
               </div>

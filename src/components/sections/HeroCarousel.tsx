@@ -73,7 +73,7 @@ export default function HeroCarousel({
             <div className="order-first mb-8 lg:mb-[72px] w-full flex justify-center">
               {images[activeIndex].link ? (
                 <Link href={`/blog/${images[activeIndex].link}`}>
-                  <div className="heading-post-title text-white text-center max-w-3xl mx-auto line-clamp-3 hover:text-white/80 transition-colors cursor-pointer">
+                  <div className="heading-post-title text-white text-center max-w-3xl mx-auto hover:text-white/80 transition-colors cursor-pointer">
                     {images[activeIndex].title}
                   </div>
                 </Link>

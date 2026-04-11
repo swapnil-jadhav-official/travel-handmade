@@ -69,11 +69,11 @@ export default function FoodDrinks({
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-8 pb-6 sm:pb-8 pt-80">
-                  <div className="heading-article-title text-white line-clamp-4 max-w-[20rem]">
+                  <div className="heading-article-title text-white max-w-[20rem]">
                     {article.title}
                   </div>
                   {(article.author || article.readTime) && (
-                    <p className="text-subcategory text-white/80 mt-5 line-clamp-1">
+                    <p className="text-subcategory text-white/80 mt-5">
                       {article.author}
                       {article.author && article.readTime && " | "}
                       {article.readTime}

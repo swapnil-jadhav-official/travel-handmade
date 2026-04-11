@@ -33,7 +33,7 @@ export default function Retreats({
                     {article.author.toUpperCase()}
                   </p>
                 )}
-                <div className="heading-article-title line-clamp-3 text-white group-hover:opacity-60 transition-opacity duration-200">
+                <div className="heading-article-title text-white group-hover:opacity-60 transition-opacity duration-200">
                   {article.title}
                 </div>
               </div>
