@@ -156,7 +156,7 @@ export default function BlogPost({ params }: BlogPageProps) {
         {/* Article Content */}
         <article className="max-w-4xl mx-auto px-6 py-12 lg:px-8">
           {/* Article Body */}
-          <BlogContent html={post?.content || ""} />
+          <BlogContent html={post?.content || ""} articleType={post?.articleType || 'listicle'} />
 
           {/* Author Bio */}
           <div className="mb-12 mt-16 lg:mt-20 pt-12 lg:pt-16 border-t border-black/20">

@@ -4,9 +4,10 @@ import { useEffect, useRef } from 'react';
 
 interface BlogContentProps {
   html: string;
+  articleType?: 'listicle' | 'visual-gallery';
 }
 
-export default function BlogContent({ html }: BlogContentProps) {
+export default function BlogContent({ html, articleType = 'listicle' }: BlogContentProps) {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,10 +55,14 @@ export default function BlogContent({ html }: BlogContentProps) {
     });
   }, [html]);
 
+  const galleryStyles = articleType === 'visual-gallery'
+    ? ' [&_img]:w-[calc(100%+8rem)] [&_img]:-ml-16 [&_img]:max-w-none [&_figure]:w-[calc(100%+8rem)] [&_figure]:-ml-16'
+    : '';
+
   return (
     <div
       ref={contentRef}
-      className="prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_h1]:text-2xl [&_h2]:text-xl [&_h3]:text-lg [&_figure]:my-6"
+      className={`prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_h1]:text-2xl [&_h2]:text-xl [&_h3]:text-lg [&_figure]:my-6${galleryStyles}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
