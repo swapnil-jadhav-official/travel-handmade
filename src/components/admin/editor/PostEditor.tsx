@@ -30,12 +30,13 @@ export default function PostEditor({
   const { user, userProfile, canPublish } = useAuth();
 
   const [post, setPost] = useState<Partial<Post>>(
-    initialPost || {
+    initialPost ? { articleType: 'listicle' as const, ...initialPost } : {
       title: '',
       slug: '',
       content: '',
       excerpt: '',
       category: '',
+      articleType: 'listicle' as const,
       tags: [],
       authorId: user?.uid || '',
       authorName: userProfile?.displayName || '',
@@ -182,6 +183,7 @@ export default function PostEditor({
             excerpt={post.excerpt || ''}
             featuredImage={post.featuredImage}
             category={post.category || ''}
+            articleType={post.articleType || 'listicle'}
             author={post.authorName || ''}
             readTime={post.readTime || ''}
             onTitleChange={(title) => handleFieldChange('title', title)}
@@ -192,6 +194,7 @@ export default function PostEditor({
             }
             onFeaturedImageRemove={() => handleFieldChange('featuredImage', '')}
             onCategoryChange={(category) => handleFieldChange('category', category)}
+            onArticleTypeChange={(articleType) => handleFieldChange('articleType', articleType as 'listicle' | 'visual-gallery')}
             onAuthorChange={(authorName) => handleFieldChange('authorName', authorName)}
             onReadTimeChange={(readTime) => handleFieldChange('readTime', readTime)}
             onAuthorIdChange={(authorId) => handleFieldChange('authorId', authorId)}

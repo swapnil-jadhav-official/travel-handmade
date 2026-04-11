@@ -51,6 +51,7 @@ export interface Post {
   publishedAt?: string;
   seoTitle?: string;
   seoDescription?: string;
+  articleType?: 'listicle' | 'visual-gallery';
   views: number;
   createdAt: string;
   updatedAt: string;

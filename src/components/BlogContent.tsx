@@ -35,7 +35,7 @@ export default function BlogContent({ html }: BlogContentProps) {
 
         // Create figcaption
         const figcaption = document.createElement('figcaption');
-        figcaption.className = 'mt-3 text-sm text-gray-600 text-center italic';
+        figcaption.className = 'mt-3 text-[10px] text-gray-600 text-center italic font-light';
         figcaption.textContent = caption;
 
         // Wrap image in figure
@@ -49,7 +49,7 @@ export default function BlogContent({ html }: BlogContentProps) {
     const allFigcaptions = contentRef.current.querySelectorAll('figcaption');
     allFigcaptions.forEach((fc) => {
       if (!fc.className) {
-        fc.className = 'mt-3 text-sm text-gray-600 text-center italic';
+        fc.className = 'mt-3 text-[10px] text-gray-600 text-center italic font-light';
       }
     });
   }, [html]);

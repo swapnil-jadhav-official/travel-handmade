@@ -5,7 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
 import BlogContent from "@/components/BlogContent";
-import { getAllPostsTyped } from "@/lib/firestore";
+import { getAllPostsTyped, getCategories } from "@/lib/firestore";
 import { getUserProfile } from "@/lib/users";
 import type { Post, UserProfile } from "@/types";
 
@@ -19,6 +19,7 @@ export default function BlogPost({ params }: BlogPageProps) {
   const [loading, setLoading] = useState(true);
   const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
   const [authorProfile, setAuthorProfile] = useState<UserProfile | null>(null);
+  const [categoryName, setCategoryName] = useState<string>('');
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -34,6 +35,14 @@ export default function BlogPost({ params }: BlogPageProps) {
 
         if (foundPost) {
           setPost(foundPost);
+          // Fetch category display name
+          try {
+            const categories = await getCategories();
+            const cat = categories.find((c) => c.slug === foundPost.category);
+            if (cat) setCategoryName(cat.name);
+          } catch (error) {
+            console.error('Error fetching categories:', error);
+          }
           // Fetch author profile
           if (foundPost.authorId) {
             try {
@@ -119,7 +128,7 @@ export default function BlogPost({ params }: BlogPageProps) {
         {/* Post Meta — below hero */}
         <div className="px-6 sm:px-12 lg:px-24 py-10 lg:py-14 border-b border-black/10 text-center">
           {post?.category && (
-            <p className="heading-main-category text-black mb-4">{post.category}</p>
+            <p className="text-subcategory text-black mb-4">{categoryName || post?.category}</p>
           )}
           <div className="heading-post-title text-black max-w-4xl mx-auto mb-5">
             {post?.title}
@@ -150,7 +159,7 @@ export default function BlogPost({ params }: BlogPageProps) {
           <BlogContent html={post?.content || ""} />
 
           {/* Author Bio */}
-          <div className="mb-12 pt-10 border-t border-black/20">
+          <div className="mb-12 mt-16 lg:mt-20 pt-12 lg:pt-16 border-t border-black/20">
             <div className="flex flex-col sm:flex-row gap-6">
               {/* Author Avatar */}
               <div className="flex-shrink-0">
@@ -164,7 +173,7 @@ export default function BlogPost({ params }: BlogPageProps) {
               </div>
               {/* Author Info */}
               <div className="flex-1">
-                <div className="text-sm font-light text-black mb-3">
+                <div className="text-[13px] font-light text-black mb-4">
                   Words: {authorProfile?.displayName || post?.author || post?.authorName}
                   {' // '}
                   {authorProfile?.socialLinks?.instagram ? (
@@ -177,7 +186,7 @@ export default function BlogPost({ params }: BlogPageProps) {
                 </div>
                 {/* Author Details */}
                 {(authorProfile?.details || authorProfile?.bio) && (
-                  <p className="text-sm font-light text-black leading-relaxed">
+                  <p className="text-[13px] font-light text-black leading-relaxed">
                     {authorProfile.details || authorProfile.bio}
                   </p>
                 )}

@@ -13,6 +13,7 @@ interface PostMetaPanelProps {
   excerpt: string;
   featuredImage?: string;
   category: string;
+  articleType: string;
   author: string;
   readTime?: string;
   onTitleChange: (title: string) => void;
@@ -21,6 +22,7 @@ interface PostMetaPanelProps {
   onFeaturedImageChange: (url: string) => void;
   onFeaturedImageRemove: () => void;
   onCategoryChange: (category: string) => void;
+  onArticleTypeChange: (articleType: string) => void;
   onAuthorChange: (author: string) => void;
   onReadTimeChange?: (readTime: string) => void;
   onAuthorIdChange?: (authorId: string) => void;
@@ -41,6 +43,7 @@ export default function PostMetaPanel({
   excerpt,
   featuredImage,
   category,
+  articleType,
   author,
   readTime,
   onTitleChange,
@@ -49,6 +52,7 @@ export default function PostMetaPanel({
   onFeaturedImageChange,
   onFeaturedImageRemove,
   onCategoryChange,
+  onArticleTypeChange,
   onAuthorChange,
   onReadTimeChange,
   onAuthorIdChange,
@@ -128,13 +132,13 @@ export default function PostMetaPanel({
       {/* Excerpt */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Excerpt ({excerpt.length}/160)
+          Excerpt ({excerpt.length}/250)
         </label>
         <textarea
           value={excerpt}
-          onChange={(e) => onExcerptChange(e.target.value.slice(0, 160))}
+          onChange={(e) => onExcerptChange(e.target.value.slice(0, 250))}
           placeholder="Brief summary of the post"
-          maxLength={160}
+          maxLength={250}
           className="h-20 w-full resize-none rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
         />
       </div>
@@ -147,10 +151,25 @@ export default function PostMetaPanel({
         <input
           type="text"
           value={category}
-          onChange={(e) => onCategoryChange(e.target.value)}
-          placeholder="e.g., Travel, Food, Culture"
-          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
+          disabled
+          placeholder="Set from publish panel"
+          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 bg-gray-100 cursor-not-allowed"
         />
+      </div>
+
+      {/* Article Type */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Article Type
+        </label>
+        <select
+          value={articleType || 'listicle'}
+          onChange={(e) => onArticleTypeChange(e.target.value)}
+          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-black focus:outline-none"
+        >
+          <option value="listicle">Listicle</option>
+          <option value="visual-gallery">Visual Gallery</option>
+        </select>
       </div>
 
       {/* Author */}

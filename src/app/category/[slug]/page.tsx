@@ -90,12 +90,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <div className="w-full px-6 sm:px-8 lg:px-12 py-12 lg:py-20">
             <div className="flex items-center gap-4 flex-wrap justify-center">
               {category.subDescriptionLabel && (
-                <span className="text-subcategory text-black uppercase">{category.subDescriptionLabel}</span>
+                <span className="heading-nav text-black">{category.subDescriptionLabel}</span>
               )}
               {category.subDescriptionLabel && <span className="w-8 h-px bg-black flex-shrink-0" />}
               {category.subDescription.split(',').map((item, i, arr) => (
                 <span key={i} className="flex items-center gap-4">
-                  <span className="text-subcategory text-black uppercase">{item.trim()}</span>
+                  <span className="heading-nav text-black">{item.trim()}</span>
                   {i < arr.length - 1 && <span className="text-black/30">•</span>}
                 </span>
               ))}
@@ -120,7 +120,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
               const progress = totalPages > 1 ? ((page + 1) / totalPages) * 100 : 100;
               return (
                 <>
-                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-14 lg:gap-y-16">
                     {pagePosts.map((post) => (
                       <Link
                         key={post.id}
@@ -128,7 +128,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                         className="bg-white overflow-hidden group"
                       >
                         {post.featuredImage && (
-                          <div className="relative h-56 w-full bg-gray-200 overflow-hidden">
+                          <div className="relative w-full aspect-square bg-gray-200 overflow-hidden">
                             <img
                               src={post.featuredImage}
                               alt={post.title}
@@ -137,7 +137,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                           </div>
                         )}
                         <div className="pt-4 pb-2">
-                          <div className="heading-card-title text-black line-clamp-2 mb-2">
+                          <div className="heading-card-title text-black mb-2">
                             {post.title}
                           </div>
                           <span className="text-card-author text-black">{post.authorName || post.author}</span>
