@@ -60,7 +60,7 @@ export default function BlogPost({ params }: BlogPageProps) {
             }
           }
           // Get related posts from same category (excluding current post)
-          const related = publishedPosts
+          const related = visiblePosts
             .filter(
               (p) => p.category === foundPost.category && p.id !== foundPost.id,
             )
