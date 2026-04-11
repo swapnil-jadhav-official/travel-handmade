@@ -54,6 +54,12 @@ export default function PostEditor({
   >('idle');
   const [showLeftPanel, setShowLeftPanel] = useState(true);
   const [showRightPanel, setShowRightPanel] = useState(true);
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+
+  const showToast = (message: string, type: 'success' | 'error' = 'success') => {
+    setToast({ message, type });
+    setTimeout(() => setToast(null), 4000);
+  };
 
   // Autosave effect
   useEffect(() => {
@@ -91,6 +97,32 @@ export default function PostEditor({
     }
   }, [post.content]);
 
+  const handleClone = async (): Promise<void> => {
+    try {
+      const clonedPost = {
+        ...post,
+        title: `${post.title || ''} (Copy)`,
+        slug: `${post.slug || ''}-copy-${Date.now()}`,
+        status: 'draft' as PostStatus,
+        publishedAt: undefined,
+        views: 0,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      // Strip undefined values
+      const cleanPost: Record<string, unknown> = {};
+      for (const [key, value] of Object.entries(clonedPost)) {
+        if (value !== undefined) cleanPost[key] = value;
+      }
+      const newId = await createPostDraft(cleanPost as any);
+      showToast('Article cloned as draft');
+      router.push(`/admin/posts/${newId}`);
+    } catch (error) {
+      console.error('Failed to clone article:', error);
+      showToast('Failed to clone article', 'error');
+    }
+  };
+
   const handleSaveDraft = async (): Promise<void> => {
     try {
       if (!postId) {
@@ -106,7 +138,7 @@ export default function PostEditor({
       setTimeout(() => setAutosaveStatus('idle'), 2000);
     } catch (error) {
       console.error('Failed to save draft:', error);
-      alert('Failed to save draft');
+      showToast('Failed to save draft', 'error');
     }
   };
 
@@ -116,29 +148,29 @@ export default function PostEditor({
 
       // Check role permission
       if (!canPublish()) {
-        alert('Your role does not have permission to publish posts. Please ask an editor or admin.');
+        showToast('Your role does not have permission to publish posts.', 'error');
         return;
       }
 
       // Validate required fields
       if (!post.title?.trim()) {
         console.warn('[PostEditor] Validation failed: Title is empty');
-        alert('Title is required');
+        showToast('Title is required', 'error');
         return;
       }
       if (!post.category) {
         console.warn('[PostEditor] Validation failed: Category is empty');
-        alert('Category is required');
+        showToast('Category is required', 'error');
         return;
       }
       if (!post.excerpt?.trim()) {
         console.warn('[PostEditor] Validation failed: Excerpt is empty');
-        alert('Excerpt is required');
+        showToast('Excerpt is required', 'error');
         return;
       }
       if (!post.content?.trim()) {
         console.warn('[PostEditor] Validation failed: Content is empty');
-        alert('Content is required');
+        showToast('Content is required', 'error');
         return;
       }
 
@@ -168,12 +200,20 @@ export default function PostEditor({
     } catch (error) {
       console.error('[PostEditor] FAILED TO PUBLISH POST:', error);
       const errorMsg = error instanceof Error ? error.message : String(error);
-      alert(`Failed to publish post: ${errorMsg}`);
+      showToast(`Failed to publish: ${errorMsg}`, 'error');
     }
   };
 
   return (
-    <div className="flex h-full w-full overflow-hidden">
+    <div className="flex h-full w-full overflow-hidden relative">
+      {/* Toast Notification */}
+      {toast && (
+        <div className={`fixed top-4 right-4 z-50 px-5 py-3 rounded-lg shadow-lg text-sm font-medium transition-all animate-in fade-in slide-in-from-top-2 ${
+          toast.type === 'error' ? 'bg-red-600 text-white' : 'bg-green-600 text-white'
+        }`}>
+          {toast.message}
+        </div>
+      )}
       {/* Left Panel - Meta */}
       {showLeftPanel && (
         <div className="w-72 overflow-y-auto border-r border-gray-200">
@@ -240,12 +280,28 @@ export default function PostEditor({
                 <ChevronLeft className="h-5 w-5 text-gray-600" />
               )}
             </button>
+            {postId && (
+              <button
+                onClick={handleClone}
+                className="rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
+              >
+                Clone
+              </button>
+            )}
             <button
               onClick={handleSaveDraft}
               className="rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
             >
               Save Draft
             </button>
+            {post.slug && (
+              <button
+                onClick={() => window.open(`/blog/${post.slug}?preview=true`, '_blank')}
+                className="rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
+              >
+                Preview
+              </button>
+            )}
             <button
               onClick={handlePublish}
               className="rounded bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-900"

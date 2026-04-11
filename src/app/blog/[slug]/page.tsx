@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, use } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
@@ -15,6 +16,8 @@ interface BlogPageProps {
 
 export default function BlogPost({ params }: BlogPageProps) {
   const { slug } = use(params);
+  const searchParams = useSearchParams();
+  const isPreview = searchParams.get('preview') === 'true';
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
@@ -28,10 +31,12 @@ export default function BlogPost({ params }: BlogPageProps) {
         // Get all posts from Firestore
         const allPosts = await getAllPostsTyped();
 
-        // Filter only published posts
-        const publishedPosts = allPosts.filter((p) => p.status === "published");
+        // Filter posts — include drafts in preview mode
+        const visiblePosts = isPreview
+          ? allPosts
+          : allPosts.filter((p) => p.status === "published");
 
-        const foundPost = publishedPosts.find((p) => p.slug === slug);
+        const foundPost = visiblePosts.find((p) => p.slug === slug);
 
         if (foundPost) {
           setPost(foundPost);

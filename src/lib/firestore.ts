@@ -230,8 +230,15 @@ export async function updatePostTyped(
 ): Promise<void> {
   try {
     const docRef = doc(db, POSTS_COLLECTION, postId);
+    // Strip undefined values — Firestore rejects them
+    const cleanData: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(data)) {
+      if (value !== undefined) {
+        cleanData[key] = value;
+      }
+    }
     await updateDoc(docRef, {
-      ...data,
+      ...cleanData,
       updatedAt: Timestamp.now(),
     });
   } catch (error) {
