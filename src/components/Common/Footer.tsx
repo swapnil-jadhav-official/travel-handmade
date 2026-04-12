@@ -81,7 +81,6 @@ export default function Footer() {
                     </Link>
                   </li>
                 ))}
-                <li><Link href="#" className="heading-nav text-white hover:opacity-70 transition">TRAVELLER</Link></li>
               </ul>
             </div>
 
@@ -117,7 +116,7 @@ export default function Footer() {
 
         {/* Copyright */}
         <div className="pt-6 sm:pt-8">
-          <p className="text-subcategory text-gray-400 leading-relaxed text-center">
+          <p className="text-subcategory text-gray-400 leading-relaxed text-center" style={{ textTransform: 'none' }}>
             © 2026 Travel Handmade. All rights reserved. The material on this site may not be reproduced, distributed, transmitted, modified, republished, or used in any form, except with the prior written permission of Travel Handmade
           </p>
         </div>
