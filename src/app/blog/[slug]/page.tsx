@@ -217,31 +217,22 @@ export default function BlogPost({ params }: BlogPageProps) {
                   <Link
                     key={relatedPost.id}
                     href={`/blog/${relatedPost.slug}`}
-                    className="relative group overflow-hidden h-80 bg-gray-200"
+                    className="overflow-hidden group"
                   >
                     {relatedPost.featuredImage && (
-                      <img
-                        src={relatedPost.featuredImage}
-                        alt={relatedPost.title}
-                        className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                      />
+                      <div className="relative w-full aspect-square bg-gray-200 overflow-hidden">
+                        <img
+                          src={relatedPost.featuredImage}
+                          alt={relatedPost.title}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     )}
-                    {/* Dark Overlay */}
-                    <div className="absolute inset-0 bg-black/50 group-hover:bg-black/60 transition" />
-                    {/* Text Overlay */}
-                    <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <p className="text-xs text-white/80 uppercase tracking-widest mb-2">
-                        <span className="font-light">{relatedPost.category}</span>
-                        {relatedPost.authorName && (
-                          <>
-                            <span className="font-light"> + </span>
-                            <span className="font-light">{relatedPost.authorName}</span>
-                          </>
-                        )}
-                      </p>
-                      <div className="text-lg font-light text-white leading-tight line-clamp-3">
+                    <div className="pt-4 pb-2">
+                      <div className="heading-card-title text-black mb-2">
                         {relatedPost.title}
                       </div>
+                      <span className="text-card-author text-black">{relatedPost.authorName || relatedPost.author}</span>
                     </div>
                   </Link>
                 ))}
