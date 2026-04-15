@@ -1,11 +1,13 @@
+'use client';
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
-import { newsletters } from '@/data/newsletters';
+import { getNewsletters } from '@/lib/firestore';
+import type { NewsletterIssue } from '@/data/newsletters';
 
 // ── Mini magazine cover card (152×190 px — exact Figma dimensions)
-// Structure: accent-coloured top strip (63px) → photo (120px) + 7px bottom gap
-// Top strip: TH logo top-left (7×6px) | issue label top-right (3px) | DEPARTURES centred (19px)
 function CoverCard({
   issueNumber,
   title,
@@ -100,6 +102,16 @@ function CoverCard({
 
 // ── Page ────────────────────────────────────────────────────────────────────
 export default function NewsletterPage() {
+  const [newsletters, setNewsletters] = useState<NewsletterIssue[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getNewsletters()
+      .then(setNewsletters)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
@@ -173,54 +185,63 @@ export default function NewsletterPage() {
         {/* ── Issue List ─────────────────────────────────────────── */}
         <section className="px-6 sm:px-8 lg:px-12 pb-12">
           <div className="max-w-[1350px] mx-auto">
-            {newsletters.map((issue, idx) => (
-              <div key={issue.id}>
-                <div className="border-t border-[#e0e0e0]" />
-                <Link
-                  href={`/newsletter/${issue.slug}`}
-                  className="flex gap-6 sm:gap-8 lg:gap-10 py-6 sm:py-8 hover:opacity-80 transition group"
-                >
-                  {/* Mini cover card */}
-                  <CoverCard
-                    issueNumber={issue.issueNumber}
-                    title={issue.title}
-                    accentColor={issue.accentColor}
-                    thumbnail={issue.coverThumbnail}
-                  />
-
-                  {/* Text */}
-                  <div className="flex-1 flex flex-col justify-center gap-2">
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-unbounded)',
-                        fontWeight: 400,
-                        fontSize: 'clamp(13px, 1.5vw, 16px)',
-                        lineHeight: '1.61',
-                        letterSpacing: '0.03em',
-                        color: 'black',
-                      }}
-                    >
-                      Issue {String(issue.issueNumber).padStart(2, '0')} :{' '}
-                      {issue.title}
-                    </p>
-                    <p
-                      style={{
-                        fontFamily: 'var(--font-work-sans)',
-                        fontSize: 'clamp(12px, 1.2vw, 16px)',
-                        lineHeight: '1.61',
-                        letterSpacing: '-0.05em',
-                        color: 'black',
-                      }}
-                    >
-                      {issue.description}
-                    </p>
-                  </div>
-                </Link>
-                {idx === newsletters.length - 1 && (
+            {loading ? (
+              <p
+                className="py-16 text-center"
+                style={{ fontFamily: 'var(--font-work-sans)', fontSize: '14px', color: '#888' }}
+              >
+                Loading issues…
+              </p>
+            ) : (
+              newsletters.map((issue, idx) => (
+                <div key={issue.id}>
                   <div className="border-t border-[#e0e0e0]" />
-                )}
-              </div>
-            ))}
+                  <Link
+                    href={`/newsletter/${issue.slug}`}
+                    className="flex gap-6 sm:gap-8 lg:gap-10 py-6 sm:py-8 hover:opacity-80 transition group"
+                  >
+                    {/* Mini cover card */}
+                    <CoverCard
+                      issueNumber={issue.issueNumber}
+                      title={issue.title}
+                      accentColor={issue.accentColor}
+                      thumbnail={issue.coverThumbnail}
+                    />
+
+                    {/* Text */}
+                    <div className="flex-1 flex flex-col justify-center gap-2">
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-unbounded)',
+                          fontWeight: 400,
+                          fontSize: 'clamp(13px, 1.5vw, 16px)',
+                          lineHeight: '1.61',
+                          letterSpacing: '0.03em',
+                          color: 'black',
+                        }}
+                      >
+                        Issue {String(issue.issueNumber).padStart(2, '0')} :{' '}
+                        {issue.title}
+                      </p>
+                      <p
+                        style={{
+                          fontFamily: 'var(--font-work-sans)',
+                          fontSize: 'clamp(12px, 1.2vw, 16px)',
+                          lineHeight: '1.61',
+                          letterSpacing: '-0.05em',
+                          color: 'black',
+                        }}
+                      >
+                        {issue.description}
+                      </p>
+                    </div>
+                  </Link>
+                  {idx === newsletters.length - 1 && (
+                    <div className="border-t border-[#e0e0e0]" />
+                  )}
+                </div>
+              ))
+            )}
           </div>
         </section>
 

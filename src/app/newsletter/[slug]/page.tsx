@@ -1,14 +1,10 @@
-import { notFound } from 'next/navigation';
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { newsletters, getNewsletterBySlug } from '@/data/newsletters';
-
-export async function generateStaticParams() {
-  return newsletters.map((n) => ({ slug: n.slug }));
-}
-
-interface PageProps {
-  params: Promise<{ slug: string }>;
-}
+import { getNewsletterBySlug } from '@/lib/firestore';
+import type { NewsletterIssue } from '@/data/newsletters';
 
 // ── Shared text styles ──────────────────────────────────────────────────────
 const bodyStyle: React.CSSProperties = {
@@ -19,10 +15,38 @@ const bodyStyle: React.CSSProperties = {
   color: 'black',
 };
 
-export default async function NewsletterDetailPage({ params }: PageProps) {
-  const { slug } = await params;
-  const issue = getNewsletterBySlug(slug);
-  if (!issue) notFound();
+export default function NewsletterDetailPage() {
+  const { slug } = useParams<{ slug: string }>();
+  const [issue, setIssue] = useState<NewsletterIssue | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    getNewsletterBySlug(slug)
+      .then(setIssue)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <p style={{ fontFamily: 'var(--font-work-sans)', fontSize: '14px', color: '#888' }}>
+          Loading…
+        </p>
+      </div>
+    );
+  }
+
+  if (!issue) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <p style={{ fontFamily: 'var(--font-work-sans)', fontSize: '14px', color: '#888' }}>
+          Issue not found.
+        </p>
+      </div>
+    );
+  }
 
   // Split editor letter paragraphs around the pull quote insertion point
   const splitAt = issue.pullQuoteAfterIndex ?? issue.editorLetterParagraphs.length;
@@ -34,21 +58,12 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
       <main className="flex-1">
         {/*
          * The entire page content sits in a centred #f7f7f9 column — 765 px wide
-         * (matching the Figma panel at left:373, width:765 on a 1512px canvas).
-         * White background is visible on both sides.
          */}
         <div
           className="mx-auto bg-[#f7f7f9]"
           style={{ maxWidth: '765px' }}
         >
-          {/* ── Cover ────────────────────────────────────────────────
-           * Same layout as the listing CoverCard, scaled to full column width.
-           * Proportions from Figma card (152×190 px):
-           *   Top strip  = 63/190 = 33.2 % of height
-           *   DEPARTURES = 42/190 = 22.1 % from top
-           *   Photo      = starts at 33.2 %, height 63.2 %, 5.3 % side margins
-           *   Bottom gap = 7/190  =  3.7 % of height
-           * ──────────────────────────────────────────────────────── */}
+          {/* ── Cover ──────────────────────────────────────────────── */}
           <div
             className="relative w-full overflow-hidden"
             style={{
@@ -56,14 +71,14 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
               background: issue.accentColor,
             }}
           >
-            {/* TH logo — top-left, proportional to CoverCard (7/152 × 6/190) */}
+            {/* TH logo */}
             <div
               className="absolute overflow-hidden"
               style={{
-                left: '4.6%',   /* 7/152 */
-                top: '3.7%',    /* 7/190 */
-                width: '9.9%',  /* 15/152 */
-                height: '3.2%', /* 6/190 */
+                left: '4.6%',
+                top: '3.7%',
+                width: '9.9%',
+                height: '3.2%',
               }}
             >
               <img
@@ -106,7 +121,7 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
               </p>
             </div>
 
-            {/* DEPARTURES — centred at 22.1 % from top (42/190) */}
+            {/* DEPARTURES */}
             <h1
               className="absolute w-full text-center text-white"
               style={{
@@ -122,7 +137,7 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
               Departures
             </h1>
 
-            {/* Photo — starts at 33.2 %, 5.3 % side margins, 3.7 % bottom gap */}
+            {/* Photo */}
             <div
               className="absolute overflow-hidden"
               style={{
@@ -140,10 +155,7 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* ── Content ─────────────────────────────────────────────
-           * Inner padding mirrors Figma: text starts ~75 px from
-           * the column left edge (448-373=75) and ends ~79 px from right.
-           * ──────────────────────────────────────────────────────── */}
+          {/* ── Content ──────────────────────────────────────────── */}
           <div
             className="py-12 sm:py-16"
             style={{ paddingLeft: 'clamp(24px, 10%, 75px)', paddingRight: 'clamp(24px, 10%, 79px)' }}
@@ -160,7 +172,7 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
               </p>
             ))}
 
-            {/* Pull quote — centred, Unbounded Regular, grey */}
+            {/* Pull quote */}
             <blockquote
               className="text-center my-10"
               style={{
@@ -175,7 +187,7 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
               {issue.pullQuote}
             </blockquote>
 
-            {/* Second batch of paragraphs (if any) */}
+            {/* Second batch of paragraphs */}
             {secondParas.map((para, i) => (
               <p key={i} className="mb-4" style={bodyStyle}>
                 {para}
@@ -218,18 +230,13 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
               IN THIS ISSUE
             </p>
 
-            {/*
-             * 2×2 article grid.
-             * Each card: photo → title (Unbounded Medium 14px) → category | author
-             * Column widths match Figma: two ~268 px columns with ~75 px gap.
-             */}
+            {/* 2×2 article grid */}
             <div
               className="grid grid-cols-1 sm:grid-cols-2"
               style={{ gap: '40px 40px' }}
             >
               {issue.articles.map((article) => (
                 <div key={article.id} className="flex flex-col gap-2">
-                  {/* Photo */}
                   <div className="overflow-hidden" style={{ aspectRatio: '268 / 246' }}>
                     <img
                       src={article.image}
@@ -237,8 +244,6 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
                       className="w-full h-full object-cover"
                     />
                   </div>
-
-                  {/* Title */}
                   <p
                     className="mt-2"
                     style={{
@@ -252,8 +257,6 @@ export default async function NewsletterDetailPage({ params }: PageProps) {
                   >
                     {article.title}
                   </p>
-
-                  {/* Category | Author */}
                   <p
                     style={{
                       fontFamily: 'var(--font-work-sans)',

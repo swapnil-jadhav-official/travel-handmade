@@ -206,7 +206,7 @@ export default function BlogPost({ params }: BlogPageProps) {
           <section className="w-full" style={{ backgroundColor: '#F5F4F4' }}>
             <div className="w-full px-6 sm:px-8 lg:px-12">
               <div className="py-4 border-b border-gray-900/20">
-                <div className="text-xl font-light uppercase">
+                <div className="text-xl font-light uppercase" style={{ fontFamily: 'var(--font-unbounded)' }}>
                   Related Stories
                 </div>
               </div>

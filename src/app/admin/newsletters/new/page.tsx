@@ -2,16 +2,14 @@
 
 import { useRouter } from 'next/navigation';
 import NewsletterForm from '../_components/NewsletterForm';
+import { saveNewsletter } from '@/lib/firestore';
 import type { NewsletterIssue } from '@/data/newsletters';
 
 export default function NewNewsletterPage() {
   const router = useRouter();
 
   const handleSave = async (data: Partial<NewsletterIssue>) => {
-    // TODO: Save to Firestore
-    // await addNewsletter(data);
-    console.log('Newsletter data to save:', data);
-    alert('Newsletter saved (static mode — connect Firestore to persist).');
+    await saveNewsletter(data as NewsletterIssue);
     router.push('/admin/newsletters');
   };
 

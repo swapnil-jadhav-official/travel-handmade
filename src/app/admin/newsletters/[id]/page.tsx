@@ -1,12 +1,10 @@
 'use client';
 
-import { use } from 'react';
+import { use, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { newsletters } from '@/data/newsletters';
+import { getNewsletterBySlug, saveNewsletter } from '@/lib/firestore';
 import type { NewsletterIssue } from '@/data/newsletters';
 import NewsletterForm from '../_components/NewsletterForm';
-
-// TODO: Replace with Firestore fetch: getNewsletterById(id)
 
 export default function EditNewsletterPage({
   params,
@@ -15,23 +13,32 @@ export default function EditNewsletterPage({
 }) {
   const { id } = use(params);
   const router = useRouter();
+  const [issue, setIssue] = useState<NewsletterIssue | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  const issue = newsletters.find((n) => n.id === id);
+  useEffect(() => {
+    getNewsletterBySlug(id)
+      .then(setIssue)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [id]);
 
-  if (!issue) {
+  const handleSave = async (data: Partial<NewsletterIssue>) => {
+    await saveNewsletter(data as NewsletterIssue);
+    router.push('/admin/newsletters');
+  };
+
+  if (loading) {
     return (
-      <div className="flex-1 p-8 text-white">
-        <p>Newsletter issue not found.</p>
-      </div>
+      <div className="flex-1 p-8 text-gray-400 text-sm">Loading…</div>
     );
   }
 
-  const handleSave = async (data: Partial<NewsletterIssue>) => {
-    // TODO: await updateNewsletter(id, data);
-    console.log('Updated newsletter data:', data);
-    alert('Changes saved (static mode — connect Firestore to persist).');
-    router.push('/admin/newsletters');
-  };
+  if (!issue) {
+    return (
+      <div className="flex-1 p-8 text-white">Newsletter issue not found.</div>
+    );
+  }
 
   return (
     <div className="flex-1 overflow-auto">
