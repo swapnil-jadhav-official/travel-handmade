@@ -151,7 +151,7 @@ export default function ContactUsPage() {
             {/* Card 1: What We're Looking For */}
             <div className="relative">
               {/* Pin */}
-              <div className="absolute -top-5 left-10 z-10">
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
                 <img src={pinImage} alt="" className="h-14 w-auto" />
               </div>
               <div
@@ -209,7 +209,7 @@ export default function ContactUsPage() {
             {/* Card 2: What We're NOT Looking For */}
             <div className="relative">
               {/* Pin */}
-              <div className="absolute -top-5 left-10 z-10">
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
                 <img src={pinImage} alt="" className="h-14 w-auto" />
               </div>
               <div
@@ -269,7 +269,7 @@ export default function ContactUsPage() {
             {/* Card 3: How to Pitch */}
             <div className="relative">
               {/* Pin */}
-              <div className="absolute -top-5 left-10 z-10">
+              <div className="absolute -top-5 left-1/2 -translate-x-1/2 z-10">
                 <img src={pinImage} alt="" className="h-14 w-auto" />
               </div>
               <div

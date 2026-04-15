@@ -229,7 +229,7 @@ export default function AboutUsPage() {
             </p>
 
             <a
-              href="#"
+              href="/newsletter"
               className="inline-block bg-white text-black border border-black hover:opacity-80 transition px-8 py-3"
               style={{
                 fontFamily: 'var(--font-unbounded)',
