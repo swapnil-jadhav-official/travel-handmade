@@ -29,14 +29,14 @@ export default function AdminNewslettersPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-white">Newsletters</h1>
-            <p className="text-gray-400 text-sm mt-1">
+            <h1 className="text-3xl font-bold text-gray-900">Newsletters</h1>
+            <p className="text-gray-600 text-sm mt-1">
               Manage <em>Departures</em> newsletter issues
             </p>
           </div>
           <Link
             href="/admin/newsletters/new"
-            className="flex items-center gap-2 bg-white text-black px-4 py-2 text-sm font-medium hover:bg-gray-100 transition"
+            className="flex items-center gap-2 bg-black text-white px-4 py-2 text-sm font-medium hover:bg-gray-900 transition rounded"
           >
             <Plus className="h-4 w-4" />
             New Issue
@@ -44,19 +44,19 @@ export default function AdminNewslettersPage() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto rounded-lg border border-gray-800">
-          <table className="w-full text-sm text-gray-300">
-            <thead>
-              <tr className="border-b border-gray-800 bg-white/5">
-                <th className="px-4 py-3 text-left font-medium text-gray-400">Cover</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-400">Issue</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-400">Title</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-400 hidden md:table-cell">Published</th>
-                <th className="px-4 py-3 text-left font-medium text-gray-400 hidden md:table-cell">Articles</th>
-                <th className="px-4 py-3 text-right font-medium text-gray-400">Actions</th>
+        <div className="overflow-x-auto rounded-lg border border-gray-200">
+          <table className="w-full text-sm text-gray-700">
+            <thead className="border-b border-gray-200 bg-gray-50">
+              <tr>
+                <th className="px-4 py-3 text-left font-medium text-gray-700">Cover</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-700">Issue</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-700">Title</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-700 hidden md:table-cell">Published</th>
+                <th className="px-4 py-3 text-left font-medium text-gray-700 hidden md:table-cell">Articles</th>
+                <th className="px-4 py-3 text-right font-medium text-gray-700">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-800">
+            <tbody>
               {loading ? (
                 <tr>
                   <td colSpan={6} className="px-4 py-10 text-center text-gray-500">
@@ -71,7 +71,7 @@ export default function AdminNewslettersPage() {
                 </tr>
               ) : (
                 issues.map((issue) => (
-                  <tr key={issue.id} className="hover:bg-white/5 transition">
+                  <tr key={issue.id} className="border-b border-gray-200 hover:bg-gray-50 transition">
                     {/* Cover swatch */}
                     <td className="px-4 py-3">
                       <div
@@ -87,20 +87,20 @@ export default function AdminNewslettersPage() {
                     </td>
 
                     {/* Issue number */}
-                    <td className="px-4 py-3 font-mono text-gray-400">
+                    <td className="px-4 py-3 font-mono text-gray-500">
                       #{String(issue.issueNumber).padStart(2, '0')}
                     </td>
 
                     {/* Title */}
                     <td className="px-4 py-3">
-                      <span className="font-medium text-white">{issue.title}</span>
+                      <span className="font-medium text-gray-900">{issue.title}</span>
                       <p className="text-gray-500 text-xs mt-0.5 line-clamp-1">
                         {issue.description}
                       </p>
                     </td>
 
                     {/* Published date */}
-                    <td className="px-4 py-3 hidden md:table-cell text-gray-400">
+                    <td className="px-4 py-3 hidden md:table-cell text-gray-500">
                       {new Date(issue.publishedAt).toLocaleDateString('en-GB', {
                         month: 'short',
                         year: 'numeric',
@@ -108,7 +108,7 @@ export default function AdminNewslettersPage() {
                     </td>
 
                     {/* Article count */}
-                    <td className="px-4 py-3 hidden md:table-cell text-gray-400">
+                    <td className="px-4 py-3 hidden md:table-cell text-gray-500">
                       {issue.articles.length}
                     </td>
 
@@ -118,21 +118,21 @@ export default function AdminNewslettersPage() {
                         <Link
                           href={`/newsletter/${issue.slug}`}
                           target="_blank"
-                          className="p-1.5 text-gray-400 hover:text-white transition"
+                          className="p-1.5 text-gray-400 hover:text-gray-900 transition"
                           title="View"
                         >
                           <ExternalLink className="h-4 w-4" />
                         </Link>
                         <Link
                           href={`/admin/newsletters/${issue.slug}`}
-                          className="p-1.5 text-gray-400 hover:text-white transition"
+                          className="p-1.5 text-gray-400 hover:text-gray-900 transition"
                           title="Edit"
                         >
                           <Edit className="h-4 w-4" />
                         </Link>
                         <button
                           onClick={() => handleDelete(issue.slug)}
-                          className="p-1.5 text-gray-400 hover:text-red-400 transition"
+                          className="p-1.5 text-gray-400 hover:text-red-500 transition"
                           title="Delete"
                         >
                           <Trash2 className="h-4 w-4" />

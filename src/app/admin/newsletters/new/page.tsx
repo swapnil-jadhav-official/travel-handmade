@@ -17,8 +17,8 @@ export default function NewNewsletterPage() {
     <div className="flex-1 overflow-auto">
       <div className="p-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white">New Newsletter Issue</h1>
-          <p className="text-gray-400 text-sm mt-1">
+          <h1 className="text-2xl font-bold text-gray-900">New Newsletter Issue</h1>
+          <p className="text-gray-600 text-sm mt-1">
             Create a new <em>Departures</em> issue. Fields marked with * are required.
           </p>
         </div>

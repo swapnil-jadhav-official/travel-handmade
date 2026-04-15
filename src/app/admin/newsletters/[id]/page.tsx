@@ -30,13 +30,13 @@ export default function EditNewsletterPage({
 
   if (loading) {
     return (
-      <div className="flex-1 p-8 text-gray-400 text-sm">Loading…</div>
+      <div className="flex-1 p-8 text-gray-500 text-sm">Loading…</div>
     );
   }
 
   if (!issue) {
     return (
-      <div className="flex-1 p-8 text-white">Newsletter issue not found.</div>
+      <div className="flex-1 p-8 text-gray-900">Newsletter issue not found.</div>
     );
   }
 
@@ -44,10 +44,10 @@ export default function EditNewsletterPage({
     <div className="flex-1 overflow-auto">
       <div className="p-8">
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-gray-900">
             Edit — Issue {String(issue.issueNumber).padStart(2, '0')}: {issue.title}
           </h1>
-          <p className="text-gray-400 text-sm mt-1">
+          <p className="text-gray-600 text-sm mt-1">
             Editing keeps the same page layout — only content changes.
           </p>
         </div>
