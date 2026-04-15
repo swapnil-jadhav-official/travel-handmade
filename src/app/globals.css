@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 html {
-  font-family: var(--font-unbounded);
+  font-family: var(--font-work-sans);
 }
 
 :root {
@@ -27,7 +27,7 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-unbounded);
+  font-family: var(--font-work-sans);
 }
 
 /* TipTap Editor Styles */

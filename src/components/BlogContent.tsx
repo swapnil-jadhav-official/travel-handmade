@@ -62,7 +62,7 @@ export default function BlogContent({ html, articleType = 'listicle' }: BlogCont
   return (
     <div
       ref={contentRef}
-      className={`prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_h1]:text-2xl [&_h2]:text-xl [&_h3]:text-lg [&_figure]:my-6${galleryStyles}`}
+      className={`prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_p]:font-[family-name:var(--font-work-sans)] [&_h1]:text-2xl [&_h2]:text-xl [&_h3]:text-lg [&_figure]:my-6${galleryStyles}`}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );

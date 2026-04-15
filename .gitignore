@@ -42,3 +42,5 @@ next-env.d.ts
 
 # Firebase service account (NEVER commit this!)
 firebase-adminsdk.json
+.claude/settings.local.json
+.claude/settings.local.json

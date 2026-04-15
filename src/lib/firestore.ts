@@ -6,6 +6,7 @@ import {
   doc,
   getDocs,
   getDoc,
+  setDoc,
   query,
   where,
   orderBy,
@@ -13,6 +14,9 @@ import {
 } from 'firebase/firestore';
 import { db } from './firebase';
 import { BlogPost, Post, PostStatus, Category, Testimonial, Traveller } from '@/types';
+import type { NewsletterIssue } from '@/data/newsletters';
+
+const NEWSLETTERS_COLLECTION = 'newsletters';
 
 const POSTS_COLLECTION = 'posts';
 const CATEGORIES_COLLECTION = 'categories';
@@ -441,6 +445,53 @@ export async function deleteTraveller(id: string): Promise<void> {
     await deleteDoc(doc(db, TRAVELLERS_COLLECTION, id));
   } catch (error) {
     console.error('Error deleting traveller:', error);
+    throw error;
+  }
+}
+
+// ===== Newsletter operations =====
+
+export async function getNewsletters(): Promise<NewsletterIssue[]> {
+  try {
+    const q = query(
+      collection(db, NEWSLETTERS_COLLECTION),
+      orderBy('issueNumber', 'desc')
+    );
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map((d) => ({ id: d.id, ...d.data() } as NewsletterIssue));
+  } catch (error) {
+    console.error('Error fetching newsletters:', error);
+    throw error;
+  }
+}
+
+export async function getNewsletterBySlug(slug: string): Promise<NewsletterIssue | null> {
+  try {
+    const docRef = doc(db, NEWSLETTERS_COLLECTION, slug);
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) return null;
+    return { id: docSnap.id, ...docSnap.data() } as NewsletterIssue;
+  } catch (error) {
+    console.error('Error fetching newsletter:', error);
+    throw error;
+  }
+}
+
+export async function saveNewsletter(issue: NewsletterIssue): Promise<void> {
+  try {
+    const ref = doc(db, NEWSLETTERS_COLLECTION, issue.slug);
+    await setDoc(ref, issue);
+  } catch (error) {
+    console.error('Error saving newsletter:', error);
+    throw error;
+  }
+}
+
+export async function deleteNewsletter(slug: string): Promise<void> {
+  try {
+    await deleteDoc(doc(db, NEWSLETTERS_COLLECTION, slug));
+  } catch (error) {
+    console.error('Error deleting newsletter:', error);
     throw error;
   }
 }

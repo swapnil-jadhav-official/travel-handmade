@@ -18,6 +18,7 @@ import {
   LogOut,
   Tent,
   ImagePlay,
+  Mail,
 } from 'lucide-react';
 
 export default function AdminSidebar(): React.ReactElement {
@@ -126,6 +127,12 @@ export default function AdminSidebar(): React.ReactElement {
           icon={Users}
           label="Travellers"
           active={isActive('/admin/travellers')}
+        />
+        <NavLink
+          href="/admin/newsletters"
+          icon={Mail}
+          label="Newsletters"
+          active={isActive('/admin/newsletters')}
         />
 
         {canManageUsers() && (
