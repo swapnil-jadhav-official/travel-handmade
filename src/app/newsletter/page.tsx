@@ -199,7 +199,7 @@ export default function NewsletterPage() {
 
         {/* ── Issue List ─────────────────────────────────────────── */}
         <section className="px-6 sm:px-8 lg:px-12 pb-12">
-          <div className="max-w-[1350px] mx-auto">
+          <div className="max-w-[1183px] mx-auto">
             {loading ? (
               <p
                 className="py-16 text-center"
