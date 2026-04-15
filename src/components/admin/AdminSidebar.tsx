@@ -187,12 +187,6 @@ export default function AdminSidebar(): React.ReactElement {
               label="Site Settings"
               active={isActive('/admin/settings')}
             />
-            <NavLink
-              href="/admin/setup"
-              icon={Settings}
-              label="Setup"
-              active={isActive('/admin/setup')}
-            />
           </>
         )}
       </nav>

@@ -183,7 +183,7 @@ export default function BlogPost({ params }: BlogPageProps) {
                   {' // '}
                   {authorProfile?.socialLinks?.instagram ? (
                     <a href={authorProfile.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      @{authorProfile.socialLinks.instagram.split('/').pop()}
+                      @{authorProfile.socialLinks.instagram.replace(/\/+$/, '').split('/').pop() || authorProfile.socialLinks.instagram}
                     </a>
                   ) : (
                     `@${(authorProfile?.displayName || post?.author)?.toLowerCase().replace(/\s+/g, '')}`

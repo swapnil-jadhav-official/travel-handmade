@@ -1,14 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { updateUserProfile } from '@/lib/users';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
+import { Camera, MapPin, Globe, Twitter, Instagram, User, FileText, AlignLeft, Mail } from 'lucide-react';
+
+const inputCls =
+  'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition bg-white';
+
+function Label({ icon, text }: { icon: React.ReactNode; text: string }) {
+  return (
+    <label className="flex items-center gap-1.5 text-xs font-medium text-gray-500 uppercase tracking-wide mb-1.5">
+      {icon}{text}
+    </label>
+  );
+}
 
 export default function ProfilePage(): React.ReactElement {
   const { user, userProfile, refreshProfile } = useAuth();
+  const fileRef = useRef<HTMLInputElement>(null);
 
   const [displayName, setDisplayName] = useState(userProfile?.displayName || '');
   const [bio, setBio] = useState(userProfile?.bio || '');
@@ -27,16 +40,12 @@ export default function ProfilePage(): React.ReactElement {
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
     setIsUploading(true);
-    setError('');
-
     try {
       const url = await uploadImageToCloudinary(file);
       setAvatarUrl(url);
-    } catch (err) {
-      setError('Failed to upload avatar. Please try again.');
-      console.error('Avatar upload error:', err);
+    } catch {
+      setError('Failed to upload avatar.');
     } finally {
       setIsUploading(false);
     }
@@ -45,240 +54,167 @@ export default function ProfilePage(): React.ReactElement {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
-
     setIsSaving(true);
     setError('');
     setMessage('');
-
     try {
-      // Update Firestore profile
       await updateUserProfile(user.uid, {
-        displayName,
-        bio,
-        details,
-        city,
-        country,
-        avatarUrl,
-        socialLinks: {
-          twitter: twitterUrl,
-          instagram: instagramUrl,
-          website: websiteUrl,
-        },
+        displayName, bio, details, city, country, avatarUrl,
+        socialLinks: { twitter: twitterUrl, instagram: instagramUrl, website: websiteUrl },
         updatedAt: new Date().toISOString(),
       });
-
-      // Update Firebase Auth profile for consistency
-      await updateProfile(auth.currentUser!, {
-        displayName,
-        photoURL: avatarUrl,
-      });
-
-      // Refresh context
+      await updateProfile(auth.currentUser!, { displayName, photoURL: avatarUrl });
       await refreshProfile();
-
       setMessage('Profile updated successfully!');
       setTimeout(() => setMessage(''), 3000);
-    } catch (err) {
-      setError('Failed to save profile. Please try again.');
-      console.error('Save error:', err);
+    } catch {
+      setError('Failed to save profile.');
     } finally {
       setIsSaving(false);
     }
   };
 
+  const initials = displayName?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || '?';
+
   return (
-    <div className="flex-1 flex flex-col overflow-auto">
-      <div className="max-w-2xl mx-auto w-full p-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">My Profile</h1>
+    <div className="flex-1 overflow-auto">
+      <div className="max-w-4xl mx-auto w-full p-8">
 
-        <form onSubmit={handleSave} className="space-y-8">
-          {message && (
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
-              {message}
-            </div>
-          )}
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
+          <p className="text-sm text-gray-500 mt-1">Manage your public author profile</p>
+        </div>
 
-          {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
-              {error}
-            </div>
-          )}
+        {message && (
+          <div className="mb-6 p-3 bg-green-50 border border-green-200 rounded-lg text-green-700 text-sm">
+            ✓ {message}
+          </div>
+        )}
+        {error && (
+          <div className="mb-6 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+            {error}
+          </div>
+        )}
 
-          {/* Avatar Section */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-4">Avatar</label>
-            <div className="flex items-start gap-6">
-              <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden flex-shrink-0">
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
-                ) : (
-                  <div className="text-3xl font-semibold text-gray-500">
-                    {displayName.charAt(0).toUpperCase()}
-                  </div>
-                )}
+        <form onSubmit={handleSave} className="space-y-6">
+
+          {/* ── Avatar + identity row ── */}
+          <div className="border border-gray-200 rounded-xl bg-white p-6">
+            <div className="flex items-center gap-8">
+              {/* Avatar */}
+              <div className="relative flex-shrink-0">
+                <div className="w-20 h-20 rounded-full overflow-hidden bg-gray-900 flex items-center justify-center">
+                  {avatarUrl ? (
+                    <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="text-2xl font-semibold text-white">{initials}</span>
+                  )}
+                </div>
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  disabled={isUploading}
+                  className="absolute bottom-0 right-0 w-6 h-6 bg-black text-white rounded-full flex items-center justify-center hover:bg-gray-800 transition shadow"
+                >
+                  {isUploading
+                    ? <div className="w-3 h-3 border border-white border-t-transparent rounded-full animate-spin" />
+                    : <Camera className="w-3 h-3" />}
+                </button>
+                <input ref={fileRef} type="file" accept="image/*" onChange={handleAvatarUpload} className="hidden" />
               </div>
-              <div className="flex-1">
-                <label htmlFor="avatar" className="block">
-                  <span className="sr-only">Upload avatar</span>
+
+              {/* Name + email — takes remaining space as a 2-col grid */}
+              <div className="flex-1 grid grid-cols-2 gap-4">
+                <div>
+                  <Label icon={<User className="w-3 h-3" />} text="Display Name" />
                   <input
-                    id="avatar"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleAvatarUpload}
-                    disabled={isUploading}
-                    className="block w-full text-sm text-gray-500
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded-full file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-black file:text-white
-                      hover:file:bg-gray-900
-                      disabled:file:bg-gray-400"
+                    type="text" value={displayName} required
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    placeholder="Your full name"
+                    className={inputCls}
                   />
-                </label>
-                <p className="text-xs text-gray-500 mt-2">JPG, PNG, GIF up to 5MB</p>
+                </div>
+                <div>
+                  <Label icon={<Mail className="w-3 h-3" />} text="Email" />
+                  <input
+                    type="email" value={user?.email || ''} disabled
+                    className={`${inputCls} bg-gray-50 text-gray-400 cursor-not-allowed`}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Display Name */}
-          <div>
-            <label htmlFor="displayName" className="block text-sm font-medium text-gray-700 mb-2">
-              Display Name
-            </label>
-            <input
-              id="displayName"
-              type="text"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-            />
-          </div>
-
-          {/* Bio */}
-          <div>
-            <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-2">
-              Bio
-            </label>
-            <textarea
-              id="bio"
-              value={bio}
-              onChange={(e) => setBio(e.target.value.slice(0, 500))}
-              rows={4}
-              maxLength={500}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none"
-              placeholder="Tell us about yourself..."
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              {bio.length}/500 characters
-            </p>
-          </div>
-
-          {/* Author Details */}
-          <div>
-            <label htmlFor="details" className="block text-sm font-medium text-gray-700 mb-2">
-              Author Details
-            </label>
-            <textarea
-              id="details"
-              value={details}
-              onChange={(e) => setDetails(e.target.value.slice(0, 1000))}
-              rows={5}
-              maxLength={1000}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black resize-none"
-              placeholder="Write your detailed author bio, background, and expertise..."
-            />
-            <p className="text-xs text-gray-500 mt-1">
-              {details.length}/1000 characters
-            </p>
-          </div>
-
-          {/* Location */}
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
-                City
-              </label>
-              <input
-                id="city"
-                type="text"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-                placeholder="e.g., Barcelona"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-              />
+          {/* ── Location + Social ── */}
+          <div className="border border-gray-200 rounded-xl bg-white divide-y divide-gray-100">
+            <div className="p-5">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Location</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label icon={<MapPin className="w-3 h-3" />} text="City" />
+                  <input type="text" value={city} onChange={(e) => setCity(e.target.value)} placeholder="e.g. Mumbai" className={inputCls} />
+                </div>
+                <div>
+                  <Label icon={<MapPin className="w-3 h-3" />} text="Country" />
+                  <input type="text" value={country} onChange={(e) => setCountry(e.target.value)} placeholder="e.g. India" className={inputCls} />
+                </div>
+              </div>
             </div>
-            <div>
-              <label htmlFor="country" className="block text-sm font-medium text-gray-700 mb-2">
-                Country
-              </label>
-              <input
-                id="country"
-                type="text"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                placeholder="e.g., Spain"
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-              />
+
+            <div className="p-5">
+              <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Social Links</p>
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <Label icon={<Twitter className="w-3 h-3" />} text="Twitter / X" />
+                  <input type="url" value={twitterUrl} onChange={(e) => setTwitterUrl(e.target.value)} placeholder="https://twitter.com/…" className={inputCls} />
+                </div>
+                <div>
+                  <Label icon={<Instagram className="w-3 h-3" />} text="Instagram" />
+                  <input type="url" value={instagramUrl} onChange={(e) => setInstagramUrl(e.target.value)} placeholder="https://instagram.com/…" className={inputCls} />
+                </div>
+                <div>
+                  <Label icon={<Globe className="w-3 h-3" />} text="Website" />
+                  <input type="url" value={websiteUrl} onChange={(e) => setWebsiteUrl(e.target.value)} placeholder="https://yoursite.com" className={inputCls} />
+                </div>
+              </div>
             </div>
           </div>
 
-          {/* Social Links */}
-          <div className="bg-gray-50 rounded-lg p-6">
-            <h3 className="font-semibold text-gray-900 mb-4">Social Links</h3>
-            <div className="space-y-4">
+          {/* ── Bio + Details side by side ── */}
+          <div className="border border-gray-200 rounded-xl bg-white p-5">
+            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">About You</p>
+            <div className="grid grid-cols-2 gap-6">
               <div>
-                <label htmlFor="twitter" className="block text-sm font-medium text-gray-700 mb-2">
-                  Twitter URL
-                </label>
-                <input
-                  id="twitter"
-                  type="url"
-                  value={twitterUrl}
-                  onChange={(e) => setTwitterUrl(e.target.value)}
-                  placeholder="https://twitter.com/..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                <Label icon={<FileText className="w-3 h-3" />} text="Short Bio" />
+                <textarea
+                  value={bio} rows={5}
+                  onChange={(e) => setBio(e.target.value.slice(0, 500))}
+                  placeholder="One or two lines about yourself…"
+                  className={`${inputCls} resize-none`}
                 />
+                <p className="text-xs text-gray-400 text-right mt-1">{bio.length}/500</p>
               </div>
-
               <div>
-                <label htmlFor="instagram" className="block text-sm font-medium text-gray-700 mb-2">
-                  Instagram URL
-                </label>
-                <input
-                  id="instagram"
-                  type="url"
-                  value={instagramUrl}
-                  onChange={(e) => setInstagramUrl(e.target.value)}
-                  placeholder="https://instagram.com/..."
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                <Label icon={<AlignLeft className="w-3 h-3" />} text="Author Details" />
+                <textarea
+                  value={details} rows={5}
+                  onChange={(e) => setDetails(e.target.value.slice(0, 1000))}
+                  placeholder="Detailed background and expertise…"
+                  className={`${inputCls} resize-none`}
                 />
-              </div>
-
-              <div>
-                <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-2">
-                  Personal Website
-                </label>
-                <input
-                  id="website"
-                  type="url"
-                  value={websiteUrl}
-                  onChange={(e) => setWebsiteUrl(e.target.value)}
-                  placeholder="https://example.com"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
-                />
+                <p className="text-xs text-gray-400 text-right mt-1">{details.length}/1000</p>
               </div>
             </div>
           </div>
 
-          {/* Submit Button */}
-          <div className="flex gap-3">
+          {/* ── Save ── */}
+          <div className="flex items-center gap-4">
             <button
-              type="submit"
-              disabled={isSaving}
-              className="px-6 py-2 bg-black text-white rounded-lg font-medium hover:bg-gray-900 disabled:bg-gray-400 transition"
+              type="submit" disabled={isSaving}
+              className="px-6 py-2.5 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-900 disabled:opacity-50 transition"
             >
-              {isSaving ? 'Saving...' : 'Save Changes'}
+              {isSaving ? 'Saving…' : 'Save Changes'}
             </button>
           </div>
         </form>

@@ -109,7 +109,9 @@ export default function SettingsPage(): React.ReactElement {
             <div className="flex items-start gap-6 mb-6">
               {logoUrl ? (
                 <div className="relative">
-                  <img src={logoUrl} alt="Site Logo" className="h-24 object-contain" />
+                  <div className="bg-black rounded p-3">
+                    <img src={logoUrl} alt="Site Logo" className="h-24 object-contain" />
+                  </div>
                   <button
                     type="button"
                     onClick={() => setLogoUrl('')}

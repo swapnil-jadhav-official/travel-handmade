@@ -25,7 +25,10 @@ export default function HeroPage(): React.ReactElement {
         ]);
         const published = allPosts.filter((p) => p.status === 'published' && p.featuredImage);
         setPosts(published);
-        setSelectedIds(settings?.heroPostIds || []);
+        const savedIds = settings?.heroPostIds || [];
+        // Drop any saved IDs that no longer exist in visible posts
+        const validIds = savedIds.filter((id) => published.some((p) => p.id === id));
+        setSelectedIds(validIds);
       } catch (error) {
         console.error('Failed to fetch data:', error);
       } finally {
