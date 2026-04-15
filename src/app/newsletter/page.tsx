@@ -100,10 +100,13 @@ function CoverCard({
   );
 }
 
+const PAGE_SIZE = 5;
+
 // ── Page ────────────────────────────────────────────────────────────────────
 export default function NewsletterPage() {
   const [newsletters, setNewsletters] = useState<NewsletterIssue[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     getNewsletters()
@@ -111,6 +114,18 @@ export default function NewsletterPage() {
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
+
+  const totalPages = Math.max(1, Math.ceil(newsletters.length / PAGE_SIZE));
+  const pageIssues = newsletters.slice(
+    (currentPage - 1) * PAGE_SIZE,
+    currentPage * PAGE_SIZE
+  );
+
+  const goTo = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
@@ -184,7 +199,7 @@ export default function NewsletterPage() {
 
         {/* ── Issue List ─────────────────────────────────────────── */}
         <section className="px-6 sm:px-8 lg:px-12 pb-12">
-          <div className="max-w-[1350px] mx-auto">
+          <div className="max-w-[1183px] mx-auto">
             {loading ? (
               <p
                 className="py-16 text-center"
@@ -193,7 +208,7 @@ export default function NewsletterPage() {
                 Loading issues…
               </p>
             ) : (
-              newsletters.map((issue, idx) => (
+              pageIssues.map((issue, idx) => (
                 <div key={issue.id}>
                   <div className="border-t border-[#e0e0e0]" />
                   <Link
@@ -236,7 +251,7 @@ export default function NewsletterPage() {
                       </p>
                     </div>
                   </Link>
-                  {idx === newsletters.length - 1 && (
+                  {idx === pageIssues.length - 1 && (
                     <div className="border-t border-[#e0e0e0]" />
                   )}
                 </div>
@@ -246,39 +261,53 @@ export default function NewsletterPage() {
         </section>
 
         {/* ── Pagination ─────────────────────────────────────────── */}
-        <section className="py-8 flex items-center justify-center gap-4">
-          <button
-            className="flex items-center justify-center w-5 h-5 opacity-40 cursor-not-allowed"
-            disabled
-            aria-label="Previous page"
-          >
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-              <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
-            </svg>
-          </button>
-          {[1, 2, 3].map((page) => (
-            <span
-              key={page}
-              style={{
-                fontFamily: 'var(--font-unbounded)',
-                fontSize: '13px',
-                letterSpacing: '0.75em',
-                color: page === 1 ? 'black' : '#909090',
-                fontWeight: page === 1 ? 600 : 400,
-              }}
+        {totalPages > 1 && (
+          <section className="py-8 flex items-center justify-center gap-4">
+            <button
+              onClick={() => goTo(currentPage - 1)}
+              disabled={currentPage === 1}
+              className="flex items-center justify-center w-5 h-5 transition"
+              style={{ opacity: currentPage === 1 ? 0.4 : 1, cursor: currentPage === 1 ? 'not-allowed' : 'pointer' }}
+              aria-label="Previous page"
             >
-              {page}
-            </span>
-          ))}
-          <button
-            className="flex items-center justify-center w-5 h-5"
-            aria-label="Next page"
-          >
-            <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
-              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
-            </svg>
-          </button>
-        </section>
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+              </svg>
+            </button>
+
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => goTo(page)}
+                style={{
+                  fontFamily: 'var(--font-unbounded)',
+                  fontSize: '13px',
+                  letterSpacing: '0.75em',
+                  color: page === currentPage ? 'black' : '#909090',
+                  fontWeight: page === currentPage ? 600 : 400,
+                  cursor: 'pointer',
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                }}
+              >
+                {page}
+              </button>
+            ))}
+
+            <button
+              onClick={() => goTo(currentPage + 1)}
+              disabled={currentPage === totalPages}
+              className="flex items-center justify-center w-5 h-5 transition"
+              style={{ opacity: currentPage === totalPages ? 0.4 : 1, cursor: currentPage === totalPages ? 'not-allowed' : 'pointer' }}
+              aria-label="Next page"
+            >
+              <svg viewBox="0 0 24 24" className="w-5 h-5" fill="currentColor">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+              </svg>
+            </button>
+          </section>
+        )}
       </main>
 
       <Footer />
