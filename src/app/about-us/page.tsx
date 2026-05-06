@@ -10,21 +10,13 @@ export default function AboutUsPage() {
 
       <main className="flex-1">
         {/* ── Page Title ──────────────────────────────────────────── */}
-        <section className="px-6 sm:px-8 lg:px-12 pt-10 sm:pt-14 lg:pt-16 pb-8">
-          <h1
-            className="text-center mx-auto mb-8 sm:mb-10 lg:mb-12"
-            style={{
-              fontFamily: 'var(--font-unbounded)',
-              fontWeight: 500,
-              fontSize: 'clamp(22px, 3vw, 32px)',
-              lineHeight: '110%',
-              letterSpacing: '-0.05em',
-              maxWidth: '660px',
-            }}
-          >
-            The Defining Voice in Conscious Travel and Cultural Storytelling
+        <section className="px-6 sm:px-8 lg:px-12 pb-8">
+          <h1 className="static-page-title">
+            The Defining Voice in
+            <span className="block">Conscious Travel and</span>
+            <span className="block">Cultural Storytelling</span>
           </h1>
-          <div className="border-t border-black" />
+          <div className="privacy-divider" />
         </section>
 
         {/* ── What Is Travel Handmade? ─────────────────────────────── */}

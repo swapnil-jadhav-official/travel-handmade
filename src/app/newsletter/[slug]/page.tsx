@@ -19,6 +19,7 @@ export default function NewsletterDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const [issue, setIssue] = useState<NewsletterIssue | null>(null);
   const [loading, setLoading] = useState(true);
+  const [shareMessage, setShareMessage] = useState<string>('');
 
   useEffect(() => {
     if (!slug) return;
@@ -47,6 +48,40 @@ export default function NewsletterDetailPage() {
       </div>
     );
   }
+
+  // Log article data structure
+  if (issue.articles && issue.articles.length > 0) {
+    console.log('Newsletter Article Data:', JSON.stringify(issue.articles[0], null, 2));
+  }
+
+  const handleShare = async () => {
+    const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+    const shareText = `Check out Travel Handmade Newsletter - Issue ${issue.issueNumber}: ${issue.title}`;
+
+    // Try native Web Share API first
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Travel Handmade Newsletter',
+          text: shareText,
+          url: shareUrl,
+        });
+        return;
+      } catch (error) {
+        // User cancelled or error occurred
+      }
+    }
+
+    // Fallback: Copy to clipboard
+    try {
+      await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
+      setShareMessage('Link copied to clipboard!');
+      setTimeout(() => setShareMessage(''), 2000);
+    } catch (error) {
+      setShareMessage('Failed to copy link');
+      setTimeout(() => setShareMessage(''), 2000);
+    }
+  };
 
   // Split editor letter paragraphs around the pull quote insertion point
   const splitAt = issue.pullQuoteAfterIndex ?? issue.editorLetterParagraphs.length;
@@ -236,7 +271,11 @@ export default function NewsletterDetailPage() {
               style={{ gap: '40px 40px' }}
             >
               {issue.articles.map((article) => (
-                <div key={article.id} className="flex flex-col gap-2">
+                <Link
+                  key={article.id}
+                  href={`/blog/${article.articleSlug}`}
+                  className="flex flex-col gap-2 hover:opacity-70 transition"
+                >
                   <div className="overflow-hidden" style={{ aspectRatio: '268 / 246' }}>
                     <img
                       src={article.image}
@@ -268,7 +307,7 @@ export default function NewsletterDetailPage() {
                     {article.category}&nbsp;&nbsp;|&nbsp;&nbsp;
                     <span className="uppercase">{article.author}</span>
                   </p>
-                </div>
+                </Link>
               ))}
             </div>
 
@@ -277,28 +316,72 @@ export default function NewsletterDetailPage() {
 
             {/* READ MORE / FOLLOW ALONG / PASS IT ON */}
             <div className="grid grid-cols-3 text-center pb-8">
-              {[
-                { label: 'Read More', href: '/blog' },
-                { label: 'Follow  Along', href: '#' },
-                { label: 'Pass  It  On', href: '#' },
-              ].map(({ label, href }) => (
-                <div key={label}>
-                  <Link
-                    href={href}
+              <div>
+                <Link
+                  href="/"
+                  style={{
+                    fontFamily: 'var(--font-unbounded)',
+                    fontWeight: 300,
+                    fontSize: '10px',
+                    letterSpacing: '-0.5px',
+                    textDecoration: 'underline',
+                    textTransform: 'uppercase',
+                    color: '#7b7b7b',
+                  }}
+                >
+                  Read More
+                </Link>
+              </div>
+              <div>
+                <a
+                  href="https://www.instagram.com/travelhandmade_mag/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: 'var(--font-unbounded)',
+                    fontWeight: 300,
+                    fontSize: '10px',
+                    letterSpacing: '-0.5px',
+                    textDecoration: 'underline',
+                    textTransform: 'uppercase',
+                    color: '#7b7b7b',
+                  }}
+                >
+                  Follow  Along
+                </a>
+              </div>
+              <div>
+                <button
+                  onClick={handleShare}
+                  style={{
+                    fontFamily: 'var(--font-unbounded)',
+                    fontWeight: 300,
+                    fontSize: '10px',
+                    letterSpacing: '-0.5px',
+                    textDecoration: 'underline',
+                    textTransform: 'uppercase',
+                    color: '#7b7b7b',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 0,
+                  }}
+                >
+                  Pass  It  On
+                </button>
+                {shareMessage && (
+                  <p
                     style={{
-                      fontFamily: 'var(--font-unbounded)',
-                      fontWeight: 300,
-                      fontSize: '10px',
-                      letterSpacing: '-0.5px',
-                      textDecoration: 'underline',
-                      textTransform: 'uppercase',
+                      fontFamily: 'var(--font-work-sans)',
+                      fontSize: '9px',
                       color: '#7b7b7b',
+                      marginTop: '4px',
                     }}
                   >
-                    {label}
-                  </Link>
-                </div>
-              ))}
+                    {shareMessage}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </div>
