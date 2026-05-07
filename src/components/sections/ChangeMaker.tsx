@@ -6,7 +6,7 @@ import type { Testimonial } from '@/types';
 
 interface ChangeMakerProps {
   testimonials: Testimonial[];
-  featuredVideo?: { url?: string; title?: string; creator?: string } | null;
+  featuredVideo?: { url?: string; title?: string; creator?: string; thumbnail?: string } | null;
 }
 
 const AUTO_ROTATE_INTERVAL = 5000;
@@ -29,6 +29,7 @@ export default function ChangeMaker({
   featuredVideo,
 }: ChangeMakerProps): React.ReactElement {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -40,6 +41,7 @@ export default function ChangeMaker({
 
   const active = testimonials[activeIndex];
   const embedUrl = featuredVideo?.url ? getYouTubeEmbedUrl(featuredVideo.url) : null;
+  const hasThumbnail = featuredVideo?.thumbnail && embedUrl;
 
   return (
     <section className="w-full flex flex-col px-6 sm:px-8 lg:px-12 py-10 lg:py-12 lg:h-dvh">
@@ -49,14 +51,34 @@ export default function ChangeMaker({
         {/* Left: Video */}
         {featuredVideo?.url && embedUrl && (
           <div className="w-full lg:w-[35%] flex-shrink-0">
-            <div className="relative w-full aspect-video lg:aspect-auto lg:h-full overflow-hidden">
-              <iframe
-                className="absolute inset-0 w-full h-full border-0"
-                src={embedUrl}
-                title={featuredVideo.title || 'Featured Video'}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+            <div className="relative w-full aspect-video lg:aspect-auto lg:h-full overflow-hidden group cursor-pointer">
+              {hasThumbnail && !isPlaying ? (
+                <>
+                  <img
+                    src={featuredVideo.thumbnail}
+                    alt={featuredVideo.title || 'Featured Video'}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <button
+                    onClick={() => setIsPlaying(true)}
+                    className="absolute inset-0 w-full h-full flex items-center justify-center bg-black/30 hover:bg-black/40 transition"
+                  >
+                    <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/90 hover:bg-white transition transform hover:scale-110">
+                      <svg className="w-6 h-6 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </div>
+                  </button>
+                </>
+              ) : (
+                <iframe
+                  className="absolute inset-0 w-full h-full border-0"
+                  src={isPlaying || !hasThumbnail ? embedUrl : undefined}
+                  title={featuredVideo.title || 'Featured Video'}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              )}
               {/* Text overlay at bottom */}
               {(featuredVideo.title || featuredVideo.creator) && (
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-5 pointer-events-none">

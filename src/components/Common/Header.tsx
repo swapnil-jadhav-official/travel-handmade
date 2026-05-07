@@ -66,7 +66,7 @@ export default function Header() {
 
         {/* Desktop Navigation Items */}
         <div className="hidden lg:flex gap-6 xl:gap-12 items-center justify-end flex-1">
-          {!loading && navigationItems.length > 0 && navigationItems.map((item) => (
+          {navigationItems.map((item) => (
             <Link
               key={item.slug}
               href={`/category/${item.slug}`}
@@ -91,7 +91,7 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="lg:hidden bg-black border-t border-gray-800 px-4 sm:px-6 py-4 sm:py-6">
           <div className="space-y-3 sm:space-y-4">
-            {!loading && navigationItems.length > 0 && navigationItems.map((item) => (
+            {navigationItems.map((item) => (
               <Link
                 key={item.slug}
                 href={`/category/${item.slug}`}

@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { getTestimonials, deleteTestimonial } from '@/lib/firestore';
 import { getSiteSettings, updateSiteSettings } from '@/lib/settings';
-import { Trash2, Edit2, Plus, Video } from 'lucide-react';
+import { uploadImageToCloudinary } from '@/lib/cloudinary';
+import { Trash2, Edit2, Plus, Video, Upload, X } from 'lucide-react';
 import type { Testimonial } from '@/types';
 
 export default function TestimonialsPage(): React.ReactElement {
@@ -15,8 +16,11 @@ export default function TestimonialsPage(): React.ReactElement {
   const [featuredVideoUrl, setFeaturedVideoUrl] = useState('');
   const [featuredVideoTitle, setFeaturedVideoTitle] = useState('');
   const [featuredVideoCreator, setFeaturedVideoCreator] = useState('');
+  const [featuredVideoThumbnail, setFeaturedVideoThumbnail] = useState('');
   const [isSavingVideo, setIsSavingVideo] = useState(false);
   const [videoMessage, setVideoMessage] = useState('');
+  const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
+  const thumbnailFileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     fetchTestimonials();
@@ -42,6 +46,7 @@ export default function TestimonialsPage(): React.ReactElement {
         setFeaturedVideoUrl(data.featuredVideoUrl || '');
         setFeaturedVideoTitle(data.featuredVideoTitle || '');
         setFeaturedVideoCreator(data.featuredVideoCreator || '');
+        setFeaturedVideoThumbnail(data.featuredVideoThumbnail || '');
       }
     } catch (error) {
       console.error('Failed to fetch video settings:', error);
@@ -56,6 +61,7 @@ export default function TestimonialsPage(): React.ReactElement {
         featuredVideoUrl: featuredVideoUrl.trim() || undefined,
         featuredVideoTitle: featuredVideoTitle.trim() || undefined,
         featuredVideoCreator: featuredVideoCreator.trim() || undefined,
+        featuredVideoThumbnail: featuredVideoThumbnail.trim() || undefined,
       });
       setVideoMessage('Saved!');
       setTimeout(() => setVideoMessage(''), 3000);
@@ -63,6 +69,23 @@ export default function TestimonialsPage(): React.ReactElement {
       console.error('Failed to save video settings:', error);
     } finally {
       setIsSavingVideo(false);
+    }
+  };
+
+  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingThumbnail(true);
+    try {
+      const url = await uploadImageToCloudinary(file);
+      setFeaturedVideoThumbnail(url);
+    } catch (error) {
+      console.error('Failed to upload thumbnail:', error);
+      alert('Failed to upload thumbnail');
+    } finally {
+      setIsUploadingThumbnail(false);
+      if (thumbnailFileRef.current) thumbnailFileRef.current.value = '';
     }
   };
 
@@ -124,6 +147,50 @@ export default function TestimonialsPage(): React.ReactElement {
                 onChange={(e) => setFeaturedVideoCreator(e.target.value)}
                 placeholder="Enter creator name..."
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-sm text-gray-900"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Custom Thumbnail (optional)</label>
+              {featuredVideoThumbnail ? (
+                <div className="relative">
+                  <img src={featuredVideoThumbnail} alt="Thumbnail preview" className="h-32 w-48 object-cover rounded-lg" />
+                  <button
+                    type="button"
+                    onClick={() => setFeaturedVideoThumbnail('')}
+                    className="absolute top-1 right-1 rounded-full bg-white/90 p-1 text-gray-600 hover:text-red-600 transition"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : null}
+              <div className="flex gap-2 mt-2">
+                <button
+                  type="button"
+                  onClick={() => thumbnailFileRef.current?.click()}
+                  disabled={isUploadingThumbnail}
+                  className="flex items-center gap-1.5 px-3 py-2 text-sm border border-gray-300 rounded bg-white hover:bg-gray-50 text-gray-700 transition disabled:opacity-50 flex-shrink-0"
+                >
+                  {isUploadingThumbnail ? (
+                    <div className="h-4 w-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Upload className="h-4 w-4" />
+                  )}
+                  {isUploadingThumbnail ? 'Uploading…' : 'Upload'}
+                </button>
+                <input
+                  type="text"
+                  value={featuredVideoThumbnail}
+                  onChange={(e) => setFeaturedVideoThumbnail(e.target.value)}
+                  placeholder="or paste image URL..."
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black text-sm text-gray-900"
+                />
+              </div>
+              <input
+                ref={thumbnailFileRef}
+                type="file"
+                accept="image/*"
+                onChange={handleThumbnailUpload}
+                className="hidden"
               />
             </div>
             <div className="flex items-center gap-4">

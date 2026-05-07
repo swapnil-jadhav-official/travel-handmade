@@ -22,7 +22,7 @@ export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([]);
   const [travellersList, setTravellersList] = useState<Traveller[]>([]);
-  const [featuredVideo, setFeaturedVideo] = useState<{ url?: string; title?: string; creator?: string } | null>(null);
+  const [featuredVideo, setFeaturedVideo] = useState<{ url?: string; title?: string; creator?: string; thumbnail?: string } | null>(null);
   const [siteSettings, setSiteSettings] = useState<{ heroPostIds?: string[] } | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -46,6 +46,7 @@ export default function Home() {
             url: settings.featuredVideoUrl,
             title: settings.featuredVideoTitle,
             creator: settings.featuredVideoCreator,
+            thumbnail: settings.featuredVideoThumbnail,
           });
         }
       } catch (error) {
