@@ -45,7 +45,7 @@ export default function ChangeMaker({
 
   return (
     <section className="w-full flex flex-col px-6 sm:px-8 lg:px-12 py-10 lg:py-12 lg:h-dvh">
-      <SectionHeader title="Change Maker" className="section-header-gap" />
+      <SectionHeader title="Changemaker" className="section-header-gap" />
 
       <div className="flex-1 flex flex-col gap-10 lg:flex-row lg:gap-16">
         {/* Left: Video */}
@@ -109,11 +109,11 @@ export default function ChangeMaker({
           </span>
 
           {/* Quote Content */}
-          <blockquote className="absolute top-1/2 left-4 sm:left-6 lg:left-14 -translate-y-1/2 w-52 sm:w-64 lg:w-80 text-white">
+          <blockquote className="absolute bottom-0 left-4 sm:left-6 lg:left-14 pb-5 sm:pb-6 lg:pb-8 w-52 sm:w-64 lg:w-80 text-white">
             <p className="font-unbounded font-medium text-[16px] sm:text-[22px] lg:text-[32px] leading-[110%] tracking-[0.96px]">
               {active.quote}
             </p>
-            <footer className="text-subcategory mt-5">
+            <footer className="text-subcategory mt-4 sm:mt-5">
               {active.articleTitle && active.articleUrl ? (
                 <>
                   <a

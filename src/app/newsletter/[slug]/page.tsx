@@ -192,7 +192,7 @@ export default function NewsletterDetailPage() {
 
           {/* ── Content ──────────────────────────────────────────── */}
           <div
-            className="py-12 sm:py-16"
+            className="py-16 sm:py-20 lg:py-24"
             style={{ paddingLeft: 'clamp(24px, 10%, 75px)', paddingRight: 'clamp(24px, 10%, 79px)' }}
           >
             {/* EDITOR'S LETTER label */}
@@ -268,7 +268,7 @@ export default function NewsletterDetailPage() {
             {/* 2×2 article grid */}
             <div
               className="grid grid-cols-1 sm:grid-cols-2"
-              style={{ gap: '40px 40px' }}
+              style={{ gap: '32px 32px' }}
             >
               {issue.articles.map((article) => (
                 <Link
@@ -276,7 +276,7 @@ export default function NewsletterDetailPage() {
                   href={`/blog/${article.articleSlug}`}
                   className="flex flex-col gap-2 hover:opacity-70 transition"
                 >
-                  <div className="overflow-hidden" style={{ aspectRatio: '268 / 246' }}>
+                  <div className="overflow-hidden" style={{ aspectRatio: '240 / 220' }}>
                     <img
                       src={article.image}
                       alt={article.title}
@@ -315,41 +315,37 @@ export default function NewsletterDetailPage() {
             <div className="border-t border-[#d0d0d0] mt-12 mb-8" />
 
             {/* READ MORE / FOLLOW ALONG / PASS IT ON */}
-            <div className="grid grid-cols-3 text-center pb-8">
-              <div>
-                <Link
-                  href="/"
-                  style={{
-                    fontFamily: 'var(--font-unbounded)',
-                    fontWeight: 300,
-                    fontSize: '10px',
-                    letterSpacing: '-0.5px',
-                    textDecoration: 'underline',
-                    textTransform: 'uppercase',
-                    color: '#7b7b7b',
-                  }}
-                >
-                  Read More
-                </Link>
-              </div>
-              <div>
-                <a
-                  href="https://www.instagram.com/travelhandmade_mag/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    fontFamily: 'var(--font-unbounded)',
-                    fontWeight: 300,
-                    fontSize: '10px',
-                    letterSpacing: '-0.5px',
-                    textDecoration: 'underline',
-                    textTransform: 'uppercase',
-                    color: '#7b7b7b',
-                  }}
-                >
-                  Follow  Along
-                </a>
-              </div>
+            <div className="flex justify-between items-start pb-8">
+              <Link
+                href="/"
+                style={{
+                  fontFamily: 'var(--font-unbounded)',
+                  fontWeight: 300,
+                  fontSize: '10px',
+                  letterSpacing: '-0.5px',
+                  textDecoration: 'underline',
+                  textTransform: 'uppercase',
+                  color: '#7b7b7b',
+                }}
+              >
+                Read More
+              </Link>
+              <a
+                href="https://www.instagram.com/travelhandmade_mag/"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  fontFamily: 'var(--font-unbounded)',
+                  fontWeight: 300,
+                  fontSize: '10px',
+                  letterSpacing: '-0.5px',
+                  textDecoration: 'underline',
+                  textTransform: 'uppercase',
+                  color: '#7b7b7b',
+                }}
+              >
+                Follow  Along
+              </a>
               <div>
                 <button
                   onClick={handleShare}
@@ -376,6 +372,7 @@ export default function NewsletterDetailPage() {
                       fontSize: '9px',
                       color: '#7b7b7b',
                       marginTop: '4px',
+                      textAlign: 'right',
                     }}
                   >
                     {shareMessage}

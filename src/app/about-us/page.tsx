@@ -10,17 +10,19 @@ export default function AboutUsPage() {
 
       <main className="flex-1">
         {/* ── Page Title ──────────────────────────────────────────── */}
-        <section className="px-6 sm:px-8 lg:px-12 pb-8">
-          <h1 className="static-page-title">
-            The Defining Voice in
-            <span className="block">Conscious Travel and</span>
-            <span className="block">Cultural Storytelling</span>
-          </h1>
+        <section className="px-6 sm:px-12 lg:px-24 pt-0 pb-10 sm:pb-12 lg:pb-16">
+          <div className="max-w-4xl mx-auto text-center mb-8 sm:mb-10">
+            <h1 className="static-page-title">
+              The Defining Voice in
+              <span className="block">Conscious Travel and</span>
+              <span className="block">Cultural Storytelling</span>
+            </h1>
+          </div>
           <div className="privacy-divider" />
         </section>
 
         {/* ── What Is Travel Handmade? ─────────────────────────────── */}
-        <section className="px-6 sm:px-8 lg:px-12 py-10 sm:py-12 lg:py-16">
+        <section className="px-6 sm:px-20 lg:px-48 py-10 sm:py-12 lg:py-16">
           <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
             {/* Postal Stamps image */}
             <div className="w-full lg:w-[38%] flex-shrink-0">

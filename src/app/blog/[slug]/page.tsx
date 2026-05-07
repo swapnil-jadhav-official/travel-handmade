@@ -164,7 +164,7 @@ export default function BlogPost({ params }: BlogPageProps) {
           <BlogContent html={post?.content || ""} articleType={post?.articleType || 'listicle'} />
 
           {/* Author Bio */}
-          <div className="mb-12 mt-16 lg:mt-20 pt-12 lg:pt-16 border-t border-black/20">
+          <div className="mt-16 lg:mt-20 pt-12 lg:pt-16 pb-12 lg:pb-16 border-t border-black/20">
             <div className="flex flex-col sm:flex-row gap-6">
               {/* Author Avatar */}
               <div className="flex-shrink-0">
@@ -199,6 +199,9 @@ export default function BlogPost({ params }: BlogPageProps) {
             </div>
           </div>
 
+          {/* Separator before Related Stories */}
+          <div className="border-b border-black/10 mb-0" />
+
         </article>
 
         {/* Related Posts - Full Width */}
@@ -211,7 +214,7 @@ export default function BlogPost({ params }: BlogPageProps) {
                 </div>
               </div>
             </div>
-            <div className="w-full px-6 sm:px-8 lg:px-12 py-12 pb-16 lg:pb-20">
+            <div className="w-full px-6 sm:px-8 lg:px-12 pt-16 lg:pt-20 pb-16 lg:pb-20">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 {relatedPosts.map((relatedPost) => (
                   <Link

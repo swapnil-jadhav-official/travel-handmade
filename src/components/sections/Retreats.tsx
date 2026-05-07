@@ -24,12 +24,12 @@ export default function Retreats({
             <Link key={article.id} href={`/blog/${article.slug}`}>
               <div
                 onMouseEnter={() => setActiveIndex(index)}
-                className={`group cursor-pointer py-4 lg:py-5 transition-all duration-200 ${
+                className={`group cursor-pointer py-4 lg:py-5 transition-all duration-200 flex flex-col justify-center ${
                   index !== articles.length - 1 ? "border-b border-white/20" : ""
                 }`}
               >
                 {article.author && (
-                  <p className="text-subcategory text-gray-400 mb-2 lg:mb-3">
+                  <p className="text-subcategory text-gray-400 mb-1 lg:mb-2">
                     {article.author.toUpperCase()}
                   </p>
                 )}

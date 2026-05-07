@@ -49,7 +49,7 @@ export default function ProfileCard({
       </div>
 
       {/* Info Section */}
-      <div className={`px-6 py-4 lg:py-5 flex-shrink-0 ${isBlackBg ? 'bg-black' : 'bg-white border border-gray-200'}`}>
+      <div className={`px-6 py-4 lg:py-5 flex-shrink-0 ${isBlackBg ? 'bg-black' : 'bg-gray-100 border border-gray-200'}`}>
         <div className={`heading-location text-center ${isBlackBg ? 'text-white' : 'text-black'}`}>
           {traveller.country}
         </div>

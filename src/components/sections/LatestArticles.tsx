@@ -16,7 +16,7 @@ export default function LatestArticles({
     <section className="w-full flex flex-col lg:flex-row lg:h-dvh">
       {/* Left Side: Title + List */}
       <div className="flex-1 px-6 sm:px-8 lg:px-12 py-10 lg:py-12 flex flex-col">
-        <div className="pb-3 border-b border-black section-header-gap">
+        <div className="pb-3 border-b border-gray-300 section-header-gap">
           <div className="heading-main-category text-black">
             Latest Articles
           </div>
@@ -26,12 +26,12 @@ export default function LatestArticles({
             <Link key={article.id} href={`/blog/${article.slug}`}>
               <div
                 onMouseEnter={() => setActiveIndex(index)}
-                className={`group cursor-pointer py-4 lg:py-5 transition-all duration-200 ${
-                  index !== articles.length - 1 ? 'border-b border-black/20' : ''
+                className={`group cursor-pointer py-4 lg:py-5 transition-all duration-200 flex flex-col justify-center ${
+                  index !== articles.length - 1 ? 'border-b border-gray-200' : ''
                 }`}
               >
                 {article.category && (
-                  <p className="text-subcategory text-gray-500 mb-2 lg:mb-3">
+                  <p className="text-subcategory text-gray-500 mb-1 lg:mb-2">
                     {article.category?.replace(/-/g, ' + ').toUpperCase()} | {article.date}
                   </p>
                 )}

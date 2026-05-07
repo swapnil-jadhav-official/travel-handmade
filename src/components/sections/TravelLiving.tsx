@@ -32,22 +32,22 @@ export default function TravelLiving({
     <section className="w-full flex flex-col py-10 lg:py-12 lg:h-dvh">
       {/* Header with Navigation */}
       <div className="px-6 sm:px-8 lg:px-12 section-header-gap">
-        <div className="flex items-center justify-between pb-3 border-b border-black">
+        <div className="flex items-center justify-between pb-3 border-b border-gray-300">
           <div className="heading-main-category">Travel + Living</div>
-          <div className="flex gap-2 sm:gap-4">
+          <div className="flex gap-1 sm:gap-2">
             <button
               onClick={handlePrevious}
-              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition text-black"
+              className="p-1 hover:bg-black/10 rounded transition text-black"
               aria-label="Previous"
             >
-              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />
             </button>
             <button
               onClick={handleNext}
-              className="p-1.5 sm:p-2 hover:bg-black/10 rounded transition text-black"
+              className="p-1 hover:bg-black/10 rounded transition text-black"
               aria-label="Next"
             >
-              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={1.5} />
             </button>
           </div>
         </div>

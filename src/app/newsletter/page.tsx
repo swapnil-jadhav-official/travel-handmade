@@ -133,7 +133,7 @@ export default function NewsletterPage() {
 
       <main className="flex-1">
         {/* ── Hero Title ─────────────────────────────────────────── */}
-        <section className="px-6 sm:px-8 lg:px-12 pt-10 sm:pt-14 lg:pt-16 pb-6 text-center">
+        <section className="px-6 sm:px-8 lg:px-12 py-16 sm:py-20 lg:py-28 text-center">
           <h1
             style={{
               fontFamily: 'var(--font-unbounded)',
@@ -161,7 +161,7 @@ export default function NewsletterPage() {
         </section>
 
         {/* ── Full-width divider ─────────────────────────────────── */}
-        <div className="mx-6 sm:mx-8 lg:mx-12 border-t border-black" />
+        <div className="mx-6 sm:mx-8 lg:mx-12 border-t border-gray-300" />
 
         {/* ── Intro text ─────────────────────────────────────────── */}
         <section className="px-6 sm:px-8 lg:px-12 py-8 sm:py-10">
@@ -210,7 +210,7 @@ export default function NewsletterPage() {
             ) : (
               pageIssues.map((issue, idx) => (
                 <div key={issue.id}>
-                  <div className="border-t border-[#e0e0e0]" />
+                  {idx > 0 && <div className="border-t border-[#e0e0e0]" />}
                   <Link
                     href={`/newsletter/${issue.slug}`}
                     className="flex gap-6 sm:gap-8 lg:gap-10 py-6 sm:py-8 hover:opacity-80 transition group"
@@ -251,9 +251,6 @@ export default function NewsletterPage() {
                       </p>
                     </div>
                   </Link>
-                  {idx === pageIssues.length - 1 && (
-                    <div className="border-t border-[#e0e0e0]" />
-                  )}
                 </div>
               ))
             )}

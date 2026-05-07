@@ -14,7 +14,6 @@ import ChangeMaker from '@/components/sections/ChangeMaker';
 import TravellerSection from '@/components/sections/Traveller';
 import { getAllPostsTyped, getTestimonials, getTravellers } from '@/lib/firestore';
 import { getSiteSettings } from '@/lib/settings';
-import { heroImages as defaultHeroImages } from '@/data/mockData';
 import type { Testimonial, Traveller } from '@/types';
 import type { Post } from '@/types';
 
@@ -100,7 +99,7 @@ export default function Home() {
       <Header />
       <main className="flex-1 w-full space-y-8 lg:space-y-12">
         {/* Hero Carousel */}
-        <HeroCarousel images={heroImages.length > 0 ? heroImages : defaultHeroImages} />
+        {heroImages.length > 0 && <HeroCarousel images={heroImages} />}
 
         {/* Latest Articles */}
         {!loading && latestArticles.length > 0 && <LatestArticles articles={latestArticles} />}
