@@ -16,6 +16,7 @@ interface PostMetaPanelProps {
   articleType: string;
   author: string;
   readTime?: string;
+  publishedAt?: string;
   onTitleChange: (title: string) => void;
   onSlugChange: (slug: string) => void;
   onExcerptChange: (excerpt: string) => void;
@@ -26,6 +27,7 @@ interface PostMetaPanelProps {
   onAuthorChange: (author: string) => void;
   onReadTimeChange?: (readTime: string) => void;
   onAuthorIdChange?: (authorId: string) => void;
+  onPublishedAtChange?: (date: string) => void;
 }
 
 const generateSlug = (text: string): string => {
@@ -46,6 +48,7 @@ export default function PostMetaPanel({
   articleType,
   author,
   readTime,
+  publishedAt,
   onTitleChange,
   onSlugChange,
   onExcerptChange,
@@ -56,6 +59,7 @@ export default function PostMetaPanel({
   onAuthorChange,
   onReadTimeChange,
   onAuthorIdChange,
+  onPublishedAtChange,
 }: PostMetaPanelProps): React.ReactElement {
   const [uploading, setUploading] = useState(false);
   const [authors, setAuthors] = useState<UserProfile[]>([]);
@@ -170,6 +174,28 @@ export default function PostMetaPanel({
           <option value="listicle">Listicle</option>
           <option value="visual-gallery">Visual Gallery</option>
         </select>
+      </div>
+
+      {/* Publish Date */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Publish Date
+        </label>
+        <input
+          type="datetime-local"
+          value={publishedAt ? new Date(publishedAt).toISOString().slice(0, 16) : ''}
+          onChange={(e) => {
+            if (e.target.value) {
+              onPublishedAtChange?.(new Date(e.target.value).toISOString());
+            }
+          }}
+          className="w-full rounded border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-black focus:outline-none"
+        />
+        {publishedAt && (
+          <p className="text-xs text-gray-500 mt-1">
+            {new Date(publishedAt).toLocaleString()}
+          </p>
+        )}
       </div>
 
       {/* Author */}

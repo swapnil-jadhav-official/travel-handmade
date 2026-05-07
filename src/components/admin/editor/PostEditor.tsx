@@ -226,6 +226,7 @@ export default function PostEditor({
             articleType={post.articleType || 'listicle'}
             author={post.authorName || ''}
             readTime={post.readTime || ''}
+            publishedAt={post.publishedAt}
             onTitleChange={(title) => handleFieldChange('title', title)}
             onSlugChange={(slug) => handleFieldChange('slug', slug)}
             onExcerptChange={(excerpt) => handleFieldChange('excerpt', excerpt)}
@@ -238,6 +239,7 @@ export default function PostEditor({
             onAuthorChange={(authorName) => handleFieldChange('authorName', authorName)}
             onReadTimeChange={(readTime) => handleFieldChange('readTime', readTime)}
             onAuthorIdChange={(authorId) => handleFieldChange('authorId', authorId)}
+            onPublishedAtChange={(publishedAt) => handleFieldChange('publishedAt', publishedAt)}
           />
         </div>
       )}

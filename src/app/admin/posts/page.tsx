@@ -45,8 +45,23 @@ export default function PostsPage(): React.ReactElement {
   };
 
   const categories = useMemo(() => {
+    const categoryOrder = [
+      'travel-living',
+      'adventure-wildlife',
+      'food-drinks',
+      'retreats',
+      'wellness',
+      'changemaker',
+      'traveller',
+    ];
     const cats = Array.from(new Set(posts.map((p) => p.category).filter(Boolean)));
-    return cats.sort();
+    return cats.sort((a, b) => {
+      const aIndex = categoryOrder.indexOf(a);
+      const bIndex = categoryOrder.indexOf(b);
+      if (aIndex === -1) return 1;
+      if (bIndex === -1) return -1;
+      return aIndex - bIndex;
+    });
   }, [posts]);
 
   const filtered = useMemo(() => {
