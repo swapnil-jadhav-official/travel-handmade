@@ -18,7 +18,15 @@ export default function TravellerSection({
       {/* 4-Column Grid (lg), 2-Column (md), 1-Column (mobile) */}
       <div className="flex-1 grid grid-cols-2 gap-0 lg:grid-cols-4 px-6 sm:px-8 lg:px-12">
         {travellers.map((traveller, index) => (
-          <ProfileCard key={traveller.id} traveller={traveller} index={index} />
+          <ProfileCard
+            key={traveller.id}
+            traveller={traveller}
+            index={index}
+            className={
+              index === 2 ? 'order-4 lg:order-none' :
+              index === 3 ? 'order-3 lg:order-none' : ''
+            }
+          />
         ))}
       </div>
     </section>
