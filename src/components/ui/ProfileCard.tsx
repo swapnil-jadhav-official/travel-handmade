@@ -22,7 +22,7 @@ export default function ProfileCard({
     <div className={`group h-full flex flex-col overflow-hidden ${className}`}>
       {/* Image */}
       <div
-        className="relative flex-1 min-h-[35vh] md:min-h-[30vh] lg:min-h-0 lg:max-h-[55vh] overflow-hidden"
+        className="relative flex-1 min-h-[22vh] sm:min-h-[28vh] md:min-h-[30vh] lg:min-h-0 lg:max-h-[55vh] overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >

@@ -70,7 +70,7 @@ export default function TravelLiving({
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
-              <div className="absolute inset-0 flex flex-col justify-center items-start px-6 sm:px-8 pb-6 sm:pb-8 pt-56">
+              <div className="absolute inset-0 flex flex-col justify-end items-start px-6 sm:px-8 pb-6 sm:pb-8">
                 <div className="heading-post-title text-white max-w-xs sm:max-w-sm md:max-w-md">
                   {article.title}
                 </div>

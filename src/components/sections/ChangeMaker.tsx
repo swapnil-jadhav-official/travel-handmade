@@ -100,8 +100,8 @@ export default function ChangeMaker({
 
         {/* Right: Quote Card */}
         <div className="relative w-full lg:flex-1 overflow-hidden h-72 sm:h-96 lg:h-auto bg-black">
-          {/* Dark gray background (65% width) */}
-          <div className="absolute inset-0 w-[65%] bg-[#2f2f2f]" />
+          {/* Dark gray background */}
+          <div className="absolute inset-0 w-[55%] sm:w-[60%] lg:w-[65%] bg-[#2f2f2f]" />
 
           {/* Quote icon pinned to top */}
           <span className="absolute top-2 sm:top-4 lg:top-6 left-4 sm:left-6 lg:left-14 font-unbounded text-[48px] sm:text-[64px] lg:text-[96px] leading-none tracking-[2.88px] text-white pointer-events-none select-none">
@@ -109,8 +109,8 @@ export default function ChangeMaker({
           </span>
 
           {/* Quote Content */}
-          <blockquote className="absolute bottom-0 left-4 sm:left-6 lg:left-14 pb-5 sm:pb-6 lg:pb-8 w-52 sm:w-64 lg:w-80 text-white">
-            <p className="font-unbounded font-medium text-[16px] sm:text-[22px] lg:text-[32px] leading-[110%] tracking-[0.96px]">
+          <blockquote className="absolute bottom-0 left-4 sm:left-6 lg:left-14 pb-5 sm:pb-6 lg:pb-8 w-[48%] sm:w-[54%] lg:w-80 text-white">
+            <p className="font-medium text-[16px] sm:text-[22px] lg:text-[32px] leading-[110%] tracking-[0.96px]" style={{ fontFamily: 'var(--font-unbounded)' }}>
               {active.quote}
             </p>
             <footer className="text-subcategory mt-4 sm:mt-5">
@@ -132,7 +132,7 @@ export default function ChangeMaker({
           </blockquote>
 
           {/* Rotating Image */}
-          <div className="absolute top-0 right-0 w-[35%] h-full overflow-hidden">
+          <div className="absolute top-0 right-0 w-[45%] sm:w-[40%] lg:w-[35%] h-full overflow-hidden">
             {testimonials.map((testimonial, index) => (
               <img
                 key={testimonial.id}
