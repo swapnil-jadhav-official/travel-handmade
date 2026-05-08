@@ -88,7 +88,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         {/* Sub Description Bar — below hero */}
         {category?.subDescription && (
           <div className="w-full px-6 sm:px-8 lg:px-12 py-12 lg:py-20">
-            <div className="flex items-center gap-4 flex-wrap justify-center">
+            <div className="flex items-center gap-4 overflow-x-auto scrollbar-hide justify-start lg:justify-center whitespace-nowrap">
               {category.subDescriptionLabel && (
                 <span className="heading-nav text-black">{category.subDescriptionLabel}</span>
               )}
