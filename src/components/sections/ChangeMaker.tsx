@@ -59,14 +59,33 @@ export default function ChangeMaker({
                     alt={featuredVideo.title || 'Featured Video'}
                     className="absolute inset-0 w-full h-full object-cover"
                   />
+                  {/* Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
+                  {/* Bottom-left: outline play + title + creator */}
                   <button
                     onClick={() => setIsPlaying(true)}
-                    className="absolute inset-0 w-full h-full flex items-center justify-center bg-black/30 hover:bg-black/40 transition"
+                    className="absolute bottom-0 left-0 right-0 px-5 py-5 text-left hover:opacity-90 transition cursor-pointer"
                   >
-                    <div className="flex items-center justify-center w-16 h-16 rounded-full bg-white/90 hover:bg-white transition transform hover:scale-110">
-                      <svg className="w-6 h-6 text-black ml-1" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
+                    <div className="flex items-start gap-3">
+                      {/* Outline circle play button */}
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full border-2 border-white flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M8 5v14l11-7z" />
+                        </svg>
+                      </div>
+                      {/* Title + Creator stacked */}
+                      <div className="flex flex-col gap-1">
+                        {featuredVideo.title && (
+                          <p className="heading-article-title text-white" style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700 }}>
+                            {featuredVideo.title}
+                          </p>
+                        )}
+                        {featuredVideo.creator && (
+                          <p className="text-subcategory text-white/80">
+                            {featuredVideo.creator}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </button>
                 </>
@@ -78,21 +97,6 @@ export default function ChangeMaker({
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 />
-              )}
-              {/* Text overlay at bottom */}
-              {(featuredVideo.title || featuredVideo.creator) && (
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent px-4 py-5 pointer-events-none">
-                  {featuredVideo.title && (
-                    <div className="heading-article-title text-white mb-1">
-                      {featuredVideo.title}
-                    </div>
-                  )}
-                  {featuredVideo.creator && (
-                    <p className="text-subcategory text-white/70">
-                      {featuredVideo.creator}
-                    </p>
-                  )}
-                </div>
               )}
             </div>
           </div>

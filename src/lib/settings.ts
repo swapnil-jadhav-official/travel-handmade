@@ -8,6 +8,7 @@ export interface SiteSettings {
   featuredVideoUrl?: string;
   featuredVideoTitle?: string;
   featuredVideoCreator?: string;
+  featuredVideoThumbnail?: string;
   heroPostIds?: string[];
   updatedAt?: string;
 }
