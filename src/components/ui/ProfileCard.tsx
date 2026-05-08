@@ -29,7 +29,7 @@ export default function ProfileCard({
         <img
           src={traveller.image}
           alt={traveller.country}
-          className="absolute inset-0 h-full w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover object-top"
         />
 
         {/* Overlay on Hover */}

@@ -51,13 +51,13 @@ export default function ChangeMaker({
         {/* Left: Video */}
         {featuredVideo?.url && embedUrl && (
           <div className="w-full lg:w-[35%] flex-shrink-0">
-            <div className="relative w-full aspect-video lg:aspect-auto lg:h-full overflow-hidden group cursor-pointer">
+            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] lg:aspect-auto lg:h-full overflow-hidden group cursor-pointer">
               {hasThumbnail && !isPlaying ? (
                 <>
                   <img
                     src={featuredVideo.thumbnail}
                     alt={featuredVideo.title || 'Featured Video'}
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover object-top"
                   />
                   {/* Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
@@ -74,9 +74,9 @@ export default function ChangeMaker({
                         </svg>
                       </div>
                       {/* Title + Creator stacked */}
-                      <div className="flex flex-col gap-1">
+                      <div className="flex flex-col gap-3">
                         {featuredVideo.title && (
-                          <p className="heading-article-title text-white" style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 700 }}>
+                          <p className="heading-article-title text-white" style={{ fontFamily: 'var(--font-unbounded)', fontWeight: 400 }}>
                             {featuredVideo.title}
                           </p>
                         )}
