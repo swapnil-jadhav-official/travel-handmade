@@ -56,7 +56,7 @@ export default function BlogContent({ html, articleType = 'listicle' }: BlogCont
   }, [html]);
 
   const galleryStyles = articleType === 'visual-gallery'
-    ? ' [&_img]:w-[calc(100%+8rem)] [&_img]:-ml-16 [&_img]:max-w-none [&_figure]:w-[calc(100%+8rem)] [&_figure]:-ml-16'
+    ? ' [&_img]:w-full [&_img]:lg:w-[calc(100%+8rem)] [&_img]:lg:-ml-16 [&_img]:max-w-none [&_figure]:w-full [&_figure]:lg:w-[calc(100%+8rem)] [&_figure]:lg:-ml-16'
     : '';
 
   return (
