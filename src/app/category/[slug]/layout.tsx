@@ -5,6 +5,11 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+function toOgImage(url: string): string {
+  if (!url || !url.includes('res.cloudinary.com')) return url;
+  return url.replace('/upload/', '/upload/c_fill,w_1200,h_630,q_80,f_jpg/');
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
 
@@ -16,18 +21,28 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       return { title: 'Category' };
     }
 
+    const title = `${category.name} Stories — Conscious Travel | Travel Handmade`;
+    const description = category.description || `Explore ${category.name} stories from Travel Handmade.`;
+    const image = category.featuredImage
+      ? toOgImage(category.featuredImage)
+      : '/og-default.png';
+
     return {
       title: category.name,
-      description: `Explore Travel Handmade stories in ${category.name} — conscious travel, cultural journalism, and immersive storytelling.`,
+      description,
       alternates: {
         canonical: `https://www.travelhandmade.com/category/${slug}`,
       },
       openGraph: {
-        title: `${category.name} | Travel Handmade`,
-        description: `Explore stories in ${category.name} from Travel Handmade.`,
-        images: category.featuredImage
-          ? [{ url: category.featuredImage, width: 1200, height: 630, alt: category.name }]
-          : [{ url: '/th-logo-new.png', width: 1200, height: 630, alt: category.name }],
+        title,
+        description,
+        images: [{ url: image, width: 1200, height: 630, alt: category.name }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+        images: [image],
       },
     };
   } catch {
