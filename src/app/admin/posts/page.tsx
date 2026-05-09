@@ -170,7 +170,7 @@ export default function PostsPage(): React.ReactElement {
                       </span>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-600">
-                      {new Date(post.createdAt).toLocaleDateString()}
+                      {new Date(post.publishedAt || post.createdAt).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">

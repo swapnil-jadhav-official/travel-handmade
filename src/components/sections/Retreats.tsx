@@ -19,12 +19,12 @@ export default function Retreats({
         <div className="pb-3 border-b border-white section-header-gap">
           <div className="heading-main-category-dark">Retreats</div>
         </div>
-        <div className="flex-1 flex flex-col justify-between">
+        <div className="flex-1 flex flex-col">
           {articles.map((article, index) => (
-            <Link key={article.id} href={`/blog/${article.slug}`}>
+            <Link key={article.id} href={`/blog/${article.slug}`} className="flex-1">
               <div
                 onMouseEnter={() => setActiveIndex(index)}
-                className={`group cursor-pointer py-4 lg:py-5 transition-all duration-200 flex flex-col justify-center ${
+                className={`group cursor-pointer h-full transition-all duration-200 flex flex-col justify-center py-3 ${
                   index !== articles.length - 1 ? "border-b border-white/20" : ""
                 }`}
               >

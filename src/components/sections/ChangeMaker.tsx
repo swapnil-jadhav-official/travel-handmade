@@ -108,32 +108,38 @@ export default function ChangeMaker({
           <div className="absolute inset-0 w-[55%] sm:w-[60%] lg:w-[65%] bg-[#2f2f2f]" />
 
           {/* Quote icon pinned to top */}
-          <span className="absolute top-2 sm:top-4 lg:top-6 left-4 sm:left-6 lg:left-14 font-unbounded text-[48px] sm:text-[64px] lg:text-[96px] leading-none tracking-[2.88px] text-white pointer-events-none select-none">
+          <span
+            className="absolute top-2 sm:top-4 lg:top-6 left-4 sm:left-6 lg:left-14 text-[48px] sm:text-[64px] lg:text-[96px] leading-none tracking-[2.88px] text-white pointer-events-none select-none"
+            style={{ fontFamily: 'var(--font-unbounded)' }}
+          >
             &rdquo;
           </span>
 
-          {/* Quote Content */}
-          <blockquote className="absolute bottom-0 left-4 sm:left-6 lg:left-14 pb-5 sm:pb-6 lg:pb-8 w-[48%] sm:w-[54%] lg:w-80 text-white">
-            <p className="font-medium text-[16px] sm:text-[22px] lg:text-[32px] leading-[110%] tracking-[0.96px]" style={{ fontFamily: 'var(--font-unbounded)' }}>
-              {active.quote}
-            </p>
-            <footer className="text-subcategory mt-4 sm:mt-5">
-              {active.articleTitle && active.articleUrl ? (
-                <>
-                  <a
-                    href={active.articleUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:opacity-70 transition"
-                  >
-                    {active.articleTitle}
-                  </a>
-                  {' | '}
-                </>
-              ) : null}
-              {active.author}
-            </footer>
-          </blockquote>
+          {/* Quote text — top, just below the quote mark */}
+          <p
+            className="absolute left-4 sm:left-6 lg:left-14 top-12 sm:top-16 lg:top-24 w-[34%] sm:w-[40%] lg:w-60 font-medium text-[13px] sm:text-[18px] lg:text-[28px] leading-[110%] tracking-[0.96px] text-white"
+            style={{ fontFamily: 'var(--font-unbounded)' }}
+          >
+            {active.quote}
+          </p>
+
+          {/* Author + article — pinned to bottom */}
+          <footer className="absolute bottom-0 left-4 sm:left-6 lg:left-14 pb-5 sm:pb-6 lg:pb-8 w-[48%] sm:w-[54%] lg:w-80 text-subcategory text-white">
+            {active.articleTitle && active.articleUrl ? (
+              <>
+                <a
+                  href={active.articleUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:opacity-70 transition"
+                >
+                  {active.articleTitle}
+                </a>
+                {' | '}
+              </>
+            ) : null}
+            {active.author}
+          </footer>
 
           {/* Rotating Image */}
           <div className="absolute top-0 right-0 w-[45%] sm:w-[40%] lg:w-[35%] h-full overflow-hidden">

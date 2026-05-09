@@ -90,7 +90,7 @@ export default function NewsletterDetailPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
-      <main className="flex-1">
+      <main className="flex-1 pt-10 sm:pt-12 lg:pt-16 pb-10 sm:pb-12 lg:pb-16">
         {/*
          * The entire page content sits in a centred #f7f7f9 column — 765 px wide
          */}
@@ -268,7 +268,7 @@ export default function NewsletterDetailPage() {
             {/* 2×2 article grid */}
             <div
               className="grid grid-cols-1 sm:grid-cols-2"
-              style={{ gap: '32px 32px' }}
+              style={{ gap: '48px 48px' }}
             >
               {issue.articles.map((article) => (
                 <Link
@@ -315,38 +315,38 @@ export default function NewsletterDetailPage() {
             <div className="border-t border-[#d0d0d0] mt-12 mb-8" />
 
             {/* READ MORE / FOLLOW ALONG / PASS IT ON */}
-            <div className="flex justify-between items-start pb-8">
-              <Link
-                href="/"
-                style={{
-                  fontFamily: 'var(--font-unbounded)',
-                  fontWeight: 300,
-                  fontSize: '10px',
-                  letterSpacing: '-0.5px',
-                  textDecoration: 'underline',
-                  textTransform: 'uppercase',
-                  color: '#7b7b7b',
-                }}
-              >
-                Read More
-              </Link>
-              <a
-                href="https://www.instagram.com/travelhandmade_mag/"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  fontFamily: 'var(--font-unbounded)',
-                  fontWeight: 300,
-                  fontSize: '10px',
-                  letterSpacing: '-0.5px',
-                  textDecoration: 'underline',
-                  textTransform: 'uppercase',
-                  color: '#7b7b7b',
-                }}
-              >
-                Follow  Along
-              </a>
-              <div>
+            <div className="pb-8">
+              <div className="flex justify-between items-center">
+                <Link
+                  href="/"
+                  style={{
+                    fontFamily: 'var(--font-unbounded)',
+                    fontWeight: 300,
+                    fontSize: '10px',
+                    letterSpacing: '-0.5px',
+                    textDecoration: 'underline',
+                    textTransform: 'uppercase',
+                    color: '#7b7b7b',
+                  }}
+                >
+                  Read More
+                </Link>
+                <a
+                  href="https://www.instagram.com/travelhandmade_mag/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    fontFamily: 'var(--font-unbounded)',
+                    fontWeight: 300,
+                    fontSize: '10px',
+                    letterSpacing: '-0.5px',
+                    textDecoration: 'underline',
+                    textTransform: 'uppercase',
+                    color: '#7b7b7b',
+                  }}
+                >
+                  Follow  Along
+                </a>
                 <button
                   onClick={handleShare}
                   style={{
@@ -365,20 +365,20 @@ export default function NewsletterDetailPage() {
                 >
                   Pass  It  On
                 </button>
-                {shareMessage && (
-                  <p
-                    style={{
-                      fontFamily: 'var(--font-work-sans)',
-                      fontSize: '9px',
-                      color: '#7b7b7b',
-                      marginTop: '4px',
-                      textAlign: 'right',
-                    }}
-                  >
-                    {shareMessage}
-                  </p>
-                )}
               </div>
+              {shareMessage && (
+                <p
+                  style={{
+                    fontFamily: 'var(--font-work-sans)',
+                    fontSize: '9px',
+                    color: '#7b7b7b',
+                    marginTop: '4px',
+                    textAlign: 'right',
+                  }}
+                >
+                  {shareMessage}
+                </p>
+              )}
             </div>
           </div>
         </div>

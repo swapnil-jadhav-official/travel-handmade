@@ -22,7 +22,7 @@ export default function ProfileCard({
     <div className={`group h-full flex flex-col overflow-hidden ${className}`}>
       {/* Image */}
       <div
-        className="relative flex-1 min-h-[22vh] sm:min-h-[28vh] md:min-h-[30vh] lg:min-h-0 lg:max-h-[55vh] overflow-hidden"
+        className="relative w-full aspect-[3/4] lg:aspect-auto lg:flex-1 lg:min-h-0 overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -49,7 +49,7 @@ export default function ProfileCard({
       </div>
 
       {/* Info Section */}
-      <div className={`px-6 py-4 lg:py-5 flex-shrink-0 ${isBlackBg ? 'bg-black' : 'bg-gray-100 border border-gray-200'}`}>
+      <div className={`px-6 py-4 lg:py-5 flex-shrink-0 ${isBlackBg ? 'bg-black' : 'bg-gray-100'}`}>
         <div className={`heading-location text-center ${isBlackBg ? 'text-white' : 'text-black'}`}>
           {traveller.country}
         </div>

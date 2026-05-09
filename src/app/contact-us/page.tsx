@@ -88,7 +88,7 @@ export default function ContactUsPage() {
               </div>
 
               {/* Divider */}
-              <div className="border-t border-[#E9E9E9] my-8" />
+              <div className="border-t border-[#E9E9E9] my-16 sm:my-20" />
 
               {/* 02 | Travellers */}
               <div className="flex flex-col gap-4">
@@ -139,7 +139,7 @@ export default function ContactUsPage() {
 
         {/* ── Sticky Notes ────────────────────────────────────────── */}
         <section className="px-6 sm:px-8 lg:px-12 py-10 sm:py-12 lg:py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-20 lg:gap-28">
             {/* Card 1: What We're Looking For */}
             <div className="relative">
               {/* Pin */}

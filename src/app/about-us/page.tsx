@@ -150,16 +150,16 @@ export default function AboutUsPage() {
             </div>
 
             {/* Right: rotated quote card */}
-            <div className="lg:w-[40%] flex-shrink-0 flex items-center justify-center py-8 lg:py-0">
+            <div className="lg:w-[40%] flex-shrink-0 flex items-center justify-center lg:justify-end py-8 lg:py-0">
               <div
-                className="bg-[#f9f0d5] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8 max-w-xs w-full"
+                className="bg-[#f9f0d5] shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)] p-8 max-w-xs w-full lg:scale-[1.35] lg:origin-[center_right]"
                 style={{ transform: 'rotate(3.3deg)' }}
               >
                 <p
                   style={{
                     fontFamily: 'var(--font-unbounded)',
                     fontWeight: 400,
-                    fontSize: '14px',
+                    fontSize: '12px',
                     lineHeight: '2',
                     letterSpacing: '0.05em',
                   }}
@@ -176,7 +176,7 @@ export default function AboutUsPage() {
                     fontSize: '10px',
                     lineHeight: '2',
                     color: '#757171',
-                    marginTop: '8px',
+                    marginTop: '48px',
                   }}
                 >
                   -TH Editorial Team
