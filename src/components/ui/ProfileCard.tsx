@@ -28,7 +28,7 @@ export default function ProfileCard({
       >
         <img
           src={traveller.image}
-          alt={traveller.name ? `${traveller.name}, traveller from ${traveller.country}` : `Traveller from ${traveller.country}`}
+          alt={traveller.traveller_name ? `${traveller.traveller_name}, traveller from ${traveller.country}` : `Traveller from ${traveller.country}`}
           className="absolute inset-0 h-full w-full object-cover object-top"
         />
 
