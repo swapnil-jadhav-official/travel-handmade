@@ -1,6 +1,5 @@
 'use client';
 
-import ComingSoon from '@/components/ComingSoon';
 import { useEffect, useState } from 'react';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
@@ -18,12 +17,7 @@ import { getSiteSettings } from '@/lib/settings';
 import type { Testimonial, Traveller } from '@/types';
 import type { Post } from '@/types';
 
-// ── To go live: remove <ComingSoon /> and return <HomeContent /> instead ──
-export default function Home() {
-  return <ComingSoon />;
-}
-
-export function HomeContent() {
+export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([]);
   const [travellersList, setTravellersList] = useState<Traveller[]>([]);
@@ -40,7 +34,6 @@ export function HomeContent() {
           getTravellers(),
           getSiteSettings(),
         ]);
-        // Filter only published posts
         const publishedPosts = allPosts.filter((p) => p.status === 'published');
         setPosts(publishedPosts);
         setTestimonialsList(testimonials);
@@ -64,7 +57,6 @@ export function HomeContent() {
     fetchData();
   }, []);
 
-  // Convert Post to Article format (map featuredImage to image)
   const postsAsArticles = posts.map((post) => ({
     id: post.id,
     title: post.title,
@@ -72,14 +64,13 @@ export function HomeContent() {
     slug: post.slug,
     category: post.category,
     date: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : '',
-    author: post.authorName,  // Use authorName instead of deprecated author field
+    author: post.authorName,
     readTime: post.readTime,
     authorLocation: post.authorLocation,
     authorCity: post.authorCity,
     authorCountry: post.authorCountry,
   }));
 
-  // Create hero images from manually selected posts only
   const heroPostIds = siteSettings?.heroPostIds || [];
   const heroImages = heroPostIds
     .map((id) => posts.find((p) => p.id === id))
@@ -91,43 +82,26 @@ export function HomeContent() {
       link: post!.slug,
     }));
 
-  // Organize posts by category
   const latestArticles = postsAsArticles.slice(0, 4);
   const travelLivingArticles = postsAsArticles.filter((p) => p.category === 'travel-living').slice(0, 3);
   const adventureArticles = postsAsArticles.filter((p) => p.category === 'adventure-wildlife').slice(0, 3);
   const foodDrinksArticles = postsAsArticles.filter((p) => p.category === 'food-drinks').slice(0, 3);
   const retreatsArticles = postsAsArticles.filter((p) => p.category === 'retreats').slice(0, 3);
   const wellnessArticles = postsAsArticles.filter((p) => p.category === 'wellness').slice(0, 3);
+  const changeMakerArticles = postsAsArticles.filter((p) => p.category === 'changemaker').slice(0, 3);
 
   return (
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
       <main className="flex-1 w-full space-y-8 lg:space-y-12">
-        {/* Hero Carousel */}
         {heroImages.length > 0 && <HeroCarousel images={heroImages} />}
-
-        {/* Latest Articles */}
         {!loading && latestArticles.length > 0 && <LatestArticles articles={latestArticles} />}
-
-        {/* Travel + Living */}
         {!loading && travelLivingArticles.length > 0 && <TravelLiving articles={travelLivingArticles} />}
-
-        {/* Adventure + Wildlife */}
         {!loading && adventureArticles.length > 0 && <AdventureWildlife articles={adventureArticles} />}
-
-        {/* Food + Drinks */}
         {!loading && foodDrinksArticles.length > 0 && <FoodDrinks articles={foodDrinksArticles} />}
-
-        {/* Retreats */}
         {!loading && retreatsArticles.length > 0 && <Retreats articles={retreatsArticles} />}
-
-        {/* Wellness */}
         {!loading && wellnessArticles.length > 0 && <Wellness articles={wellnessArticles} />}
-
-        {/* Change Maker */}
         {!loading && testimonialsList.length > 0 && <ChangeMaker testimonials={testimonialsList} featuredVideo={featuredVideo} />}
-
-        {/* Traveller */}
         {!loading && travellersList.length > 0 && <TravellerSection travellers={travellersList} />}
       </main>
       <Footer />

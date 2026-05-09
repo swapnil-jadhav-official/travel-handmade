@@ -282,6 +282,26 @@ export async function createCategory(data: Omit<Category, 'id'>): Promise<string
   }
 }
 
+export async function getPostBySlug(slug: string): Promise<Post | null> {
+  try {
+    const q = query(collection(db, POSTS_COLLECTION), where('slug', '==', slug), where('status', '==', 'published'));
+    const querySnapshot = await getDocs(q);
+    if (querySnapshot.empty) return null;
+    const doc = querySnapshot.docs[0];
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      authorName: data.authorName || data.author || '',
+      createdAt: convertTimestamp(data.createdAt),
+      updatedAt: convertTimestamp(data.updatedAt),
+      publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+    } as Post;
+  } catch (error) {
+    return null;
+  }
+}
+
 export async function getCategories(): Promise<Category[]> {
   try {
     const q = query(collection(db, CATEGORIES_COLLECTION), orderBy('name', 'asc'));

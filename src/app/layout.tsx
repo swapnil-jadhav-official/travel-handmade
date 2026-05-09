@@ -41,8 +41,36 @@ const floresttaOpheralio = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Travel Handmade | Conscious Travel & Wellness",
-  description: "Inspiring stories of conscious travel, adventure, wellness, and authentic living around the world.",
+  metadataBase: new URL('https://www.travelhandmade.com'),
+  title: {
+    default: 'Travel Handmade',
+    template: '%s | Travel Handmade',
+  },
+  description:
+    'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism that begins where the guidebooks end.',
+  keywords: ['travel', 'conscious travel', 'cultural travel', 'travel journalism', 'travel magazine', 'India travel', 'travel stories'],
+  authors: [{ name: 'Travel Handmade Editorial Team' }],
+  openGraph: {
+    type: 'website',
+    siteName: 'Travel Handmade',
+    title: 'Travel Handmade',
+    description:
+      'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism.',
+    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'Travel Handmade' }],
+    locale: 'en_IN',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Travel Handmade',
+    description:
+      'A digital publication for conscious travellers. Cultural storytelling and long-form travel journalism.',
+    images: ['/og-default.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true },
+  },
 };
 
 export default function RootLayout({

@@ -1,5 +1,18 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description:
+    'Travel Handmade is a digital publication dedicated to a more considered way of travelling — examining the cultural climates, philosophies, and people that give destinations their character.',
+  openGraph: {
+    title: 'About Us | Travel Handmade',
+    description:
+      'Learn about Travel Handmade — the defining voice in conscious travel and cultural storytelling.',
+    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'About Travel Handmade' }],
+  },
+};
 
 const postalStampsImage = '/postal-stamp.png';
 

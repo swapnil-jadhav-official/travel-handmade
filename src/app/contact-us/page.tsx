@@ -1,5 +1,18 @@
+import type { Metadata } from 'next';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
+
+export const metadata: Metadata = {
+  title: 'Contact Us',
+  description:
+    'Get in touch with Travel Handmade — for brand collaborations, editorial pitches, and travel story submissions.',
+  openGraph: {
+    title: 'Contact Us | Travel Handmade',
+    description:
+      'Reach out to Travel Handmade for brand stories, writer pitches, and traveller submissions.',
+    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'Contact Travel Handmade' }],
+  },
+};
 
 const contactImage = '/contact-image.png';
 const pinImage = '/pin-image.png';
