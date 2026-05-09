@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Unbounded, Roboto_Flex, Work_Sans, Dancing_Script } from "next/font/google";
 import localFont from "next/font/local";
 import Script from "next/script";
+import JsonLd from "@/components/JsonLd";
 import { RootProvider } from "@/components/RootProvider";
 import "./globals.css";
 
@@ -75,6 +76,9 @@ export const metadata: Metadata = {
     follow: true,
     googleBot: { index: true, follow: true },
   },
+  alternates: {
+    canonical: 'https://www.travelhandmade.com',
+  },
 };
 
 export default function RootLayout({
@@ -103,6 +107,40 @@ export default function RootLayout({
             </Script>
           </>
         )}
+        <JsonLd data={{
+          '@context': 'https://schema.org',
+          '@graph': [
+            {
+              '@type': 'Organization',
+              '@id': 'https://www.travelhandmade.com/#organization',
+              name: 'Travel Handmade',
+              url: 'https://www.travelhandmade.com',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://www.travelhandmade.com/th-logo-new.png',
+              },
+              sameAs: ['https://www.instagram.com/travelhandmade_mag/'],
+              contactPoint: {
+                '@type': 'ContactPoint',
+                email: 'editor@travelhandmade.com',
+                contactType: 'editorial',
+              },
+            },
+            {
+              '@type': 'WebSite',
+              '@id': 'https://www.travelhandmade.com/#website',
+              url: 'https://www.travelhandmade.com',
+              name: 'Travel Handmade',
+              description: 'A digital publication for conscious travellers — cultural storytelling and long-form travel journalism.',
+              publisher: { '@id': 'https://www.travelhandmade.com/#organization' },
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: { '@type': 'EntryPoint', urlTemplate: 'https://www.travelhandmade.com/?s={search_term_string}' },
+                'query-input': 'required name=search_term_string',
+              },
+            },
+          ],
+        }} />
         <RootProvider>{children}</RootProvider>
       </body>
     </html>

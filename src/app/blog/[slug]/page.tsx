@@ -6,6 +6,7 @@ import Link from "next/link";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
 import BlogContent from "@/components/BlogContent";
+import ScrollDepthTracker from "@/components/ScrollDepthTracker";
 import { getAllPostsTyped, getCategories } from "@/lib/firestore";
 import { getUserProfile } from "@/lib/users";
 import type { Post, UserProfile } from "@/types";
@@ -118,6 +119,7 @@ export default function BlogPost({ params }: BlogPageProps) {
     <>
       <Header />
       <main className="bg-white">
+        <ScrollDepthTracker articleTitle={post.title} />
         {/* Hero Image — full viewport minus header */}
         {post?.featuredImage ? (
           <div className="relative w-full bg-gray-200 overflow-hidden" style={{ height: 'calc(100dvh - 67px)' }}>

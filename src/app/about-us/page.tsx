@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'About Us',
   description:
     'Travel Handmade is a digital publication dedicated to a more considered way of travelling — examining the cultural climates, philosophies, and people that give destinations their character.',
+  alternates: { canonical: 'https://www.travelhandmade.com/about-us' },
   openGraph: {
     title: 'About Us | Travel Handmade',
     description:

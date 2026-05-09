@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'Contact Us',
   description:
     'Get in touch with Travel Handmade — for brand collaborations, editorial pitches, and travel story submissions.',
+  alternates: { canonical: 'https://www.travelhandmade.com/contact-us' },
   openGraph: {
     title: 'Contact Us | Travel Handmade',
     description:

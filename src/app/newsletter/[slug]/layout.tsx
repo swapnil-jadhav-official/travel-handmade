@@ -21,6 +21,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Departures Issue ${String(issue.issueNumber).padStart(2, '0')}: ${issue.title}`,
     description: issue.description,
+    alternates: {
+      canonical: `https://www.travelhandmade.com/newsletter/${slug}`,
+    },
     openGraph: {
       type: 'article',
       title,

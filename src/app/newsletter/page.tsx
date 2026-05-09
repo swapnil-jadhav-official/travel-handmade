@@ -31,7 +31,7 @@ function CoverCard({
       >
         <img
           src="/th-logo-new.png"
-          alt="TH"
+          alt="Travel Handmade"
           className="w-full h-full object-contain"
           style={{ filter: 'brightness(0) invert(1)' }}
         />
@@ -92,7 +92,7 @@ function CoverCard({
       >
         <img
           src={thumbnail}
-          alt=""
+          alt={`Departures Issue ${issueNumber} — ${title}`}
           className="w-full h-full object-cover"
         />
       </div>

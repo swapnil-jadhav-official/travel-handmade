@@ -1,6 +1,7 @@
 'use client';
 
 import ComingSoon from '@/components/ComingSoon';
+import SectionTracker from '@/components/SectionTracker';
 import { useEffect, useState } from 'react';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
@@ -103,32 +104,15 @@ export function HomeContent() {
     <div className="flex flex-col min-h-screen bg-white">
       <Header />
       <main className="flex-1 w-full space-y-8 lg:space-y-12">
-        {/* Hero Carousel */}
-        {heroImages.length > 0 && <HeroCarousel images={heroImages} />}
-
-        {/* Latest Articles */}
-        {!loading && latestArticles.length > 0 && <LatestArticles articles={latestArticles} />}
-
-        {/* Travel + Living */}
-        {!loading && travelLivingArticles.length > 0 && <TravelLiving articles={travelLivingArticles} />}
-
-        {/* Adventure + Wildlife */}
-        {!loading && adventureArticles.length > 0 && <AdventureWildlife articles={adventureArticles} />}
-
-        {/* Food + Drinks */}
-        {!loading && foodDrinksArticles.length > 0 && <FoodDrinks articles={foodDrinksArticles} />}
-
-        {/* Retreats */}
-        {!loading && retreatsArticles.length > 0 && <Retreats articles={retreatsArticles} />}
-
-        {/* Wellness */}
-        {!loading && wellnessArticles.length > 0 && <Wellness articles={wellnessArticles} />}
-
-        {/* Change Maker */}
-        {!loading && testimonialsList.length > 0 && <ChangeMaker testimonials={testimonialsList} featuredVideo={featuredVideo} />}
-
-        {/* Traveller */}
-        {!loading && travellersList.length > 0 && <TravellerSection travellers={travellersList} />}
+        {heroImages.length > 0 && <div className="relative"><SectionTracker sectionName="Hero" /><HeroCarousel images={heroImages} /></div>}
+        {!loading && latestArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Latest Articles" /><LatestArticles articles={latestArticles} /></div>}
+        {!loading && travelLivingArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Travel Living" /><TravelLiving articles={travelLivingArticles} /></div>}
+        {!loading && adventureArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Adventure Wildlife" /><AdventureWildlife articles={adventureArticles} /></div>}
+        {!loading && foodDrinksArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Food Drinks" /><FoodDrinks articles={foodDrinksArticles} /></div>}
+        {!loading && retreatsArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Retreats" /><Retreats articles={retreatsArticles} /></div>}
+        {!loading && wellnessArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Wellness" /><Wellness articles={wellnessArticles} /></div>}
+        {!loading && testimonialsList.length > 0 && <div className="relative"><SectionTracker sectionName="Changemaker" /><ChangeMaker testimonials={testimonialsList} featuredVideo={featuredVideo} /></div>}
+        {!loading && travellersList.length > 0 && <div className="relative"><SectionTracker sectionName="Traveller" /><TravellerSection travellers={travellersList} /></div>}
       </main>
       <Footer />
     </div>

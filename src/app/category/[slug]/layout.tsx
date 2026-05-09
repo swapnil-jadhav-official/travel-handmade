@@ -19,6 +19,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: category.name,
       description: `Explore Travel Handmade stories in ${category.name} — conscious travel, cultural journalism, and immersive storytelling.`,
+      alternates: {
+        canonical: `https://www.travelhandmade.com/category/${slug}`,
+      },
       openGraph: {
         title: `${category.name} | Travel Handmade`,
         description: `Explore stories in ${category.name} from Travel Handmade.`,
