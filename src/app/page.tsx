@@ -1,6 +1,5 @@
 'use client';
 
-import ComingSoon from '@/components/ComingSoon';
 import SectionTracker from '@/components/SectionTracker';
 import { useEffect, useState } from 'react';
 import Header from '@/components/Common/Header';
@@ -19,9 +18,8 @@ import { getSiteSettings } from '@/lib/settings';
 import type { Testimonial, Traveller } from '@/types';
 import type { Post } from '@/types';
 
-// ── To go live: remove <ComingSoon /> and return <HomeContent /> instead ──
 export default function Home() {
-  return <ComingSoon />;
+  return <HomeContent />;
 }
 
 export function HomeContent() {
