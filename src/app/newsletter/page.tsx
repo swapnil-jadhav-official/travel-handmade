@@ -164,7 +164,7 @@ export default function NewsletterPage() {
         <div className="mx-6 sm:mx-8 lg:mx-12 border-t border-gray-300" />
 
         {/* ── Intro text ─────────────────────────────────────────── */}
-        <section className="px-6 sm:px-8 lg:px-12 py-8 sm:py-10">
+        <section className="px-6 sm:px-8 lg:px-12 pt-14 sm:pt-16 pb-8 sm:pb-10">
           <div className="max-w-[1183px] mx-auto">
             <p
               style={{
