@@ -7,6 +7,12 @@ function toOgImage(url: string): string {
   return url.replace('/upload/', '/upload/c_fill,w_1200,h_630,q_80,f_jpg/');
 }
 
+// Truncate description to optimal OG length
+function toOgDescription(text: string, max = 155): string {
+  if (!text) return '';
+  return text.length <= max ? text : text.slice(0, max - 1).trimEnd() + '…';
+}
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
@@ -24,11 +30,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: post.title,
-    description: post.excerpt || post.title,
+    description: toOgDescription(post.excerpt || post.title),
     openGraph: {
       type: 'article',
       title: post.title,
-      description: post.excerpt || post.title,
+      description: toOgDescription(post.excerpt || post.title),
       images: post.featuredImage
         ? [{ url: toOgImage(post.featuredImage), width: 1200, height: 630, alt: post.title }]
         : [{ url: '/og-default.jpg', width: 1200, height: 630, alt: post.title }],
@@ -38,7 +44,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: 'summary_large_image',
       title: post.title,
-      description: post.excerpt || post.title,
+      description: toOgDescription(post.excerpt || post.title),
       images: post.featuredImage ? [toOgImage(post.featuredImage)] : ['/og-default.jpg'],
     },
   };
