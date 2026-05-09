@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Departures Newsletter | Travel Handmade',
     description:
       'A monthly curation of travel perspectives, exclusive insights, and long reads. This is travel that begins where the guidebooks end.',
-    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'Departures Newsletter by Travel Handmade' }],
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Departures Newsletter by Travel Handmade' }],
   },
 };
 

@@ -58,18 +58,18 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'Travel Handmade',
-    title: 'Travel Handmade',
+    title: 'Travel Handmade — Conscious Travel & Cultural Storytelling',
     description:
       'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism.',
-    images: [{ url: '/th-logo-new.png', width: 1200, height: 630, alt: 'Travel Handmade' }],
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Travel Handmade' }],
     locale: 'en_IN',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Travel Handmade',
+    title: 'Travel Handmade — Conscious Travel & Cultural Storytelling',
     description:
       'A digital publication for conscious travellers. Cultural storytelling and long-form travel journalism.',
-    images: ['/th-logo-new.png'],
+    images: ['/og-default.png'],
   },
   robots: {
     index: true,

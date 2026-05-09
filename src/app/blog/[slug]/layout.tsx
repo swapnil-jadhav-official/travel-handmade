@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const metaTitle = post.seoTitle || post.title;
   const metaDescription = toOgDescription(post.seoDescription || post.excerpt || post.title);
-  const metaImage = post.featuredImage ? toOgImage(post.featuredImage) : '/og-default.jpg';
+  const metaImage = post.featuredImage ? toOgImage(post.featuredImage) : '/og-default.png';
 
   return {
     title: metaTitle,
@@ -72,7 +72,7 @@ export default async function BlogSlugLayout({ params, children }: Props) {
     '@type': 'Article',
     headline: post.title,
     description: post.excerpt || post.title,
-    image: post.featuredImage ? toOgImage(post.featuredImage) : `${BASE_URL}/og-default.jpg`,
+    image: post.featuredImage ? toOgImage(post.featuredImage) : `${BASE_URL}/og-default.png`,
     datePublished: post.publishedAt || post.createdAt,
     dateModified: post.updatedAt || post.publishedAt || post.createdAt,
     author: {

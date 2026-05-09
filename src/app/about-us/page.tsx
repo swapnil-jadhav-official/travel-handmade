@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'About Us | Travel Handmade',
     description:
       'Learn about Travel Handmade — the defining voice in conscious travel and cultural storytelling.',
-    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'About Travel Handmade' }],
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'About Travel Handmade' }],
   },
 };
 

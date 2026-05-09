@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     title: 'Contact Us | Travel Handmade',
     description:
       'Reach out to Travel Handmade for brand stories, writer pitches, and traveller submissions.',
-    images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: 'Contact Travel Handmade' }],
+    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Contact Travel Handmade' }],
   },
 };
 
