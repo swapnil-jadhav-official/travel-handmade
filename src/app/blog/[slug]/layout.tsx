@@ -32,27 +32,31 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
+  const metaTitle = post.seoTitle || post.title;
+  const metaDescription = toOgDescription(post.seoDescription || post.excerpt || post.title);
+  const metaImage = post.featuredImage ? toOgImage(post.featuredImage) : '/og-default.jpg';
+
   return {
-    title: post.title,
-    description: toOgDescription(post.excerpt || post.title),
+    title: metaTitle,
+    description: metaDescription,
+    keywords: post.tags?.length ? post.tags : undefined,
     alternates: {
       canonical: `${BASE_URL}/blog/${slug}`,
     },
     openGraph: {
       type: 'article',
-      title: post.title,
-      description: toOgDescription(post.excerpt || post.title),
-      images: post.featuredImage
-        ? [{ url: toOgImage(post.featuredImage), width: 1200, height: 630, alt: post.title }]
-        : [{ url: '/og-default.jpg', width: 1200, height: 630, alt: post.title }],
+      title: metaTitle,
+      description: metaDescription,
+      images: [{ url: metaImage, width: 1200, height: 630, alt: metaTitle }],
       publishedTime: post.publishedAt,
       authors: [post.authorName || post.author || 'Travel Handmade'],
+      tags: post.tags?.length ? post.tags : undefined,
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
-      description: toOgDescription(post.excerpt || post.title),
-      images: post.featuredImage ? [toOgImage(post.featuredImage)] : ['/og-default.jpg'],
+      title: metaTitle,
+      description: metaDescription,
+      images: [metaImage],
     },
   };
 }
