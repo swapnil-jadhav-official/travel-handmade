@@ -25,7 +25,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       openGraph: {
         title: `${category.name} | Travel Handmade`,
         description: `Explore stories in ${category.name} from Travel Handmade.`,
-        images: [{ url: '/og-default.jpg', width: 1200, height: 630, alt: category.name }],
+        images: category.featuredImage
+          ? [{ url: category.featuredImage, width: 1200, height: 630, alt: category.name }]
+          : [{ url: '/th-logo-new.png', width: 1200, height: 630, alt: category.name }],
       },
     };
   } catch {
