@@ -88,6 +88,12 @@ export default function AdminSidebar(): React.ReactElement {
           active={isActive('/admin') && pathname === '/admin'}
         />
         <NavLink
+          href="/admin/analytics"
+          icon={BarChart2}
+          label="Analytics"
+          active={isActive('/admin/analytics')}
+        />
+        <NavLink
           href="/admin/posts"
           icon={FileText}
           label="All Posts"
@@ -134,12 +140,6 @@ export default function AdminSidebar(): React.ReactElement {
           icon={Mail}
           label="Newsletters"
           active={isActive('/admin/newsletters')}
-        />
-        <NavLink
-          href="/admin/analytics"
-          icon={BarChart2}
-          label="Analytics"
-          active={isActive('/admin/analytics')}
         />
 
         {canManageUsers() && (
