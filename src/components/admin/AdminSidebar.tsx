@@ -19,6 +19,7 @@ import {
   Tent,
   ImagePlay,
   Mail,
+  BarChart2,
 } from 'lucide-react';
 
 export default function AdminSidebar(): React.ReactElement {
@@ -133,6 +134,12 @@ export default function AdminSidebar(): React.ReactElement {
           icon={Mail}
           label="Newsletters"
           active={isActive('/admin/newsletters')}
+        />
+        <NavLink
+          href="/admin/analytics"
+          icon={BarChart2}
+          label="Analytics"
+          active={isActive('/admin/analytics')}
         />
 
         {canManageUsers() && (
