@@ -3,12 +3,17 @@
 import { useEffect, useState } from 'react';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
 import { getSiteSettings, updateSiteSettings } from '@/lib/settings';
-import { X, Image as ImageIcon } from 'lucide-react';
+import { X, Image as ImageIcon, Search } from 'lucide-react';
 
 export default function SettingsPage(): React.ReactElement {
   const [logoUrl, setLogoUrl] = useState('');
+  const [siteName, setSiteName] = useState('');
+  const [siteDescription, setSiteDescription] = useState('');
+  const [ogTitle, setOgTitle] = useState('');
+  const [ogDescription, setOgDescription] = useState('');
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSavingSeo, setIsSavingSeo] = useState(false);
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
@@ -19,6 +24,10 @@ export default function SettingsPage(): React.ReactElement {
         const data = await getSiteSettings();
         if (data) {
           setLogoUrl(data.logoUrl || '');
+          setSiteName(data.siteName || '');
+          setSiteDescription(data.siteDescription || '');
+          setOgTitle(data.ogTitle || '');
+          setOgDescription(data.ogDescription || '');
         }
       } catch (err) {
         console.error('Failed to fetch settings:', err);
@@ -58,13 +67,31 @@ export default function SettingsPage(): React.ReactElement {
 
     try {
       await updateSiteSettings({ logoUrl });
-      setMessage('Settings saved successfully!');
+      setMessage('Logo saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (err) {
       setError('Failed to save settings. Please try again.');
       console.error('Save error:', err);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleSaveSeo = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingSeo(true);
+    setError('');
+    setMessage('');
+
+    try {
+      await updateSiteSettings({ siteName, siteDescription, ogTitle, ogDescription });
+      setMessage('SEO settings saved successfully!');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setError('Failed to save SEO settings. Please try again.');
+      console.error('Save error:', err);
+    } finally {
+      setIsSavingSeo(false);
     }
   };
 
@@ -149,6 +176,84 @@ export default function SettingsPage(): React.ReactElement {
               className="px-5 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-900 disabled:bg-gray-400 transition"
             >
               {isSaving ? 'Saving...' : 'Save Logo'}
+            </button>
+          </form>
+        </div>
+
+        {/* SEO & Sharing */}
+        <div className="border border-gray-200 rounded-lg overflow-hidden mt-8">
+          <div className="flex items-center gap-3 p-6 border-b border-gray-200 bg-gray-50">
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Search className="h-5 w-5 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="font-semibold text-gray-900">SEO & Sharing</h2>
+              <p className="text-sm text-gray-500">Controls the title and description shown in search results and social sharing previews</p>
+            </div>
+          </div>
+          <form onSubmit={handleSaveSeo} className="p-6 space-y-5">
+            <div>
+              <label htmlFor="siteName" className="block text-sm font-medium text-gray-700 mb-1">
+                Site Title
+              </label>
+              <input
+                id="siteName"
+                type="text"
+                value={siteName}
+                onChange={(e) => setSiteName(e.target.value)}
+                placeholder="Travel Handmade"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black"
+              />
+              <p className="text-xs text-gray-500 mt-1">Used as the default page title and in the title template (e.g. &quot;Article Title | Site Title&quot;)</p>
+            </div>
+            <div>
+              <label htmlFor="siteDescription" className="block text-sm font-medium text-gray-700 mb-1">
+                Meta Description
+              </label>
+              <textarea
+                id="siteDescription"
+                value={siteDescription}
+                onChange={(e) => setSiteDescription(e.target.value)}
+                placeholder="A digital publication for conscious travellers..."
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"
+              />
+              <p className="text-xs text-gray-500 mt-1">Shown in Google search results. Aim for 150–160 characters.</p>
+            </div>
+            <div>
+              <label htmlFor="ogTitle" className="block text-sm font-medium text-gray-700 mb-1">
+                Share Title
+              </label>
+              <input
+                id="ogTitle"
+                type="text"
+                value={ogTitle}
+                onChange={(e) => setOgTitle(e.target.value)}
+                placeholder="Travel Handmade — Conscious Travel & Cultural Storytelling"
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black"
+              />
+              <p className="text-xs text-gray-500 mt-1">Title shown when the homepage is shared on WhatsApp, Twitter, LinkedIn, etc.</p>
+            </div>
+            <div>
+              <label htmlFor="ogDescription" className="block text-sm font-medium text-gray-700 mb-1">
+                Share Description
+              </label>
+              <textarea
+                id="ogDescription"
+                value={ogDescription}
+                onChange={(e) => setOgDescription(e.target.value)}
+                placeholder="A digital publication for conscious travellers. Discover cultural storytelling..."
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"
+              />
+              <p className="text-xs text-gray-500 mt-1">Description shown when the homepage is shared on social media.</p>
+            </div>
+            <button
+              type="submit"
+              disabled={isSavingSeo}
+              className="px-5 py-2 bg-black text-white rounded-lg text-sm font-medium hover:bg-gray-900 disabled:bg-gray-400 transition"
+            >
+              {isSavingSeo ? 'Saving...' : 'Save SEO Settings'}
             </button>
           </form>
         </div>

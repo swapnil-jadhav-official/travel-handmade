@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import Script from "next/script";
 import JsonLd from "@/components/JsonLd";
 import { RootProvider } from "@/components/RootProvider";
+import { getSiteSettings } from "@/lib/settings";
 import "./globals.css";
 
 // ── Replace with your GA4 Measurement ID once available (format: G-XXXXXXXXXX) ──
@@ -45,41 +46,59 @@ const floresttaOpheralio = localFont({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://www.travelhandmade.com'),
-  title: {
-    default: 'Travel Handmade',
-    template: '%s | Travel Handmade',
-  },
-  description:
-    'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism that begins where the guidebooks end.',
-  keywords: ['travel', 'conscious travel', 'cultural travel', 'travel journalism', 'travel magazine', 'India travel', 'travel stories'],
-  authors: [{ name: 'Travel Handmade Editorial Team' }],
-  openGraph: {
-    type: 'website',
-    siteName: 'Travel Handmade',
-    title: 'Travel Handmade — Conscious Travel & Cultural Storytelling',
-    description:
-      'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism.',
-    images: [{ url: '/og-default.png', width: 1200, height: 630, alt: 'Travel Handmade' }],
-    locale: 'en_IN',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Travel Handmade — Conscious Travel & Cultural Storytelling',
-    description:
-      'A digital publication for conscious travellers. Cultural storytelling and long-form travel journalism.',
-    images: ['/og-default.png'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: { index: true, follow: true },
-  },
-  alternates: {
-    canonical: 'https://www.travelhandmade.com',
-  },
-};
+const DEFAULT_SITE_TITLE = 'Travel Handmade';
+const DEFAULT_SITE_DESCRIPTION =
+  'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism that begins where the guidebooks end.';
+const DEFAULT_OG_TITLE = 'Travel Handmade — Conscious Travel & Cultural Storytelling';
+const DEFAULT_OG_DESCRIPTION =
+  'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism.';
+
+export async function generateMetadata(): Promise<Metadata> {
+  let settings = null;
+  try {
+    settings = await getSiteSettings();
+  } catch {
+    // fall back to defaults if Firestore is unreachable
+  }
+
+  const siteTitle = settings?.siteName || DEFAULT_SITE_TITLE;
+  const siteDescription = settings?.siteDescription || DEFAULT_SITE_DESCRIPTION;
+  const ogTitle = settings?.ogTitle || DEFAULT_OG_TITLE;
+  const ogDescription = settings?.ogDescription || DEFAULT_OG_DESCRIPTION;
+
+  return {
+    metadataBase: new URL('https://www.travelhandmade.com'),
+    title: {
+      default: siteTitle,
+      template: `%s | ${siteTitle}`,
+    },
+    description: siteDescription,
+    keywords: ['travel', 'conscious travel', 'cultural travel', 'travel journalism', 'travel magazine', 'India travel', 'travel stories'],
+    authors: [{ name: 'Travel Handmade Editorial Team' }],
+    openGraph: {
+      type: 'website',
+      siteName: siteTitle,
+      title: ogTitle,
+      description: ogDescription,
+      images: [{ url: '/og-default.png', width: 1200, height: 630, alt: siteTitle }],
+      locale: 'en_IN',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: ogTitle,
+      description: ogDescription,
+      images: ['/og-default.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: { index: true, follow: true },
+    },
+    alternates: {
+      canonical: 'https://www.travelhandmade.com',
+    },
+  };
+}
 
 export default function RootLayout({
   children,
