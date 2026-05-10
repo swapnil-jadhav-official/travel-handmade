@@ -65,6 +65,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteDescription = settings?.siteDescription || DEFAULT_SITE_DESCRIPTION;
   const ogTitle = settings?.ogTitle || DEFAULT_OG_TITLE;
   const ogDescription = settings?.ogDescription || DEFAULT_OG_DESCRIPTION;
+  const ogImage = settings?.ogImageUrl || '/og-default.png';
 
   return {
     metadataBase: new URL('https://www.travelhandmade.com'),
@@ -80,14 +81,14 @@ export async function generateMetadata(): Promise<Metadata> {
       siteName: siteTitle,
       title: ogTitle,
       description: ogDescription,
-      images: [{ url: '/og-default.png', width: 1200, height: 630, alt: siteTitle }],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: siteTitle }],
       locale: 'en_IN',
     },
     twitter: {
       card: 'summary_large_image',
       title: ogTitle,
       description: ogDescription,
-      images: ['/og-default.png'],
+      images: [ogImage],
     },
     robots: {
       index: true,

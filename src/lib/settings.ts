@@ -7,6 +7,7 @@ export interface SiteSettings {
   siteDescription?: string;
   ogTitle?: string;
   ogDescription?: string;
+  ogImageUrl?: string;
   featuredVideoUrl?: string;
   featuredVideoTitle?: string;
   featuredVideoCreator?: string;

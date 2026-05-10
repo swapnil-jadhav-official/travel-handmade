@@ -11,6 +11,8 @@ export default function SettingsPage(): React.ReactElement {
   const [siteDescription, setSiteDescription] = useState('');
   const [ogTitle, setOgTitle] = useState('');
   const [ogDescription, setOgDescription] = useState('');
+  const [ogImageUrl, setOgImageUrl] = useState('');
+  const [isUploadingOg, setIsUploadingOg] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isSavingSeo, setIsSavingSeo] = useState(false);
@@ -28,6 +30,7 @@ export default function SettingsPage(): React.ReactElement {
           setSiteDescription(data.siteDescription || '');
           setOgTitle(data.ogTitle || '');
           setOgDescription(data.ogDescription || '');
+          setOgImageUrl(data.ogImageUrl || '');
         }
       } catch (err) {
         console.error('Failed to fetch settings:', err);
@@ -77,6 +80,24 @@ export default function SettingsPage(): React.ReactElement {
     }
   };
 
+  const handleOgImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setIsUploadingOg(true);
+    setError('');
+    try {
+      const url = await uploadImageToCloudinary(file);
+      setOgImageUrl(url);
+      setMessage('OG image uploaded successfully');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setError('Failed to upload image. Please try again.');
+      console.error('OG image upload error:', err);
+    } finally {
+      setIsUploadingOg(false);
+    }
+  };
+
   const handleSaveSeo = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSavingSeo(true);
@@ -84,7 +105,7 @@ export default function SettingsPage(): React.ReactElement {
     setMessage('');
 
     try {
-      await updateSiteSettings({ siteName, siteDescription, ogTitle, ogDescription });
+      await updateSiteSettings({ siteName, siteDescription, ogTitle, ogDescription, ogImageUrl });
       setMessage('SEO settings saved successfully!');
       setTimeout(() => setMessage(''), 3000);
     } catch (err) {
@@ -247,6 +268,43 @@ export default function SettingsPage(): React.ReactElement {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-black resize-none"
               />
               <p className="text-xs text-gray-500 mt-1">Description shown when the homepage is shared on social media.</p>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Share Image</label>
+              <div className="flex items-start gap-4">
+                {ogImageUrl ? (
+                  <div className="relative flex-shrink-0">
+                    <img src={ogImageUrl} alt="OG Image" className="w-40 h-24 object-cover rounded border border-gray-200" />
+                    <button
+                      type="button"
+                      onClick={() => setOgImageUrl('')}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex-shrink-0 w-40 h-24 bg-gray-100 rounded border-2 border-dashed border-gray-300 flex items-center justify-center">
+                    <span className="text-xs text-gray-500 text-center px-2">No image<br/>1200×630</span>
+                  </div>
+                )}
+                <div className="flex-1">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleOgImageUpload}
+                    disabled={isUploadingOg}
+                    className="block w-full text-sm text-gray-500
+                      file:mr-4 file:py-2 file:px-4
+                      file:rounded-full file:border-0
+                      file:text-sm file:font-semibold
+                      file:bg-black file:text-white
+                      hover:file:bg-gray-900
+                      disabled:file:bg-gray-400"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">Recommended 1200×630px. Shown when the homepage is shared on social media.</p>
+                </div>
+              </div>
             </div>
             <button
               type="submit"
