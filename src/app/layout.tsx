@@ -6,8 +6,7 @@ import { RootProvider } from "@/components/RootProvider";
 import { getSiteSettings } from "@/lib/settings";
 import "./globals.css";
 
-// ── Replace with your GA4 Measurement ID once available (format: G-XXXXXXXXXX) ──
-const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || 'G-ZL6K9C9928';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
