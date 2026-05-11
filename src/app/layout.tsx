@@ -44,12 +44,13 @@ const floresttaOpheralio = localFont({
   display: "swap",
 });
 
-const DEFAULT_SITE_TITLE = 'Travel Handmade';
+const DEFAULT_SITE_TITLE = 'Travel Handmade - Voice Of The Modern Traveller';
 const DEFAULT_SITE_DESCRIPTION =
-  'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism that begins where the guidebooks end.';
-const DEFAULT_OG_TITLE = 'Travel Handmade — Conscious Travel & Cultural Storytelling';
+  'An independent digital publication documenting culture, food, place and people through immersive photography and long-form travel features.';
+const DEFAULT_OG_TITLE = 'Travel Handmade — Voice Of The Modern Traveller';
 const DEFAULT_OG_DESCRIPTION =
-  'A digital publication for conscious travellers. Discover cultural storytelling, immersive photography, and long-form travel journalism.';
+  'An independent digital publication documenting culture, food, place and people through immersive photography and long-form travel features.';
+const DEFAULT_OG_IMAGE = 'https://res.cloudinary.com/dzrabrzd4/image/upload/v1778396717/k5bn4hhzofln8atagn6r.png';
 
 export async function generateMetadata(): Promise<Metadata> {
   let settings = null;
@@ -63,7 +64,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteDescription = settings?.siteDescription || DEFAULT_SITE_DESCRIPTION;
   const ogTitle = settings?.ogTitle || DEFAULT_OG_TITLE;
   const ogDescription = settings?.ogDescription || DEFAULT_OG_DESCRIPTION;
-  const ogImage = settings?.ogImageUrl || '/og-default.png';
+  const ogImage = settings?.ogImageUrl || DEFAULT_OG_IMAGE;
 
   return {
     metadataBase: new URL('https://www.travelhandmade.com'),
