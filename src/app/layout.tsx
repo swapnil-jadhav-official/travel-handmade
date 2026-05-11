@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Unbounded, Roboto_Flex, Work_Sans, Dancing_Script } from "next/font/google";
 import localFont from "next/font/local";
-import Script from "next/script";
 import JsonLd from "@/components/JsonLd";
 import { RootProvider } from "@/components/RootProvider";
 import { getSiteSettings } from "@/lib/settings";
@@ -108,25 +107,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {GA_MEASUREMENT_ID && (
+        <head>
+          <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`} />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_MEASUREMENT_ID}');`,
+            }}
+          />
+        </head>
+      )}
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${unbounded.variable} ${robotoFlex.variable} ${workSans.variable} ${dancingScript.variable} ${floresttaOpheralio.variable} antialiased`}
       >
-        {GA_MEASUREMENT_ID && (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
-              strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${GA_MEASUREMENT_ID}', { page_path: window.location.pathname });
-              `}
-            </Script>
-          </>
-        )}
         <JsonLd data={{
           '@context': 'https://schema.org',
           '@graph': [
