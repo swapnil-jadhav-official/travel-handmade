@@ -57,7 +57,7 @@ export async function getAllPosts() {
   try {
     const q = query(
       collection(db, POSTS_COLLECTION),
-      orderBy('createdAt', 'desc')
+      orderBy('publishedAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({
@@ -91,7 +91,7 @@ export async function getPostsByCategory(category: string) {
     const q = query(
       collection(db, POSTS_COLLECTION),
       where('category', '==', category),
-      orderBy('createdAt', 'desc')
+      orderBy('publishedAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => ({
@@ -183,7 +183,7 @@ export async function getAllPostsTyped(): Promise<Post[]> {
   try {
     const q = query(
       collection(db, POSTS_COLLECTION),
-      orderBy('createdAt', 'desc')
+      orderBy('publishedAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => {
@@ -209,7 +209,7 @@ export async function getPostsByStatusTyped(status: PostStatus): Promise<Post[]>
     const q = query(
       collection(db, POSTS_COLLECTION),
       where('status', '==', status),
-      orderBy('createdAt', 'desc')
+      orderBy('publishedAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => {
@@ -346,7 +346,7 @@ export async function getPostsByAuthorTyped(authorId: string): Promise<Post[]> {
     const q = query(
       collection(db, POSTS_COLLECTION),
       where('authorId', '==', authorId),
-      orderBy('createdAt', 'desc')
+      orderBy('publishedAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
     return querySnapshot.docs.map((doc) => {
