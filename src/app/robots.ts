@@ -6,7 +6,16 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/admin/', '/admin/*', '/(auth)/'],
+        disallow: [
+          '/admin',
+          '/admin/',
+          '/login',
+          '/wp-content/',
+          '/wp-includes/',
+          '/wp-admin/',
+          '/wp-login.php',
+          '/xmlrpc.php',
+        ],
       },
     ],
     sitemap: 'https://www.travelhandmade.com/sitemap.xml',

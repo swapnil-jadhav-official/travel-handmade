@@ -94,9 +94,6 @@ export async function generateMetadata(): Promise<Metadata> {
       follow: true,
       googleBot: { index: true, follow: true },
     },
-    alternates: {
-      canonical: 'https://www.travelhandmade.com',
-    },
   };
 }
 

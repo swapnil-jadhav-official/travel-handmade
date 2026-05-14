@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, use } from 'react';
+import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
@@ -18,6 +19,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [category, setCategory] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
+  const [categoryNotFound, setCategoryNotFound] = useState(false);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
@@ -25,23 +27,20 @@ export default function CategoryPage({ params }: CategoryPageProps) {
       try {
         setLoading(true);
 
-        // Get all categories from Firestore
         const categoriesData = await getCategories();
-
-        // Find the category by slug
         const foundCategory = categoriesData.find((c) => c.slug === slug);
-        setCategory(foundCategory || null);
 
-        if (foundCategory) {
-          // Get all published posts from Firestore
-          const allPosts = await getAllPostsTyped();
-          const publishedPosts = allPosts.filter((p) => p.status === 'published');
-
-          // Filter posts by category slug
-          const categoryPosts = publishedPosts.filter((p) => p.category === slug);
-          console.log('Category posts response:', categoryPosts);
-          setPosts(categoryPosts);
+        if (!foundCategory) {
+          setCategoryNotFound(true);
+          return;
         }
+
+        setCategory(foundCategory);
+
+        const allPosts = await getAllPostsTyped();
+        const publishedPosts = allPosts.filter((p) => p.status === 'published');
+        const categoryPosts = publishedPosts.filter((p) => p.category === slug);
+        setPosts(categoryPosts);
       } catch (error) {
         console.error('Error fetching category posts:', error);
       } finally {
@@ -51,6 +50,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
     fetchCategoryPosts();
   }, [slug]);
+
+  if (categoryNotFound) notFound();
 
   return (
     <>
