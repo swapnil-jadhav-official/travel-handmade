@@ -283,6 +283,7 @@ export default function TestimonialsPage(): React.ReactElement {
           )}
         </div>
 
+      </div>
       <ConfirmDialog {...dialogProps} />
     </div>
   );
