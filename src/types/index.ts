@@ -55,6 +55,7 @@ export interface Post {
   views: number;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string;
 }
 
 export interface Article {

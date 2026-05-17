@@ -119,13 +119,70 @@ export async function updatePost(postId: string, postData: Partial<BlogPost>) {
   }
 }
 
-// Delete a blog post
+// Soft-delete a blog post (sets deletedAt, does not remove from Firestore)
 export async function deletePost(postId: string) {
   try {
-    await deleteDoc(doc(db, POSTS_COLLECTION, postId));
+    const docRef = doc(db, POSTS_COLLECTION, postId);
+    await updateDoc(docRef, {
+      deletedAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    });
     return postId;
   } catch (error) {
     console.error('Error deleting post:', error);
+    throw error;
+  }
+}
+
+// Permanently delete a post from Firestore (irreversible)
+export async function permanentlyDeletePost(postId: string): Promise<void> {
+  try {
+    await deleteDoc(doc(db, POSTS_COLLECTION, postId));
+  } catch (error) {
+    console.error('Error permanently deleting post:', error);
+    throw error;
+  }
+}
+
+// Restore a soft-deleted post
+export async function restorePost(postId: string): Promise<void> {
+  try {
+    const docRef = doc(db, POSTS_COLLECTION, postId);
+    await updateDoc(docRef, {
+      deletedAt: null,
+      updatedAt: Timestamp.now(),
+    });
+  } catch (error) {
+    console.error('Error restoring post:', error);
+    throw error;
+  }
+}
+
+// Get all soft-deleted posts
+export async function getSoftDeletedPosts(): Promise<Post[]> {
+  try {
+    const q = query(
+      collection(db, POSTS_COLLECTION),
+      where('deletedAt', '!=', null),
+      orderBy('deletedAt', 'desc')
+    );
+    const querySnapshot = await getDocs(q);
+    const posts = querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        authorName: data.authorName || data.author || '',
+        createdAt: convertTimestamp(data.createdAt),
+        updatedAt: convertTimestamp(data.updatedAt),
+        publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+        deletedAt: convertTimestamp(data.deletedAt),
+      } as Post;
+    });
+    console.log(`[Firestore] Soft-deleted posts (${posts.length}):`, posts);
+    return posts;
+  } catch (error) {
+    console.error('Error fetching soft-deleted posts:', error);
     throw error;
   }
 }
@@ -140,6 +197,7 @@ export async function createPostDraft(
     const docRef = await addDoc(collection(db, POSTS_COLLECTION), {
       ...data,
       views: 0,
+      deletedAt: null,
       createdAt: Timestamp.now(),
       updatedAt: Timestamp.now(),
     });
@@ -183,21 +241,23 @@ export async function getAllPostsTyped(): Promise<Post[]> {
   try {
     const q = query(
       collection(db, POSTS_COLLECTION),
-      orderBy('publishedAt', 'desc')
+      orderBy('createdAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        // Fall back to deprecated `author` field for old posts
-        authorName: data.authorName || data.author || '',
-        createdAt: convertTimestamp(data.createdAt),
-        updatedAt: convertTimestamp(data.updatedAt),
-        publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
-      } as Post;
-    });
+    return querySnapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          authorName: data.authorName || data.author || '',
+          createdAt: convertTimestamp(data.createdAt),
+          updatedAt: convertTimestamp(data.updatedAt),
+          publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+          deletedAt: data.deletedAt ? convertTimestamp(data.deletedAt) : undefined,
+        } as Post;
+      })
+      .filter((post) => !post.deletedAt);
   } catch (error) {
     console.error('Error fetching all posts:', error);
     throw error;
@@ -209,19 +269,22 @@ export async function getPostsByStatusTyped(status: PostStatus): Promise<Post[]>
     const q = query(
       collection(db, POSTS_COLLECTION),
       where('status', '==', status),
-      orderBy('publishedAt', 'desc')
+      orderBy('createdAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: convertTimestamp(data.createdAt),
-        updatedAt: convertTimestamp(data.updatedAt),
-        publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
-      } as Post;
-    });
+    return querySnapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: convertTimestamp(data.createdAt),
+          updatedAt: convertTimestamp(data.updatedAt),
+          publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+          deletedAt: data.deletedAt ? convertTimestamp(data.deletedAt) : undefined,
+        } as Post;
+      })
+      .filter((post) => !post.deletedAt);
   } catch (error) {
     console.error('Error fetching posts by status:', error);
     throw error;
@@ -346,19 +409,22 @@ export async function getPostsByAuthorTyped(authorId: string): Promise<Post[]> {
     const q = query(
       collection(db, POSTS_COLLECTION),
       where('authorId', '==', authorId),
-      orderBy('publishedAt', 'desc')
+      orderBy('createdAt', 'desc')
     );
     const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map((doc) => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        createdAt: convertTimestamp(data.createdAt),
-        updatedAt: convertTimestamp(data.updatedAt),
-        publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
-      } as Post;
-    });
+    return querySnapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: convertTimestamp(data.createdAt),
+          updatedAt: convertTimestamp(data.updatedAt),
+          publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
+          deletedAt: data.deletedAt ? convertTimestamp(data.deletedAt) : undefined,
+        } as Post;
+      })
+      .filter((post) => !post.deletedAt);
   } catch (error) {
     console.error('Error fetching posts by author:', error);
     throw error;

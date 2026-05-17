@@ -4,7 +4,7 @@ import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
 import { Trash2, Edit } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
-import { getAllPostsTyped, deletePost, getPostsByAuthorTyped } from '@/lib/firestore';
+import { getAllPostsTyped, deletePost, getPostsByAuthorTyped, restorePost } from '@/lib/firestore';
 import type { Post } from '@/types';
 
 export default function PostsPage(): React.ReactElement {
