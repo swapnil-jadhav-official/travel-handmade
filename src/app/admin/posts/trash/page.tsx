@@ -1,48 +1,53 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
-import { Trash2, Edit } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-import { getAllPostsTyped, deletePost } from '@/lib/firestore';
+import { Trash2, RotateCcw } from 'lucide-react';
+import { getSoftDeletedPosts, restorePost, permanentlyDeletePost } from '@/lib/firestore';
 import { useAdminDialog } from '@/hooks/useAdminDialog';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { Post } from '@/types';
 
-export default function RetreatsPage(): React.ReactElement {
-  const { user, isEditorOrAbove } = useAuth();
+export default function TrashPage(): React.ReactElement {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const { dialogProps, showConfirm, showAlert } = useAdminDialog();
 
   useEffect(() => {
-    const fetchPosts = async (): Promise<void> => {
-      try {
-        const data = await getAllPostsTyped();
-        const retreats = data.filter((p) => p.category === 'retreats');
-        setPosts(retreats);
-      } catch (error) {
-        console.error('Failed to fetch retreats:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
+    getSoftDeletedPosts()
+      .then(setPosts)
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
 
-    fetchPosts();
-  }, [user, isEditorOrAbove]);
-
-  const handleDelete = (id: string): void => {
+  const handleRestore = (id: string) => {
     showConfirm({
-      title: 'Delete Retreat',
-      message: 'This retreat will be moved to Trash. You can restore it from there.',
-      confirmLabel: 'Move to Trash',
+      title: 'Restore Post',
+      message: 'This post will be moved back to your posts list.',
+      confirmLabel: 'Restore',
+      variant: 'info',
       onConfirm: async () => {
         try {
-          await deletePost(id);
+          await restorePost(id);
           setPosts((prev) => prev.filter((p) => p.id !== id));
-        } catch (error) {
-          console.error('Failed to delete post:', error);
-          showAlert('Error', 'Failed to delete retreat. Please try again.');
+        } catch {
+          showAlert('Error', 'Failed to restore post. Please try again.');
+        }
+      },
+    });
+  };
+
+  const handlePermanentDelete = (id: string) => {
+    showConfirm({
+      title: 'Permanently Delete',
+      message: 'This will permanently remove the post from Firestore. This action cannot be undone.',
+      confirmLabel: 'Delete Forever',
+      variant: 'danger',
+      onConfirm: async () => {
+        try {
+          await permanentlyDeletePost(id);
+          setPosts((prev) => prev.filter((p) => p.id !== id));
+        } catch {
+          showAlert('Error', 'Failed to permanently delete post. Please try again.');
         }
       },
     });
@@ -51,24 +56,16 @@ export default function RetreatsPage(): React.ReactElement {
   return (
     <div className="flex-1 overflow-auto">
       <div className="space-y-6 p-8">
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="text-3xl font-bold text-gray-900">Retreats</div>
-            <p className="text-gray-600">Manage posts in the Retreats section</p>
-          </div>
-          <Link
-            href="/admin/posts/new"
-            className="rounded bg-black px-4 py-2 text-white hover:bg-gray-900"
-          >
-            New Retreat Post
-          </Link>
+        <div>
+          <div className="text-3xl font-bold text-gray-900">Trash</div>
+          <p className="text-gray-600">Soft-deleted posts — restore or permanently delete them</p>
         </div>
 
         {loading ? (
           <div className="text-center text-gray-500">Loading...</div>
         ) : posts.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center text-gray-600">
-            No retreat posts yet. Create a new post and set its category to <strong>Retreats</strong>.
+            Trash is empty.
           </div>
         ) : (
           <div className="overflow-x-auto rounded-lg border border-gray-200">
@@ -77,9 +74,9 @@ export default function RetreatsPage(): React.ReactElement {
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Image</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Title</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Author</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Category</th>
                   <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Status</th>
-                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Date</th>
+                  <th className="px-6 py-3 text-left text-sm font-medium text-gray-700">Deleted At</th>
                   <th className="px-6 py-3 text-right text-sm font-medium text-gray-700">Actions</th>
                 </tr>
               </thead>
@@ -91,7 +88,7 @@ export default function RetreatsPage(): React.ReactElement {
                         <img
                           src={post.featuredImage}
                           alt={post.title}
-                          className="h-12 w-12 rounded object-cover"
+                          className="h-12 w-12 rounded object-cover opacity-60"
                         />
                       ) : (
                         <div className="h-12 w-12 rounded bg-gray-200 flex items-center justify-center text-xs text-gray-400">
@@ -99,34 +96,30 @@ export default function RetreatsPage(): React.ReactElement {
                         </div>
                       )}
                     </td>
-                    <td className="px-6 py-4 text-sm font-medium text-gray-900">{post.title}</td>
-                    <td className="px-6 py-4 text-sm text-gray-600">{post.authorName || '—'}</td>
+                    <td className="px-6 py-4 text-sm font-medium text-gray-500">{post.title}</td>
+                    <td className="px-6 py-4 text-sm text-gray-500 capitalize">
+                      {post.category?.replace(/-/g, ' ')}
+                    </td>
                     <td className="px-6 py-4 text-sm">
-                      <span
-                        className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold ${
-                          post.status === 'published'
-                            ? 'bg-green-100 text-green-800'
-                            : post.status === 'draft'
-                              ? 'bg-gray-100 text-gray-800'
-                              : 'bg-yellow-100 text-yellow-800'
-                        }`}
-                      >
+                      <span className="inline-flex rounded-full px-3 py-1 text-xs font-semibold bg-gray-100 text-gray-500">
                         {post.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-600">
-                      {new Date(post.createdAt).toLocaleDateString()}
+                    <td className="px-6 py-4 text-sm text-gray-500">
+                      {post.deletedAt ? new Date(post.deletedAt).toLocaleDateString() : '—'}
                     </td>
                     <td className="px-6 py-4 text-right">
                       <div className="flex items-center justify-end gap-2">
-                        <Link
-                          href={`/admin/posts/${post.id}`}
-                          className="inline-flex rounded p-2 hover:bg-gray-100"
-                        >
-                          <Edit className="h-4 w-4 text-gray-600" />
-                        </Link>
                         <button
-                          onClick={() => handleDelete(post.id)}
+                          onClick={() => handleRestore(post.id)}
+                          title="Restore"
+                          className="inline-flex rounded p-2 hover:bg-green-50"
+                        >
+                          <RotateCcw className="h-4 w-4 text-green-600" />
+                        </button>
+                        <button
+                          onClick={() => handlePermanentDelete(post.id)}
+                          title="Permanently delete"
                           className="inline-flex rounded p-2 hover:bg-red-50"
                         >
                           <Trash2 className="h-4 w-4 text-red-600" />

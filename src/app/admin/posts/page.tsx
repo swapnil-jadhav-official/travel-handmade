@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Trash2, Edit } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getAllPostsTyped, deletePost, getPostsByAuthorTyped, restorePost } from '@/lib/firestore';
+import { useAdminDialog } from '@/hooks/useAdminDialog';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { Post } from '@/types';
 
 export default function PostsPage(): React.ReactElement {
@@ -12,6 +14,7 @@ export default function PostsPage(): React.ReactElement {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const { dialogProps, showConfirm, showAlert } = useAdminDialog();
 
   useEffect(() => {
     const fetchPosts = async (): Promise<void> => {
@@ -31,17 +34,25 @@ export default function PostsPage(): React.ReactElement {
     };
 
     fetchPosts();
-  }, [user, isEditorOrAbove]);
+  // isEditorOrAbove is a function recreated each render — excluding it is intentional
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
-  const handleDelete = async (id: string): Promise<void> => {
-    if (!confirm('Are you sure you want to delete this post?')) return;
-    try {
-      await deletePost(id);
-      setPosts(posts.filter((p) => p.id !== id));
-    } catch (error) {
-      console.error('Failed to delete post:', error);
-      alert('Failed to delete post');
-    }
+  const handleDelete = (id: string): void => {
+    showConfirm({
+      title: 'Delete Post',
+      message: 'This post will be moved to Trash. You can restore it from there.',
+      confirmLabel: 'Move to Trash',
+      onConfirm: async () => {
+        try {
+          await deletePost(id);
+          setPosts((prev) => prev.filter((p) => p.id !== id));
+        } catch (error) {
+          console.error('Failed to delete post:', error);
+          showAlert('Error', 'Failed to delete post. Please try again.');
+        }
+      },
+    });
   };
 
   const categories = useMemo(() => {
@@ -195,6 +206,7 @@ export default function PostsPage(): React.ReactElement {
           </div>
         )}
       </div>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

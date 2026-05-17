@@ -4,12 +4,15 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getTravellers, deleteTraveller } from '@/lib/firestore';
 import { Trash2, Edit2, Plus } from 'lucide-react';
+import { useAdminDialog } from '@/hooks/useAdminDialog';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { Traveller } from '@/types';
 
 export default function TravellersPage(): React.ReactElement {
   const [travellers, setTravellers] = useState<Traveller[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const { dialogProps, showConfirm, showAlert } = useAdminDialog();
 
   useEffect(() => {
     fetchTravellers();
@@ -27,19 +30,24 @@ export default function TravellersPage(): React.ReactElement {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this traveller?')) return;
-
-    try {
-      setDeleting(id);
-      await deleteTraveller(id);
-      setTravellers(travellers.filter((t) => t.id !== id));
-    } catch (error) {
-      console.error('Failed to delete traveller:', error);
-      alert('Failed to delete traveller');
-    } finally {
-      setDeleting(null);
-    }
+  const handleDelete = (id: string) => {
+    showConfirm({
+      title: 'Delete Traveller',
+      message: 'Are you sure you want to delete this traveller? This cannot be undone.',
+      confirmLabel: 'Delete',
+      onConfirm: async () => {
+        try {
+          setDeleting(id);
+          await deleteTraveller(id);
+          setTravellers((prev) => prev.filter((t) => t.id !== id));
+        } catch (error) {
+          console.error('Failed to delete traveller:', error);
+          showAlert('Error', 'Failed to delete traveller. Please try again.');
+        } finally {
+          setDeleting(null);
+        }
+      },
+    });
   };
 
   if (loading) {
@@ -117,6 +125,7 @@ export default function TravellersPage(): React.ReactElement {
           </div>
         )}
       </div>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

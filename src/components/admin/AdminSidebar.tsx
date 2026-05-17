@@ -20,6 +20,7 @@ import {
   ImagePlay,
   Mail,
   BarChart2,
+  Trash2,
 } from 'lucide-react';
 
 export default function AdminSidebar(): React.ReactElement {
@@ -97,7 +98,13 @@ export default function AdminSidebar(): React.ReactElement {
           href="/admin/posts"
           icon={FileText}
           label="All Posts"
-          active={isActive('/admin/posts')}
+          active={isActive('/admin/posts') && !pathname.startsWith('/admin/posts/trash')}
+        />
+        <NavLink
+          href="/admin/posts/trash"
+          icon={Trash2}
+          label="Trash"
+          active={isActive('/admin/posts/trash')}
         />
         <NavLink
           href="/admin/categories"

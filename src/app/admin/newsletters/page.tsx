@@ -4,11 +4,14 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react';
 import { getNewsletters, deleteNewsletter } from '@/lib/firestore';
+import { useAdminDialog } from '@/hooks/useAdminDialog';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { NewsletterIssue } from '@/data/newsletters';
 
 export default function AdminNewslettersPage() {
   const [issues, setIssues] = useState<NewsletterIssue[]>([]);
   const [loading, setLoading] = useState(true);
+  const { dialogProps, showConfirm, showAlert } = useAdminDialog();
 
   useEffect(() => {
     getNewsletters()
@@ -17,10 +20,20 @@ export default function AdminNewslettersPage() {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleDelete = async (slug: string) => {
-    if (!confirm('Delete this newsletter issue?')) return;
-    await deleteNewsletter(slug);
-    setIssues((prev) => prev.filter((n) => n.slug !== slug));
+  const handleDelete = (slug: string) => {
+    showConfirm({
+      title: 'Delete Newsletter Issue',
+      message: 'This newsletter issue will be permanently deleted.',
+      confirmLabel: 'Delete',
+      onConfirm: async () => {
+        try {
+          await deleteNewsletter(slug);
+          setIssues((prev) => prev.filter((n) => n.slug !== slug));
+        } catch {
+          showAlert('Error', 'Failed to delete newsletter issue. Please try again.');
+        }
+      },
+    });
   };
 
   return (
@@ -146,6 +159,7 @@ export default function AdminNewslettersPage() {
           </table>
         </div>
       </div>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

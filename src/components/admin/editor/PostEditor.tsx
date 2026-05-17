@@ -2,12 +2,14 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Trash2 } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import BlockEditor from './BlockEditor';
 import PostMetaPanel from './PostMetaPanel';
 import PostPublishPanel from './PostPublishPanel';
-import { createPostDraft, updatePostTyped, publishPost } from '@/lib/firestore';
+import { createPostDraft, updatePostTyped, publishPost, deletePost } from '@/lib/firestore';
+import { useAdminDialog } from '@/hooks/useAdminDialog';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { Post, PostStatus, PostVisibility } from '@/types';
 
 interface PostEditorProps {
@@ -55,6 +57,7 @@ export default function PostEditor({
   const [showLeftPanel, setShowLeftPanel] = useState(true);
   const [showRightPanel, setShowRightPanel] = useState(true);
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const { dialogProps, showConfirm } = useAdminDialog();
 
   const showToast = (message: string, type: 'success' | 'error' = 'success') => {
     setToast({ message, type });
@@ -99,8 +102,10 @@ export default function PostEditor({
 
   const handleClone = async (): Promise<void> => {
     try {
+      // Destructure out id so it is never stored inside the cloned document's data
+      const { id: _id, ...postWithoutId } = post as Post;
       const clonedPost = {
-        ...post,
+        ...postWithoutId,
         title: `${post.title || ''} (Copy)`,
         slug: `${post.slug || ''}-copy-${Date.now()}`,
         status: 'draft' as PostStatus,
@@ -121,6 +126,19 @@ export default function PostEditor({
       console.error('Failed to clone article:', error);
       showToast('Failed to clone article', 'error');
     }
+  };
+
+  const handleDelete = (): void => {
+    if (!postId) return;
+    showConfirm({
+      title: 'Move to Trash',
+      message: 'This post will be moved to Trash. You can restore it from there.',
+      confirmLabel: 'Move to Trash',
+      onConfirm: async () => {
+        await deletePost(postId);
+        router.push('/admin/posts');
+      },
+    });
   };
 
   const handleSaveDraft = async (): Promise<void> => {
@@ -283,12 +301,21 @@ export default function PostEditor({
               )}
             </button>
             {postId && (
-              <button
-                onClick={handleClone}
-                className="rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
-              >
-                Clone
-              </button>
+              <>
+                <button
+                  onClick={handleDelete}
+                  title="Move to Trash"
+                  className="rounded p-2 text-gray-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={handleClone}
+                  className="rounded border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50"
+                >
+                  Clone
+                </button>
+              </>
             )}
             <button
               onClick={handleSaveDraft}
@@ -319,6 +346,8 @@ export default function PostEditor({
           onChange={(html) => handleFieldChange('content', html)}
         />
       </div>
+
+      <ConfirmDialog {...dialogProps} />
 
       {/* Right Panel - Publish */}
       {showRightPanel && (

@@ -45,17 +45,19 @@ function ImageUploadField({
   required?: boolean;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
+    setUploadError('');
     try {
       const url = await uploadImageToCloudinary(file);
       onChange(url);
     } catch {
-      alert('Upload failed. Please try again.');
+      setUploadError('Upload failed. Please try again.');
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = '';
@@ -108,6 +110,9 @@ function ImageUploadField({
       </div>
 
       <input ref={fileRef} type="file" accept="image/*" onChange={handleUpload} className="hidden" />
+      {uploadError && (
+        <p className="text-xs text-red-600">{uploadError}</p>
+      )}
     </div>
   );
 }

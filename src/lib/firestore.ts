@@ -5,6 +5,7 @@ import {
   deleteDoc,
   doc,
   getDocs,
+  getDocsFromServer,
   getDoc,
   setDoc,
   query,
@@ -128,7 +129,9 @@ export async function deletePost(postId: string) {
       updatedAt: Timestamp.now(),
     });
     return postId;
-  } catch (error) {
+  } catch (error: any) {
+    // Document already gone — treat as deleted so UI can clean up
+    if (error?.code === 'not-found') return postId;
     console.error('Error deleting post:', error);
     throw error;
   }
@@ -170,8 +173,8 @@ export async function getSoftDeletedPosts(): Promise<Post[]> {
     const posts = querySnapshot.docs.map((doc) => {
       const data = doc.data();
       return {
-        id: doc.id,
         ...data,
+        id: doc.id,
         authorName: data.authorName || data.author || '',
         createdAt: convertTimestamp(data.createdAt),
         updatedAt: convertTimestamp(data.updatedAt),
@@ -194,8 +197,9 @@ export async function createPostDraft(
 ): Promise<string> {
   try {
     console.log('[Firestore] Creating draft post with data:', data);
+    const { id: _id, ...dataWithoutId } = data as any;
     const docRef = await addDoc(collection(db, POSTS_COLLECTION), {
-      ...data,
+      ...dataWithoutId,
       views: 0,
       deletedAt: null,
       createdAt: Timestamp.now(),
@@ -218,9 +222,9 @@ export async function getPostTyped(postId: string): Promise<Post | null> {
     if (docSnap.exists()) {
       const rawData = docSnap.data();
       const data: Post = {
-        id: docSnap.id,
         ...rawData,
-        // Fall back to deprecated `author` field for old posts
+        // Firestore document ID always wins over any stored id field
+        id: docSnap.id,
         authorName: rawData.authorName || rawData.author || '',
         createdAt: convertTimestamp(rawData.createdAt),
         updatedAt: convertTimestamp(rawData.updatedAt),
@@ -243,13 +247,14 @@ export async function getAllPostsTyped(): Promise<Post[]> {
       collection(db, POSTS_COLLECTION),
       orderBy('createdAt', 'desc')
     );
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocsFromServer(q);
+    const seen = new Set<string>();
     return querySnapshot.docs
       .map((doc) => {
         const data = doc.data();
         return {
-          id: doc.id,
           ...data,
+          id: doc.id,
           authorName: data.authorName || data.author || '',
           createdAt: convertTimestamp(data.createdAt),
           updatedAt: convertTimestamp(data.updatedAt),
@@ -257,7 +262,12 @@ export async function getAllPostsTyped(): Promise<Post[]> {
           deletedAt: data.deletedAt ? convertTimestamp(data.deletedAt) : undefined,
         } as Post;
       })
-      .filter((post) => !post.deletedAt);
+      .filter((post) => {
+        if (post.deletedAt) return false;
+        if (seen.has(post.id)) return false;
+        seen.add(post.id);
+        return true;
+      });
   } catch (error) {
     console.error('Error fetching all posts:', error);
     throw error;
@@ -276,8 +286,8 @@ export async function getPostsByStatusTyped(status: PostStatus): Promise<Post[]>
       .map((doc) => {
         const data = doc.data();
         return {
-          id: doc.id,
           ...data,
+          id: doc.id,
           createdAt: convertTimestamp(data.createdAt),
           updatedAt: convertTimestamp(data.updatedAt),
           publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
@@ -297,12 +307,12 @@ export async function updatePostTyped(
 ): Promise<void> {
   try {
     const docRef = doc(db, POSTS_COLLECTION, postId);
-    // Strip undefined values — Firestore rejects them
+    // Strip undefined values and the id field — Firestore rejects undefined,
+    // and id must never be stored in the document data
     const cleanData: Record<string, unknown> = {};
     for (const [key, value] of Object.entries(data)) {
-      if (value !== undefined) {
-        cleanData[key] = value;
-      }
+      if (key === 'id' || value === undefined) continue;
+      cleanData[key] = value;
     }
     await updateDoc(docRef, {
       ...cleanData,
@@ -353,8 +363,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     const doc = querySnapshot.docs[0];
     const data = doc.data();
     return {
-      id: doc.id,
       ...data,
+      id: doc.id,
       authorName: data.authorName || data.author || '',
       createdAt: convertTimestamp(data.createdAt),
       updatedAt: convertTimestamp(data.updatedAt),
@@ -411,20 +421,26 @@ export async function getPostsByAuthorTyped(authorId: string): Promise<Post[]> {
       where('authorId', '==', authorId),
       orderBy('createdAt', 'desc')
     );
-    const querySnapshot = await getDocs(q);
+    const querySnapshot = await getDocsFromServer(q);
+    const seen = new Set<string>();
     return querySnapshot.docs
       .map((doc) => {
         const data = doc.data();
         return {
-          id: doc.id,
           ...data,
+          id: doc.id,
           createdAt: convertTimestamp(data.createdAt),
           updatedAt: convertTimestamp(data.updatedAt),
           publishedAt: data.publishedAt ? convertTimestamp(data.publishedAt) : undefined,
           deletedAt: data.deletedAt ? convertTimestamp(data.deletedAt) : undefined,
         } as Post;
       })
-      .filter((post) => !post.deletedAt);
+      .filter((post) => {
+        if (post.deletedAt) return false;
+        if (seen.has(post.id)) return false;
+        seen.add(post.id);
+        return true;
+      });
   } catch (error) {
     console.error('Error fetching posts by author:', error);
     throw error;

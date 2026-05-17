@@ -6,12 +6,15 @@ import { getTestimonials, deleteTestimonial } from '@/lib/firestore';
 import { getSiteSettings, updateSiteSettings } from '@/lib/settings';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
 import { Trash2, Edit2, Plus, Video, Upload, X } from 'lucide-react';
+import { useAdminDialog } from '@/hooks/useAdminDialog';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { Testimonial } from '@/types';
 
 export default function TestimonialsPage(): React.ReactElement {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const { dialogProps, showConfirm, showAlert } = useAdminDialog();
 
   const [featuredVideoUrl, setFeaturedVideoUrl] = useState('');
   const [featuredVideoTitle, setFeaturedVideoTitle] = useState('');
@@ -82,25 +85,31 @@ export default function TestimonialsPage(): React.ReactElement {
       setFeaturedVideoThumbnail(url);
     } catch (error) {
       console.error('Failed to upload thumbnail:', error);
-      alert('Failed to upload thumbnail');
+      showAlert('Upload Failed', 'Failed to upload thumbnail. Please try again.');
     } finally {
       setIsUploadingThumbnail(false);
       if (thumbnailFileRef.current) thumbnailFileRef.current.value = '';
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this testimonial?')) return;
-    try {
-      setDeleting(id);
-      await deleteTestimonial(id);
-      setTestimonials(testimonials.filter((t) => t.id !== id));
-    } catch (error) {
-      console.error('Failed to delete testimonial:', error);
-      alert('Failed to delete testimonial');
-    } finally {
-      setDeleting(null);
-    }
+  const handleDelete = (id: string) => {
+    showConfirm({
+      title: 'Delete Testimonial',
+      message: 'Are you sure you want to delete this testimonial? This cannot be undone.',
+      confirmLabel: 'Delete',
+      onConfirm: async () => {
+        try {
+          setDeleting(id);
+          await deleteTestimonial(id);
+          setTestimonials((prev) => prev.filter((t) => t.id !== id));
+        } catch (error) {
+          console.error('Failed to delete testimonial:', error);
+          showAlert('Error', 'Failed to delete testimonial. Please try again.');
+        } finally {
+          setDeleting(null);
+        }
+      },
+    });
   };
 
   return (
@@ -274,7 +283,7 @@ export default function TestimonialsPage(): React.ReactElement {
           )}
         </div>
 
-      </div>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { Trash2, Plus, Upload } from 'lucide-react';
 import { getCategories, deleteCategory, createCategory, updateCategory } from '@/lib/firestore';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
+import { useAdminDialog } from '@/hooks/useAdminDialog';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { Category } from '@/types';
 
 export default function CategoriesPage(): React.ReactElement {
@@ -14,6 +16,8 @@ export default function CategoriesPage(): React.ReactElement {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({ name: '', slug: '', description: '', subDescription: '', subDescriptionLabel: '', color: '#C55626', featuredImage: '' });
+  const [formError, setFormError] = useState('');
+  const { dialogProps, showConfirm, showAlert } = useAdminDialog();
 
   useEffect(() => {
     fetchCategories();
@@ -26,7 +30,7 @@ export default function CategoriesPage(): React.ReactElement {
       setCategories(data);
     } catch (error) {
       console.error('Failed to fetch categories:', error);
-      alert('Failed to fetch categories');
+      showAlert('Error', 'Failed to fetch categories. Please refresh the page.');
     } finally {
       setLoading(false);
     }
@@ -34,28 +38,28 @@ export default function CategoriesPage(): React.ReactElement {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setFormError('');
 
     if (!formData.name || !formData.slug) {
-      alert('Name and slug are required');
+      setFormError('Name and slug are required.');
       return;
     }
 
     try {
       if (editingId) {
-        // Update existing category
         await updateCategory(editingId, formData);
         setCategories(categories.map(c => c.id === editingId ? { ...c, ...formData } : c));
       } else {
-        // Create new category
         const newId = await createCategory(formData);
         setCategories([...categories, { id: newId, ...formData }]);
       }
       setFormData({ name: '', slug: '', description: '', subDescription: '', subDescriptionLabel: '', color: '#C55626', featuredImage: '' });
+      setFormError('');
       setEditingId(null);
       setShowForm(false);
     } catch (error) {
       console.error('Failed to save category:', error);
-      alert('Failed to save category');
+      showAlert('Error', 'Failed to save category. Please try again.');
     }
   };
 
@@ -73,15 +77,21 @@ export default function CategoriesPage(): React.ReactElement {
     setShowForm(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this category?')) return;
-    try {
-      await deleteCategory(id);
-      setCategories(categories.filter((c) => c.id !== id));
-    } catch (error) {
-      console.error('Failed to delete category:', error);
-      alert('Failed to delete category');
-    }
+  const handleDelete = (id: string) => {
+    showConfirm({
+      title: 'Delete Category',
+      message: 'Are you sure you want to delete this category? This cannot be undone.',
+      confirmLabel: 'Delete',
+      onConfirm: async () => {
+        try {
+          await deleteCategory(id);
+          setCategories((prev) => prev.filter((c) => c.id !== id));
+        } catch (error) {
+          console.error('Failed to delete category:', error);
+          showAlert('Error', 'Failed to delete category. Please try again.');
+        }
+      },
+    });
   };
 
   const handleCancel = () => {
@@ -104,7 +114,7 @@ export default function CategoriesPage(): React.ReactElement {
           setFormData({ ...formData, featuredImage: cloudinaryUrl });
         } catch (error) {
           console.error('Failed to upload image:', error);
-          alert('Failed to upload image');
+          showAlert('Upload Failed', 'Failed to upload image. Please try again.');
         } finally {
           setUploading(false);
         }
@@ -137,6 +147,9 @@ export default function CategoriesPage(): React.ReactElement {
               {editingId ? 'Edit Category' : 'Create New Category'}
             </div>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {formError && (
+                <p className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{formError}</p>
+              )}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Name
@@ -343,6 +356,7 @@ export default function CategoriesPage(): React.ReactElement {
           </div>
         )}
       </div>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }

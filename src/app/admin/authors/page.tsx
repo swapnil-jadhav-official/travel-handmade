@@ -5,6 +5,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import { getAllUserProfiles, deleteUserProfile } from '@/lib/users';
 import { createAuthorAction, deleteAuthorAction, updateAuthorRoleAction, updateAuthorProfileAction } from './actions';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
+import { useAdminDialog } from '@/hooks/useAdminDialog';
+import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import type { UserProfile, UserRole } from '@/types';
 import { Plus, Trash2, Shield, Edit2, X } from 'lucide-react';
 
@@ -16,6 +18,7 @@ export default function AuthorsPage(): React.ReactElement {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const { dialogProps, showConfirm } = useAdminDialog();
 
   const [formData, setFormData] = useState({
     email: '',
@@ -84,19 +87,23 @@ export default function AuthorsPage(): React.ReactElement {
     setSubmitting(false);
   };
 
-  const handleDeleteAuthor = async (uid: string, name: string) => {
-    if (!confirm(`Are you sure you want to delete "${name}"?`)) return;
-
-    setError('');
-    const result = await deleteAuthorAction(uid);
-
-    if (result.error) {
-      setError(result.error);
-    } else {
-      setMessage(`Author "${name}" deleted successfully!`);
-      await loadAuthors();
-      setTimeout(() => setMessage(''), 3000);
-    }
+  const handleDeleteAuthor = (uid: string, name: string) => {
+    showConfirm({
+      title: 'Delete Author',
+      message: `Are you sure you want to delete "${name}"? This cannot be undone.`,
+      confirmLabel: 'Delete',
+      onConfirm: async () => {
+        setError('');
+        const result = await deleteAuthorAction(uid);
+        if (result.error) {
+          setError(result.error);
+        } else {
+          setMessage(`Author "${name}" deleted successfully!`);
+          await loadAuthors();
+          setTimeout(() => setMessage(''), 3000);
+        }
+      },
+    });
   };
 
   const handleUpdateRole = async (uid: string, newRole: UserRole) => {
@@ -615,6 +622,7 @@ export default function AuthorsPage(): React.ReactElement {
           </div>
         )}
       </div>
+      <ConfirmDialog {...dialogProps} />
     </div>
   );
 }
