@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useMemo } from 'react';
 import Link from 'next/link';
-import { Trash2, Edit } from 'lucide-react';
+import { Trash2, Edit, Search, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getAllPostsTyped, deletePost, getPostsByAuthorTyped, restorePost } from '@/lib/firestore';
 import { useAdminDialog } from '@/hooks/useAdminDialog';
@@ -14,6 +14,7 @@ export default function PostsPage(): React.ReactElement {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [search, setSearch] = useState('');
   const { dialogProps, showConfirm, showAlert } = useAdminDialog();
 
   useEffect(() => {
@@ -76,9 +77,18 @@ export default function PostsPage(): React.ReactElement {
   }, [posts]);
 
   const filtered = useMemo(() => {
-    if (activeCategory === 'all') return posts;
-    return posts.filter((p) => p.category === activeCategory);
-  }, [posts, activeCategory]);
+    const term = search.trim().toLowerCase();
+    return posts.filter((p) => {
+      if (activeCategory !== 'all' && p.category !== activeCategory) return false;
+      if (!term) return true;
+      return (
+        p.title?.toLowerCase().includes(term) ||
+        p.authorName?.toLowerCase().includes(term) ||
+        p.category?.toLowerCase().includes(term) ||
+        p.tags?.some((t) => t.toLowerCase().includes(term))
+      );
+    });
+  }, [posts, activeCategory, search]);
 
   return (
     <div className="flex-1 overflow-auto">
@@ -95,6 +105,28 @@ export default function PostsPage(): React.ReactElement {
             New Post
           </Link>
         </div>
+
+        {/* Search */}
+        {!loading && posts.length > 0 && (
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search by title, author, category or tag…"
+              className="w-full rounded-lg border border-gray-200 bg-white pl-10 pr-9 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-black focus:outline-none"
+            />
+            {search && (
+              <button
+                onClick={() => setSearch('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Category filter chips */}
         {!loading && posts.length > 0 && (
@@ -132,7 +164,11 @@ export default function PostsPage(): React.ReactElement {
           <div className="text-center text-gray-500">Loading...</div>
         ) : filtered.length === 0 ? (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center text-gray-600">
-            {posts.length === 0 ? 'No posts yet. Create your first post.' : 'No posts in this category.'}
+            {posts.length === 0
+              ? 'No posts yet. Create your first post.'
+              : search
+                ? `No posts match "${search}".`
+                : 'No posts in this category.'}
           </div>
         ) : (
           <div className="overflow-x-auto rounded-lg border border-gray-200">
