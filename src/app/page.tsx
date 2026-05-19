@@ -39,8 +39,14 @@ export function HomeContent() {
           getTravellers(),
           getSiteSettings(),
         ]);
-        // Filter only published posts
-        const publishedPosts = allPosts.filter((p) => p.status === 'published');
+        // Filter only published posts, sorted newest-published first
+        const publishedPosts = allPosts
+          .filter((p) => p.status === 'published')
+          .sort((a, b) => {
+            const dateA = a.publishedAt || a.createdAt;
+            const dateB = b.publishedAt || b.createdAt;
+            return new Date(dateB).getTime() - new Date(dateA).getTime();
+          });
         setPosts(publishedPosts);
         setTestimonialsList(testimonials);
         setTravellersList(travellerData);
