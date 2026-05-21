@@ -73,7 +73,7 @@ export async function updateAuthorProfileAction(
   avatarUrl: string,
   city: string = '',
   country: string = '',
-  socialLinks?: { twitter?: string; instagram?: string; website?: string }
+  socialLinks?: { twitter?: string; instagram?: string; website?: string; linkedin?: string }
 ): Promise<{ error?: string }> {
   try {
     const updateData: any = {

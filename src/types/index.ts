@@ -19,6 +19,7 @@ export interface UserProfile {
     twitter?: string;
     instagram?: string;
     website?: string;
+    linkedin?: string;
   };
   createdAt: string;
   updatedAt: string;

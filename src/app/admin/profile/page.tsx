@@ -6,7 +6,7 @@ import { updateUserProfile } from '@/lib/users';
 import { uploadImageToCloudinary } from '@/lib/cloudinary';
 import { updateProfile } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
-import { Camera, MapPin, Globe, Twitter, Instagram, User, FileText, AlignLeft, Mail } from 'lucide-react';
+import { Camera, MapPin, Globe, Twitter, Instagram, Linkedin, User, FileText, AlignLeft, Mail } from 'lucide-react';
 
 const inputCls =
   'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-gray-400 transition bg-white';
@@ -31,6 +31,7 @@ export default function ProfilePage(): React.ReactElement {
   const [twitterUrl, setTwitterUrl] = useState(userProfile?.socialLinks?.twitter || '');
   const [instagramUrl, setInstagramUrl] = useState(userProfile?.socialLinks?.instagram || '');
   const [websiteUrl, setWebsiteUrl] = useState(userProfile?.socialLinks?.website || '');
+  const [linkedinUrl, setLinkedinUrl] = useState(userProfile?.socialLinks?.linkedin || '');
   const [avatarUrl, setAvatarUrl] = useState(userProfile?.avatarUrl || '');
   const [isUploading, setIsUploading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -60,7 +61,7 @@ export default function ProfilePage(): React.ReactElement {
     try {
       await updateUserProfile(user.uid, {
         displayName, bio, details, city, country, avatarUrl,
-        socialLinks: { twitter: twitterUrl, instagram: instagramUrl, website: websiteUrl },
+        socialLinks: { twitter: twitterUrl, instagram: instagramUrl, website: websiteUrl, linkedin: linkedinUrl },
         updatedAt: new Date().toISOString(),
       });
       await updateProfile(auth.currentUser!, { displayName, photoURL: avatarUrl });
@@ -164,7 +165,7 @@ export default function ProfilePage(): React.ReactElement {
 
             <div className="p-5">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Social Links</p>
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                 <div>
                   <Label icon={<Twitter className="w-3 h-3" />} text="Twitter / X" />
                   <input type="url" value={twitterUrl} onChange={(e) => setTwitterUrl(e.target.value)} placeholder="https://twitter.com/…" className={inputCls} />
@@ -172,6 +173,10 @@ export default function ProfilePage(): React.ReactElement {
                 <div>
                   <Label icon={<Instagram className="w-3 h-3" />} text="Instagram" />
                   <input type="url" value={instagramUrl} onChange={(e) => setInstagramUrl(e.target.value)} placeholder="https://instagram.com/…" className={inputCls} />
+                </div>
+                <div>
+                  <Label icon={<Linkedin className="w-3 h-3" />} text="LinkedIn" />
+                  <input type="url" value={linkedinUrl} onChange={(e) => setLinkedinUrl(e.target.value)} placeholder="https://linkedin.com/in/…" className={inputCls} />
                 </div>
                 <div>
                   <Label icon={<Globe className="w-3 h-3" />} text="Website" />

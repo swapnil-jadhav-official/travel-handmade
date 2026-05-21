@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Linkedin } from "lucide-react";
 import Header from "@/components/Common/Header";
 import Footer from "@/components/Common/Footer";
 import BlogContent from "@/components/BlogContent";
@@ -180,15 +181,32 @@ export default function BlogPost({ params }: BlogPageProps) {
               </div>
               {/* Author Info */}
               <div className="flex-1">
-                <div className="text-[13px] font-light text-black mb-4">
-                  Words: {authorProfile?.displayName || post?.author || post?.authorName}
-                  {' // '}
-                  {authorProfile?.socialLinks?.instagram ? (
-                    <a href={authorProfile.socialLinks.instagram} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      @{authorProfile.socialLinks.instagram.replace(/\/+$/, '').split('/').pop() || authorProfile.socialLinks.instagram}
+                <div className="text-[13px] font-light text-black mb-4 flex items-center gap-3 flex-wrap">
+                  <span>
+                    Words: {authorProfile?.displayName || post?.author || post?.authorName}
+                    {' // '}
+                    {(() => {
+                      const sl = authorProfile?.socialLinks;
+                      const social = sl?.instagram || sl?.twitter || sl?.linkedin || sl?.website;
+                      if (!social) return `@${(authorProfile?.displayName || post?.author)?.toLowerCase().replace(/\s+/g, '')}`;
+                      const handle = social.replace(/\/+$/, '').split('/').pop() || social;
+                      const isHandle = sl?.instagram || sl?.twitter;
+                      return (
+                        <a href={social} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                          {isHandle ? `@${handle}` : handle}
+                        </a>
+                      );
+                    })()}
+                  </span>
+                  {authorProfile?.socialLinks?.linkedin && (
+                    <a
+                      href={authorProfile.socialLinks.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center hover:opacity-70 transition-opacity"
+                    >
+                      <Linkedin className="h-4 w-4" />
                     </a>
-                  ) : (
-                    `@${(authorProfile?.displayName || post?.author)?.toLowerCase().replace(/\s+/g, '')}`
                   )}
                 </div>
                 {/* Author Details */}

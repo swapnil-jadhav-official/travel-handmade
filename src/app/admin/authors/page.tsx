@@ -41,6 +41,7 @@ export default function AuthorsPage(): React.ReactElement {
     twitter: '',
     instagram: '',
     website: '',
+    linkedin: '',
   });
   const [uploading, setUploading] = useState(false);
 
@@ -132,6 +133,7 @@ export default function AuthorsPage(): React.ReactElement {
       twitter: author.socialLinks?.twitter || '',
       instagram: author.socialLinks?.instagram || '',
       website: author.socialLinks?.website || '',
+      linkedin: author.socialLinks?.linkedin || '',
     });
   };
 
@@ -148,6 +150,7 @@ export default function AuthorsPage(): React.ReactElement {
       twitter: '',
       instagram: '',
       website: '',
+      linkedin: '',
     });
   };
 
@@ -189,6 +192,7 @@ export default function AuthorsPage(): React.ReactElement {
         twitter: editFormData.twitter,
         instagram: editFormData.instagram,
         website: editFormData.website,
+        linkedin: editFormData.linkedin,
       }
     );
 
@@ -597,6 +601,21 @@ export default function AuthorsPage(): React.ReactElement {
                       }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
                       placeholder="https://example.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      LinkedIn (optional)
+                    </label>
+                    <input
+                      type="url"
+                      value={editFormData.linkedin}
+                      onChange={(e) =>
+                        setEditFormData({ ...editFormData, linkedin: e.target.value })
+                      }
+                      className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                      placeholder="https://linkedin.com/in/…"
                     />
                   </div>
                 </div>
