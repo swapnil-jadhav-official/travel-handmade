@@ -183,50 +183,54 @@ export default function HeroPage(): React.ReactElement {
         </div>
 
         {/* Add Posts */}
-        {selectedIds.length < MAX_HERO && (
-          <div>
-            <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide mb-3">
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide">
               Add Posts
             </h2>
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search by title..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-black mb-3"
-            />
-            <div className="space-y-2 max-h-80 overflow-y-auto">
-              {availablePosts.length === 0 ? (
-                <p className="text-sm text-gray-400 text-center py-4">No posts found</p>
-              ) : (
-                availablePosts.map((post) => (
-                  <div
-                    key={post.id}
-                    className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition"
-                  >
-                    {post.featuredImage && (
-                      <img
-                        src={post.featuredImage}
-                        alt={post.title}
-                        className="w-14 h-10 object-cover rounded flex-shrink-0"
-                      />
-                    )}
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 truncate">{post.title}</p>
-                      <p className="text-xs text-gray-500 capitalize">{post.category?.replace(/-/g, ' ')}</p>
-                    </div>
-                    <button
-                      onClick={() => handleAdd(post.id)}
-                      className="p-1 text-gray-400 hover:text-black transition flex-shrink-0"
-                    >
-                      <Plus className="h-5 w-5" />
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
+            {selectedIds.length >= MAX_HERO && (
+              <span className="text-xs text-amber-600 font-medium">Max {MAX_HERO} reached — remove one to swap</span>
+            )}
           </div>
-        )}
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by title..."
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-black mb-3"
+          />
+          <div className="space-y-2 max-h-80 overflow-y-auto">
+            {availablePosts.length === 0 ? (
+              <p className="text-sm text-gray-400 text-center py-4">No posts found</p>
+            ) : (
+              availablePosts.map((post) => (
+                <div
+                  key={post.id}
+                  className="flex items-center gap-3 p-3 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 transition"
+                >
+                  {post.featuredImage && (
+                    <img
+                      src={post.featuredImage}
+                      alt={post.title}
+                      className="w-14 h-10 object-cover rounded flex-shrink-0"
+                    />
+                  )}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">{post.title}</p>
+                    <p className="text-xs text-gray-500 capitalize">{post.category?.replace(/-/g, ' ')}</p>
+                  </div>
+                  <button
+                    onClick={() => handleAdd(post.id)}
+                    disabled={selectedIds.length >= MAX_HERO}
+                    className="p-1 text-gray-400 hover:text-black transition flex-shrink-0 disabled:opacity-30 disabled:cursor-not-allowed"
+                  >
+                    <Plus className="h-5 w-5" />
+                  </button>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

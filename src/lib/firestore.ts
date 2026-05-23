@@ -243,11 +243,7 @@ export async function getPostTyped(postId: string): Promise<Post | null> {
 
 export async function getAllPostsTyped(): Promise<Post[]> {
   try {
-    const q = query(
-      collection(db, POSTS_COLLECTION),
-      orderBy('createdAt', 'desc')
-    );
-    const querySnapshot = await getDocsFromServer(q);
+    const querySnapshot = await getDocsFromServer(collection(db, POSTS_COLLECTION));
     const seen = new Set<string>();
     return querySnapshot.docs
       .map((doc) => {
@@ -267,6 +263,11 @@ export async function getAllPostsTyped(): Promise<Post[]> {
         if (seen.has(post.id)) return false;
         seen.add(post.id);
         return true;
+      })
+      .sort((a, b) => {
+        const dateA = a.createdAt || '';
+        const dateB = b.createdAt || '';
+        return dateB.localeCompare(dateA);
       });
   } catch (error) {
     console.error('Error fetching all posts:', error);
@@ -418,8 +419,7 @@ export async function getPostsByAuthorTyped(authorId: string): Promise<Post[]> {
   try {
     const q = query(
       collection(db, POSTS_COLLECTION),
-      where('authorId', '==', authorId),
-      orderBy('createdAt', 'desc')
+      where('authorId', '==', authorId)
     );
     const querySnapshot = await getDocsFromServer(q);
     const seen = new Set<string>();
@@ -440,7 +440,8 @@ export async function getPostsByAuthorTyped(authorId: string): Promise<Post[]> {
         if (seen.has(post.id)) return false;
         seen.add(post.id);
         return true;
-      });
+      })
+      .sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   } catch (error) {
     console.error('Error fetching posts by author:', error);
     throw error;
