@@ -31,18 +31,22 @@ export default function HeroCarousel({
     <section className="relative w-full overflow-hidden bg-gray-300">
       <div className="relative w-full h-[calc(100dvh-67px)]">
         {/* Images */}
-        {images.map((image, index) => (
-          <Image
-            key={image.id}
-            src={image.image}
-            alt={image.title}
-            fill
-            className={`object-cover transition-opacity duration-700 ${
-              index === activeIndex ? 'opacity-100' : 'opacity-0'
-            }`}
-            priority={index === 0}
-          />
-        ))}
+        {images.map((image, index) => {
+          const isActive = index === activeIndex;
+          const isNext = index === (activeIndex + 1) % images.length;
+          if (!isActive && !isNext) return null;
+          return (
+            <Image
+              key={image.id}
+              src={image.image}
+              alt={image.title}
+              fill
+              sizes="100vw"
+              className={`object-cover transition-opacity duration-700 ${isActive ? 'opacity-100' : 'opacity-0'}`}
+              priority={index === 0}
+            />
+          );
+        })}
 
         {/* Gradient Overlay - Dark at bottom, transparent at top */}
         <div className="absolute inset-0 z-5" style={{

@@ -84,10 +84,39 @@ export default function BlogPost({ params }: BlogPageProps) {
     return (
       <>
         <Header />
-        <main className="min-h-screen bg-gray-50 py-12">
-          <div className="max-w-4xl mx-auto px-4">
-            <p className="text-gray-500 text-center">Loading...</p>
+        <main className="bg-white">
+          {/* Hero skeleton */}
+          <div className="w-full bg-gray-200 animate-pulse" style={{ height: 'calc(100dvh - 67px)' }} />
+
+          {/* Meta skeleton */}
+          <div className="px-6 sm:px-12 lg:px-24 py-10 lg:py-14 border-b border-black/10 flex flex-col items-center gap-4">
+            <div className="h-4 w-28 bg-gray-200 animate-pulse rounded" />
+            <div className="h-8 w-3/4 bg-gray-200 animate-pulse rounded" />
+            <div className="h-8 w-1/2 bg-gray-200 animate-pulse rounded" />
+            <div className="h-4 w-48 bg-gray-100 animate-pulse rounded" />
           </div>
+
+          {/* Content skeleton */}
+          <article className="max-w-4xl mx-auto px-6 py-12 lg:px-8">
+            <div className="space-y-3">
+              {[100, 100, 75, 100, 100, 60, 100, 100, 80].map((w, i) => (
+                <div
+                  key={i}
+                  className="h-4 bg-gray-200 animate-pulse rounded"
+                  style={{ width: `${w}%` }}
+                />
+              ))}
+            </div>
+            <div className="mt-8 space-y-3">
+              {[100, 90, 100, 100, 70].map((w, i) => (
+                <div
+                  key={i}
+                  className="h-4 bg-gray-200 animate-pulse rounded"
+                  style={{ width: `${w}%` }}
+                />
+              ))}
+            </div>
+          </article>
         </main>
         <Footer />
       </>

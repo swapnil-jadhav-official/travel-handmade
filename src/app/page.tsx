@@ -1,124 +1,32 @@
-'use client';
+import { HomeContent } from '@/components/HomeContent';
+import {
+  getPublishedPostsServer,
+  getTestimonialsServer,
+  getTravellersServer,
+  getSiteSettingsServer,
+} from '@/lib/firestore-server';
 
-import SectionTracker from '@/components/SectionTracker';
-import { useEffect, useState } from 'react';
-import Header from '@/components/Common/Header';
-import Footer from '@/components/Common/Footer';
-import HeroCarousel from '@/components/sections/HeroCarousel';
-import LatestArticles from '@/components/sections/LatestArticles';
-import TravelLiving from '@/components/sections/TravelLiving';
-import AdventureWildlife from '@/components/sections/AdventureWildlife';
-import FoodDrinks from '@/components/sections/FoodDrinks';
-import Retreats from '@/components/sections/Retreats';
-import Wellness from '@/components/sections/Wellness';
-import ChangeMaker from '@/components/sections/ChangeMaker';
-import TravellerSection from '@/components/sections/Traveller';
-import { getAllPostsTyped, getTestimonials, getTravellers } from '@/lib/firestore';
-import { getSiteSettings } from '@/lib/settings';
-import type { Testimonial, Traveller } from '@/types';
-import type { Post } from '@/types';
+export default async function Home() {
+  const [posts, testimonials, travellers, settings] = await Promise.all([
+    getPublishedPostsServer(),
+    getTestimonialsServer(),
+    getTravellersServer(),
+    getSiteSettingsServer(),
+  ]);
 
-export default function Home() {
-  return <HomeContent />;
-}
-
-export function HomeContent() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [testimonialsList, setTestimonialsList] = useState<Testimonial[]>([]);
-  const [travellersList, setTravellersList] = useState<Traveller[]>([]);
-  const [featuredVideo, setFeaturedVideo] = useState<{ url?: string; title?: string; creator?: string; thumbnail?: string } | null>(null);
-  const [siteSettings, setSiteSettings] = useState<{ heroPostIds?: string[] } | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [allPosts, testimonials, travellerData, settings] = await Promise.all([
-          getAllPostsTyped(),
-          getTestimonials(),
-          getTravellers(),
-          getSiteSettings(),
-        ]);
-        // Filter only published posts, sorted newest-published first
-        const publishedPosts = allPosts
-          .filter((p) => p.status === 'published')
-          .sort((a, b) => {
-            const dateA = a.publishedAt || a.createdAt;
-            const dateB = b.publishedAt || b.createdAt;
-            return new Date(dateB).getTime() - new Date(dateA).getTime();
-          });
-        setPosts(publishedPosts);
-        setTestimonialsList(testimonials);
-        setTravellersList(travellerData);
-        setSiteSettings(settings);
-        if (settings?.featuredVideoUrl) {
-          setFeaturedVideo({
-            url: settings.featuredVideoUrl,
-            title: settings.featuredVideoTitle,
-            creator: settings.featuredVideoCreator,
-            thumbnail: settings.featuredVideoThumbnail,
-          });
-        }
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Convert Post to Article format (map featuredImage to image)
-  const postsAsArticles = posts.map((post) => ({
-    id: post.id,
-    title: post.title,
-    image: post.featuredImage || '',
-    slug: post.slug,
-    category: post.category,
-    date: post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).toUpperCase() : '',
-    author: post.authorName,  // Use authorName instead of deprecated author field
-    readTime: post.readTime,
-    authorLocation: post.authorLocation,
-    authorCity: post.authorCity,
-    authorCountry: post.authorCountry,
-  }));
-
-  // Create hero images from manually selected posts only
-  const heroPostIds = siteSettings?.heroPostIds || [];
-  const heroImages = heroPostIds
-    .map((id) => posts.find((p) => p.id === id))
-    .filter(Boolean)
-    .map((post) => ({
-      id: post!.id,
-      image: post!.featuredImage!,
-      title: post!.title,
-      link: post!.slug,
-    }));
-
-  // Organize posts by category
-  const latestArticles = postsAsArticles.slice(0, 4);
-  const travelLivingArticles = postsAsArticles.filter((p) => p.category === 'travel-living').slice(0, 3);
-  const adventureArticles = postsAsArticles.filter((p) => p.category === 'adventure-wildlife').slice(0, 3);
-  const foodDrinksArticles = postsAsArticles.filter((p) => p.category === 'food-drinks').slice(0, 3);
-  const retreatsArticles = postsAsArticles.filter((p) => p.category === 'retreats').slice(0, 3);
-  const wellnessArticles = postsAsArticles.filter((p) => p.category === 'wellness').slice(0, 3);
+  // Sort by publishedAt first, fall back to createdAt — matches previous client-side sort
+  const sortedPosts = [...posts].sort((a, b) => {
+    const dateA = a.publishedAt || a.createdAt;
+    const dateB = b.publishedAt || b.createdAt;
+    return new Date(dateB).getTime() - new Date(dateA).getTime();
+  });
 
   return (
-    <div className="flex flex-col min-h-screen bg-white">
-      <Header />
-      <main className="flex-1 w-full space-y-8 lg:space-y-12">
-        {heroImages.length > 0 && <div className="relative"><SectionTracker sectionName="Hero" /><HeroCarousel images={heroImages} /></div>}
-        {!loading && latestArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Latest Articles" /><LatestArticles articles={latestArticles} /></div>}
-        {!loading && travelLivingArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Travel Living" /><TravelLiving articles={travelLivingArticles} /></div>}
-        {!loading && adventureArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Adventure Wildlife" /><AdventureWildlife articles={adventureArticles} /></div>}
-        {!loading && foodDrinksArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Food Drinks" /><FoodDrinks articles={foodDrinksArticles} /></div>}
-        {!loading && retreatsArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Retreats" /><Retreats articles={retreatsArticles} /></div>}
-        {!loading && wellnessArticles.length > 0 && <div className="relative"><SectionTracker sectionName="Wellness" /><Wellness articles={wellnessArticles} /></div>}
-        {!loading && testimonialsList.length > 0 && <div className="relative"><SectionTracker sectionName="Changemaker" /><ChangeMaker testimonials={testimonialsList} featuredVideo={featuredVideo} /></div>}
-        {!loading && travellersList.length > 0 && <div className="relative"><SectionTracker sectionName="Traveller" /><TravellerSection travellers={travellersList} /></div>}
-      </main>
-      <Footer />
-    </div>
+    <HomeContent
+      posts={sortedPosts}
+      testimonials={testimonials}
+      travellers={travellers}
+      settings={settings}
+    />
   );
 }

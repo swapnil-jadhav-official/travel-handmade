@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import SectionHeader from '@/components/ui/SectionHeader';
 import type { Testimonial } from '@/types';
 
@@ -54,10 +55,12 @@ export default function ChangeMaker({
             <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] lg:aspect-auto lg:h-full overflow-hidden group cursor-pointer">
               {hasThumbnail && !isPlaying ? (
                 <>
-                  <img
-                    src={featuredVideo.thumbnail}
+                  <Image
+                    src={featuredVideo.thumbnail!}
                     alt={featuredVideo.title || 'Featured Video'}
-                    className="absolute inset-0 w-full h-full object-cover object-top"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 35vw"
+                    className="object-cover object-top"
                   />
                   {/* Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent pointer-events-none" />
@@ -141,19 +144,18 @@ export default function ChangeMaker({
             {active.author}
           </footer>
 
-          {/* Rotating Image */}
+          {/* Rotating Image — only render the active testimonial image */}
           <div className="absolute top-0 right-0 w-[45%] sm:w-[40%] lg:w-[35%] h-full overflow-hidden">
-            {testimonials.map((testimonial, index) => (
-              <img
-                key={testimonial.id}
-                src={testimonial.image}
-                alt={testimonial.author}
-                loading="eager"
-                className={`absolute top-0 left-0 h-full w-full object-cover transition-opacity duration-700 ${
-                  index === activeIndex ? 'opacity-100' : 'opacity-0 pointer-events-none'
-                }`}
+            {active.image && (
+              <Image
+                key={active.id}
+                src={active.image}
+                alt={active.author}
+                fill
+                sizes="(max-width: 640px) 45vw, (max-width: 1024px) 40vw, 35vw"
+                className="object-cover"
               />
-            ))}
+            )}
           </div>
         </div>
       </div>

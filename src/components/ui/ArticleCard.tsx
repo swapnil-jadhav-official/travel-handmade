@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Article } from '@/types';
 
 interface ArticleCardProps {
@@ -14,11 +15,13 @@ export default function ArticleCard({
     <Link href={`/blog/${article.slug}`}>
       <article className={`group cursor-pointer ${className}`}>
         {/* Image Container */}
-        <div className="relative w-full overflow-hidden bg-gray-200">
-          <img
+        <div className="relative h-72 w-full overflow-hidden bg-gray-200">
+          <Image
             src={article.image}
             alt={article.title}
-            className="h-72 w-full object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover"
           />
         </div>
 

@@ -107,7 +107,18 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         {/* Posts Grid */}
         <div className="max-w-7xl mx-auto px-4 py-12">
           {loading ? (
-            <p className="text-center text-gray-500">Loading posts...</p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-12 gap-y-14 lg:gap-y-16">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i}>
+                  <div className="relative w-full aspect-square bg-gray-200 animate-pulse" />
+                  <div className="pt-4 pb-2 space-y-2">
+                    <div className="h-4 w-full bg-gray-200 animate-pulse rounded" />
+                    <div className="h-4 w-3/4 bg-gray-200 animate-pulse rounded" />
+                    <div className="h-3 w-1/2 bg-gray-100 animate-pulse rounded" />
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : posts.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-600 text-lg mb-4">No posts found in this category</p>
