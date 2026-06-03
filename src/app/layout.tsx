@@ -68,6 +68,11 @@ export async function generateMetadata(): Promise<Metadata> {
 
   return {
     metadataBase: new URL('https://www.travelhandmade.com'),
+    icons: {
+      icon: '/favicon.png',
+      shortcut: '/favicon.png',
+      apple: '/favicon.png',
+    },
     title: {
       default: siteTitle,
       template: `%s | ${siteTitle}`,

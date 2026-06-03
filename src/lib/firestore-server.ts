@@ -97,6 +97,59 @@ export async function getTravellersServer(): Promise<Traveller[]> {
   }
 }
 
+export async function getPostBySlugServer(slug: string): Promise<Post | null> {
+  try {
+    const db = await getAdminDb();
+    if (!db) return null;
+
+    const snapshot = await db
+      .collection('posts')
+      .where('slug', '==', slug)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) return null;
+
+    const doc = snapshot.docs[0];
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      createdAt: toIso(data.createdAt),
+      updatedAt: toIso(data.updatedAt),
+      publishedAt: data.publishedAt ? toIso(data.publishedAt) : undefined,
+    } as Post;
+  } catch (error) {
+    console.error('Server: Error fetching post by slug:', error);
+    return null;
+  }
+}
+
+export async function getCategoryBySlugServer(slug: string): Promise<{ name: string; description?: string; featuredImage?: string } | null> {
+  try {
+    const db = await getAdminDb();
+    if (!db) return null;
+
+    const snapshot = await db
+      .collection('categories')
+      .where('slug', '==', slug)
+      .limit(1)
+      .get();
+
+    if (snapshot.empty) return null;
+
+    const data = snapshot.docs[0].data();
+    return {
+      name: data.name,
+      description: data.description,
+      featuredImage: data.featuredImage,
+    };
+  } catch (error) {
+    console.error('Server: Error fetching category by slug:', error);
+    return null;
+  }
+}
+
 export async function getSiteSettingsServer(): Promise<SiteSettings | null> {
   try {
     const db = await getAdminDb();
