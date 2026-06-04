@@ -24,24 +24,20 @@ export default function BlogContent({ html, articleType = 'listicle' }: BlogCont
     images.forEach((img) => {
       const caption = img.getAttribute('data-caption');
 
-      // Skip if already wrapped in figure/figcaption
-      if (img.closest('figure')?.querySelector('figcaption')) {
-        return;
-      }
+      // Skip if already wrapped in a figure
+      if (img.closest('figure')) return;
+
+      // Always wrap in <figure> so gallery layout styles ([&_figure]) apply
+      // regardless of whether a caption exists
+      const figure = document.createElement('figure');
+      figure.className = 'my-6';
+      img.replaceWith(figure);
+      figure.appendChild(img);
 
       if (caption) {
-        // Create a figure element
-        const figure = document.createElement('figure');
-        figure.className = 'my-6';
-
-        // Create figcaption
         const figcaption = document.createElement('figcaption');
         figcaption.className = 'mt-3 text-[10px] text-gray-600 text-center italic font-light';
         figcaption.textContent = caption;
-
-        // Wrap image in figure
-        img.replaceWith(figure);
-        figure.appendChild(img);
         figure.appendChild(figcaption);
       }
     });
