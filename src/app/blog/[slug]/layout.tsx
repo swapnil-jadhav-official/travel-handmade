@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getPostBySlug } from '@/lib/firestore';
+import { getPostBySlugServer } from '@/lib/firestore-server';
 import JsonLd from '@/components/JsonLd';
 
 const BASE_URL = 'https://www.travelhandmade.com';
@@ -21,14 +21,24 @@ function toOgDescription(text: string, max = 155): string {
   return text.length <= max ? text : text.slice(0, max - 1).trimEnd() + '…';
 }
 
+function titleFromSlug(slug: string): string {
+  return slug
+    .split('-')
+    .filter(Boolean)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlugServer(slug);
 
   if (!post) {
     return {
-      title: 'Article Not Found',
-      robots: { index: false, follow: false },
+      title: titleFromSlug(slug),
+      alternates: {
+        canonical: `${BASE_URL}/blog/${slug}`,
+      },
     };
   }
 
@@ -63,7 +73,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogSlugLayout({ params, children }: Props) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const post = await getPostBySlugServer(slug);
 
   if (!post) return <>{children}</>;
 

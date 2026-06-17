@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { getCategoryBySlugServer } from '@/lib/firestore-server';
+import { getCategoryBySlugServer, getPostsByCategoryServer } from '@/lib/firestore-server';
 import CategoryPageContent from './CategoryPageContent';
 
 const DEFAULT_OG_IMAGE = 'https://res.cloudinary.com/dzrabrzd4/image/upload/v1778396717/k5bn4hhzofln8atagn6r.png';
@@ -36,5 +36,10 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
   const { slug } = await params;
-  return <CategoryPageContent slug={slug} />;
+  const [category, posts] = await Promise.all([
+    getCategoryBySlugServer(slug),
+    getPostsByCategoryServer(slug),
+  ]);
+
+  return <CategoryPageContent slug={slug} initialCategory={category} initialPosts={posts} />;
 }

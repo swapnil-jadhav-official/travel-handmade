@@ -16,6 +16,14 @@ async function getAdminDb() {
   }
 }
 
+function getPublicFirebaseConfig() {
+  const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+  const apiKey = process.env.NEXT_PUBLIC_FIREBASE_API_KEY;
+
+  if (!projectId || !apiKey) return null;
+  return { projectId, apiKey };
+}
+
 function toIso(ts: unknown): string {
   if (!ts) return '';
   if (typeof ts === 'string') return ts;
@@ -28,6 +36,103 @@ function toIso(ts: unknown): string {
     return (ts as { toDate: () => Date }).toDate().toISOString();
   }
   return '';
+}
+
+function firestoreValueToJs(value: unknown): unknown {
+  if (!value || typeof value !== 'object') return undefined;
+
+  const typedValue = value as Record<string, unknown>;
+  if ('stringValue' in typedValue) return typedValue.stringValue;
+  if ('integerValue' in typedValue) return Number(typedValue.integerValue);
+  if ('doubleValue' in typedValue) return Number(typedValue.doubleValue);
+  if ('booleanValue' in typedValue) return typedValue.booleanValue;
+  if ('timestampValue' in typedValue) return typedValue.timestampValue;
+  if ('nullValue' in typedValue) return null;
+  if ('arrayValue' in typedValue) {
+    const values = (typedValue.arrayValue as { values?: unknown[] }).values || [];
+    return values.map(firestoreValueToJs);
+  }
+  if ('mapValue' in typedValue) {
+    const fields = (typedValue.mapValue as { fields?: Record<string, unknown> }).fields || {};
+    return firestoreFieldsToJs(fields);
+  }
+
+  return undefined;
+}
+
+function firestoreFieldsToJs(fields: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(fields).map(([key, value]) => [key, firestoreValueToJs(value)])
+  );
+}
+
+async function getPostBySlugPublicServer(slug: string): Promise<Post | null> {
+  const config = getPublicFirebaseConfig();
+  if (!config) return null;
+
+  try {
+    const url = `https://firestore.googleapis.com/v1/projects/${config.projectId}/databases/(default)/documents:runQuery?key=${config.apiKey}`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        structuredQuery: {
+          from: [{ collectionId: 'posts' }],
+          where: {
+            compositeFilter: {
+              op: 'AND',
+              filters: [
+                {
+                  fieldFilter: {
+                    field: { fieldPath: 'slug' },
+                    op: 'EQUAL',
+                    value: { stringValue: slug },
+                  },
+                },
+                {
+                  fieldFilter: {
+                    field: { fieldPath: 'status' },
+                    op: 'EQUAL',
+                    value: { stringValue: 'published' },
+                  },
+                },
+              ],
+            },
+          },
+          limit: 1,
+        },
+      }),
+      next: { revalidate: 3600 },
+    });
+
+    if (!response.ok) return null;
+
+    const results = (await response.json()) as Array<{
+      document?: {
+        name: string;
+        fields?: Record<string, unknown>;
+      };
+    }>;
+    const match = results.find((result) => result.document);
+
+    if (!match?.document?.fields) return null;
+
+    const data = firestoreFieldsToJs(match.document.fields);
+    const id = match.document.name.split('/').pop() || '';
+
+    return {
+      ...data,
+      id,
+      authorName: (data.authorName || data.author || '') as string,
+      createdAt: toIso(data.createdAt),
+      updatedAt: toIso(data.updatedAt),
+      publishedAt: data.publishedAt ? toIso(data.publishedAt) : undefined,
+      deletedAt: data.deletedAt ? toIso(data.deletedAt) : undefined,
+    } as Post;
+  } catch (error) {
+    console.error('Server: Error fetching post by slug with public Firestore REST:', error);
+    return null;
+  }
 }
 
 export async function getPublishedPostsServer(): Promise<Post[]> {
@@ -100,7 +205,7 @@ export async function getTravellersServer(): Promise<Traveller[]> {
 export async function getPostBySlugServer(slug: string): Promise<Post | null> {
   try {
     const db = await getAdminDb();
-    if (!db) return null;
+    if (!db) return getPostBySlugPublicServer(slug);
 
     const snapshot = await db
       .collection('posts')
@@ -108,7 +213,7 @@ export async function getPostBySlugServer(slug: string): Promise<Post | null> {
       .limit(1)
       .get();
 
-    if (snapshot.empty) return null;
+    if (snapshot.empty) return getPostBySlugPublicServer(slug);
 
     const doc = snapshot.docs[0];
     const data = doc.data();
@@ -121,11 +226,42 @@ export async function getPostBySlugServer(slug: string): Promise<Post | null> {
     } as Post;
   } catch (error) {
     console.error('Server: Error fetching post by slug:', error);
-    return null;
+    return getPostBySlugPublicServer(slug);
   }
 }
 
-export async function getCategoryBySlugServer(slug: string): Promise<{ name: string; description?: string; featuredImage?: string } | null> {
+export async function getPostsByCategoryServer(category: string): Promise<Post[]> {
+  try {
+    const db = await getAdminDb();
+    if (!db) return [];
+
+    const snapshot = await db
+      .collection('posts')
+      .where('status', '==', 'published')
+      .where('category', '==', category)
+      .orderBy('createdAt', 'desc')
+      .get();
+
+    return snapshot.docs
+      .map((doc) => {
+        const data = doc.data();
+        return {
+          id: doc.id,
+          ...data,
+          createdAt: toIso(data.createdAt),
+          updatedAt: toIso(data.updatedAt),
+          publishedAt: data.publishedAt ? toIso(data.publishedAt) : undefined,
+          deletedAt: data.deletedAt ? toIso(data.deletedAt) : undefined,
+        } as Post;
+      })
+      .filter((post) => !post.deletedAt);
+  } catch (error) {
+    console.error('Server: Error fetching posts by category:', error);
+    return [];
+  }
+}
+
+export async function getCategoryBySlugServer(slug: string): Promise<{ id?: string; name: string; slug?: string; description?: string; subDescription?: string; subDescriptionLabel?: string; color?: string; featuredImage?: string } | null> {
   try {
     const db = await getAdminDb();
     if (!db) return null;
@@ -138,10 +274,16 @@ export async function getCategoryBySlugServer(slug: string): Promise<{ name: str
 
     if (snapshot.empty) return null;
 
-    const data = snapshot.docs[0].data();
+    const doc = snapshot.docs[0];
+    const data = doc.data();
     return {
+      id: doc.id,
       name: data.name,
+      slug: data.slug,
       description: data.description,
+      subDescription: data.subDescription,
+      subDescriptionLabel: data.subDescriptionLabel,
+      color: data.color,
       featuredImage: data.featuredImage,
     };
   } catch (error) {

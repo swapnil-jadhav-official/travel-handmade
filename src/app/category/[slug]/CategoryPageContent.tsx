@@ -10,14 +10,28 @@ import type { Post, Category } from '@/types';
 
 const POSTS_PER_PAGE = 16;
 
-export default function CategoryPageContent({ slug }: { slug: string }) {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [loading, setLoading] = useState(true);
+interface CategoryPageContentProps {
+  slug: string;
+  initialPosts?: Post[];
+  initialCategory?: Partial<Category> | null;
+}
+
+export default function CategoryPageContent({
+  slug,
+  initialPosts = [],
+  initialCategory = null,
+}: CategoryPageContentProps) {
+  const [posts, setPosts] = useState<Post[]>(initialPosts);
+  const [category, setCategory] = useState<Category | null>(
+    initialCategory ? ({ id: initialCategory.id || slug, ...initialCategory } as Category) : null
+  );
+  const [loading, setLoading] = useState(!initialCategory && initialPosts.length === 0);
   const [categoryNotFound, setCategoryNotFound] = useState(false);
   const [page, setPage] = useState(0);
 
   useEffect(() => {
+    if (initialCategory || initialPosts.length > 0) return;
+
     const fetchCategoryPosts = async () => {
       try {
         setLoading(true);
@@ -36,7 +50,7 @@ export default function CategoryPageContent({ slug }: { slug: string }) {
       }
     };
     fetchCategoryPosts();
-  }, [slug]);
+  }, [slug, initialCategory, initialPosts.length]);
 
   if (categoryNotFound) notFound();
 

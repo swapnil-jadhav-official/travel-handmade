@@ -12,14 +12,24 @@ import { getAllPostsTyped, getCategories } from "@/lib/firestore";
 import { getUserProfile } from "@/lib/users";
 import type { Post, UserProfile } from "@/types";
 
-export default function BlogPostContent({ slug }: { slug: string }) {
+interface BlogPostContentProps {
+  slug: string;
+  initialPost?: Post | null;
+}
+
+export default function BlogPostContent({ slug, initialPost = null }: BlogPostContentProps) {
   const searchParams = useSearchParams();
   const isPreview = searchParams.get('preview') === 'true';
-  const [post, setPost] = useState<Post | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState<Post | null>(initialPost);
+  const [loading, setLoading] = useState(!initialPost || isPreview);
   const [relatedPosts, setRelatedPosts] = useState<Post[]>([]);
   const [authorProfile, setAuthorProfile] = useState<UserProfile | null>(null);
   const [categoryName, setCategoryName] = useState<string>('');
+
+  useEffect(() => {
+    if (!post?.title) return;
+    document.title = `${post.seoTitle || post.title} | Travel Handmade`;
+  }, [post?.seoTitle, post?.title]);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -62,8 +72,47 @@ export default function BlogPostContent({ slug }: { slug: string }) {
       }
     };
 
+    const hydrateInitialPost = async (foundPost: Post) => {
+      try {
+        try {
+          const categories = await getCategories();
+          const cat = categories.find((c) => c.slug === foundPost.category);
+          if (cat) setCategoryName(cat.name);
+        } catch (error) {
+          console.error('Error fetching categories:', error);
+        }
+
+        if (foundPost.authorId) {
+          try {
+            const profile = await getUserProfile(foundPost.authorId);
+            if (profile) setAuthorProfile(profile);
+          } catch (error) {
+            console.error('Error fetching author profile:', error);
+          }
+        }
+
+        try {
+          const allPosts = await getAllPostsTyped();
+          const related = allPosts
+            .filter((p) => p.status === "published" && p.category === foundPost.category && p.id !== foundPost.id)
+            .slice(0, 4);
+          setRelatedPosts(related);
+        } catch (error) {
+          console.error('Error fetching related posts:', error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (initialPost && !isPreview) {
+      setPost(initialPost);
+      hydrateInitialPost(initialPost);
+      return;
+    }
+
     fetchPost();
-  }, [slug, isPreview]);
+  }, [slug, isPreview, initialPost]);
 
   if (loading) {
     return (
