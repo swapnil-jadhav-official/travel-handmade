@@ -10,7 +10,7 @@ interface BlogContentProps {
 const CAPTION_CLASS = 'mt-3 text-[10px] text-gray-600 text-center italic font-light';
 
 function getAttributeValue(tag: string, name: string): string {
-  const match = tag.match(new RegExp(`\\s${name}=(["'])(.*?)\\1`, 'i'));
+  const match = tag.match(new RegExp(`\\s${name}=(["'])([\\s\\S]*?)\\1`, 'i'));
   return match?.[2]?.trim() || '';
 }
 
