@@ -150,7 +150,7 @@ export function HomeContent({
   const latestArticles = postsAsArticles.slice(0, 4);
   const travelLivingArticles = postsAsArticles.filter((p) => p.category === 'travel-living').slice(0, 3);
   const adventureArticles = postsAsArticles.filter((p) => p.category === 'adventure-wildlife').slice(0, 3);
-  const foodDrinksArticles = postsAsArticles.filter((p) => p.category === 'food-drinks').slice(0, 3);
+  const foodDrinksArticles = postsAsArticles.filter((p) => p.category === 'food-drinks');
   const retreatsArticles = postsAsArticles.filter((p) => p.category === 'retreats').slice(0, 3);
   const wellnessArticles = postsAsArticles.filter((p) => p.category === 'wellness').slice(0, 3);
 
