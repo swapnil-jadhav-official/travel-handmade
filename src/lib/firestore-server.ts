@@ -102,7 +102,7 @@ async function getPostBySlugPublicServer(slug: string): Promise<Post | null> {
           limit: 1,
         },
       }),
-      next: { revalidate: 3600 },
+      cache: 'no-store',
     });
 
     if (!response.ok) return null;
