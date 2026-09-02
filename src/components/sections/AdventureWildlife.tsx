@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { Article } from "@/types";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 
 interface AdventureWildlifeProps {
   articles: Article[];
@@ -36,7 +37,7 @@ export default function AdventureWildlife({
         <div className="group relative overflow-hidden bg-gray-300 cursor-pointer h-dvh">
           {/* Background Image */}
           <Image
-            src={currentArticle.image}
+            src={optimizeCloudinaryUrl(currentArticle.image, 1920)}
             alt={currentArticle.title}
             fill
             sizes="100vw"

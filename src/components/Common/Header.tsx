@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { X, Menu } from 'lucide-react';
 import { getSiteSettings } from '@/lib/settings';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 import type { Category } from '@/types';
 
 export default function Header() {
@@ -48,7 +49,7 @@ export default function Header() {
         <Link href="/" className="shrink-0">
           {!loading && (logoUrl.startsWith('http') ? (
             <img
-              src={logoUrl}
+              src={optimizeCloudinaryUrl(logoUrl, 300)}
               alt="Travel Handmade"
               className="h-8 sm:h-10 md:h-12 w-auto"
             />

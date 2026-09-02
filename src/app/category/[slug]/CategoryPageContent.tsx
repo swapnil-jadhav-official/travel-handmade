@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
 import { getAllPostsTyped, getCategories } from '@/lib/firestore';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 import type { Post, Category } from '@/types';
 
 const POSTS_PER_PAGE = 16;
@@ -65,7 +66,7 @@ export default function CategoryPageContent({
         {/* Hero */}
         <div className="relative w-full bg-gray-200 overflow-hidden" style={{ height: 'calc(100dvh - 67px)' }}>
           {category?.featuredImage && (
-            <img src={category.featuredImage} alt={category.name} className="absolute inset-0 h-full w-full object-cover" />
+            <img src={optimizeCloudinaryUrl(category.featuredImage, 1920)} alt={category.name} className="absolute inset-0 h-full w-full object-cover" />
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/30 to-black/70" />
           <div className="absolute left-0 right-0 z-10 flex flex-col items-center px-6" style={{ bottom: '29px' }}>
@@ -127,7 +128,7 @@ export default function CategoryPageContent({
                   <Link key={post.id} href={`/blog/${post.slug}`} className="bg-white overflow-hidden group">
                     {post.featuredImage && (
                       <div className="relative w-full aspect-square bg-gray-200 overflow-hidden">
-                        <img src={post.featuredImage} alt={post.title} className="w-full h-full object-cover" />
+                        <img src={optimizeCloudinaryUrl(post.featuredImage, 800)} alt={post.title} className="w-full h-full object-cover" />
                       </div>
                     )}
                     <div className="pt-4 pb-2">

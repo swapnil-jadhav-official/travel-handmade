@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Article } from "@/types";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 
 interface WellnessProps {
   articles: Article[];
@@ -51,7 +52,7 @@ export default function Wellness({
         <Link href={`/blog/${visibleArticles[currentIndex].slug}`}>
           <div className="relative overflow-hidden bg-gray-300 cursor-pointer group aspect-[4/3]">
             <Image
-              src={visibleArticles[currentIndex].image}
+              src={optimizeCloudinaryUrl(visibleArticles[currentIndex].image, 1200)}
               alt={visibleArticles[currentIndex].title}
               fill
               sizes="100vw"
@@ -84,7 +85,7 @@ export default function Wellness({
           >
             <div className={`relative overflow-hidden bg-gray-300 cursor-pointer group ${idx === 0 ? "aspect-[826/484]" : "aspect-[413/484]"}`}>
               <Image
-                src={article.image}
+                src={optimizeCloudinaryUrl(article.image, 1200)}
                 alt={article.title}
                 fill
                 sizes={idx === 0 ? "(min-width: 640px) 66vw, 100vw" : "(min-width: 640px) 33vw, 100vw"}

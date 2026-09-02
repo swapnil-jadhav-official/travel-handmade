@@ -50,7 +50,7 @@ const DEFAULT_SITE_DESCRIPTION =
 const DEFAULT_OG_TITLE = 'Travel Handmade — Voice Of The Modern Traveller';
 const DEFAULT_OG_DESCRIPTION =
   'An independent digital publication documenting culture, food, place and people through immersive photography and long-form travel features.';
-const DEFAULT_OG_IMAGE = 'https://res.cloudinary.com/dzrabrzd4/image/upload/v1778396717/k5bn4hhzofln8atagn6r.png';
+const DEFAULT_OG_IMAGE = 'https://res.cloudinary.com/iomadqap/image/upload/v1778396717/k5bn4hhzofln8atagn6r.png';
 
 export async function generateMetadata(): Promise<Metadata> {
   let settings = null;

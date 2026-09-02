@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { Traveller } from '@/types';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface ProfileCardProps {
   traveller: Traveller;
@@ -27,7 +28,7 @@ export default function ProfileCard({
         onMouseLeave={() => setIsHovered(false)}
       >
         <img
-          src={traveller.image}
+          src={optimizeCloudinaryUrl(traveller.image, 800)}
           alt={traveller.traveller_name ? `${traveller.traveller_name}, traveller from ${traveller.country}` : `Traveller from ${traveller.country}`}
           className="absolute inset-0 h-full w-full object-cover object-top"
         />

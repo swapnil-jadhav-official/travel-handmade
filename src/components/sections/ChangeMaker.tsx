@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import SectionHeader from '@/components/ui/SectionHeader';
 import type { Testimonial } from '@/types';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface ChangeMakerProps {
   testimonials: Testimonial[];
@@ -56,7 +57,7 @@ export default function ChangeMaker({
               {hasThumbnail && !isPlaying ? (
                 <>
                   <Image
-                    src={featuredVideo.thumbnail!}
+                    src={optimizeCloudinaryUrl(featuredVideo.thumbnail!, 800)}
                     alt={featuredVideo.title || 'Featured Video'}
                     fill
                     sizes="(max-width: 1024px) 100vw, 35vw"
@@ -149,7 +150,7 @@ export default function ChangeMaker({
             {active.image && (
               <Image
                 key={active.id}
-                src={active.image}
+                src={optimizeCloudinaryUrl(active.image, 800)}
                 alt={active.author}
                 fill
                 sizes="(max-width: 640px) 45vw, (max-width: 1024px) 40vw, 35vw"

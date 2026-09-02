@@ -10,6 +10,7 @@ import BlogContent from "@/components/BlogContent";
 import ScrollDepthTracker from "@/components/ScrollDepthTracker";
 import { getAllPostsTyped, getCategories } from "@/lib/firestore";
 import { getUserProfile } from "@/lib/users";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 import type { Post, UserProfile } from "@/types";
 
 interface BlogPostContentProps {
@@ -168,7 +169,7 @@ export default function BlogPostContent({ slug, initialPost = null }: BlogPostCo
 
         {post.featuredImage && (
           <div className="relative w-full bg-gray-200 overflow-hidden" style={{ height: 'calc(100dvh - 67px)' }}>
-            <img src={post.featuredImage} alt={post.title} className="absolute inset-0 h-full w-full object-cover" />
+            <img src={optimizeCloudinaryUrl(post.featuredImage, 1920)} alt={post.title} className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/50" />
           </div>
         )}
@@ -197,7 +198,7 @@ export default function BlogPostContent({ slug, initialPost = null }: BlogPostCo
               <div className="flex-shrink-0">
                 <div className="w-24 h-24 sm:w-36 sm:h-36 bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-2xl sm:text-3xl overflow-hidden">
                   {authorProfile?.avatarUrl ? (
-                    <img src={authorProfile.avatarUrl} alt={post.author} className="w-full h-full object-cover" />
+                    <img src={optimizeCloudinaryUrl(authorProfile.avatarUrl, 200)} alt={post.author} className="w-full h-full object-cover" />
                   ) : (
                     post.author?.charAt(0)
                   )}
@@ -250,7 +251,7 @@ export default function BlogPostContent({ slug, initialPost = null }: BlogPostCo
                   <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} className="overflow-hidden group">
                     {relatedPost.featuredImage && (
                       <div className="relative w-full aspect-square bg-gray-200 overflow-hidden">
-                        <img src={relatedPost.featuredImage} alt={relatedPost.title} className="w-full h-full object-cover" />
+                        <img src={optimizeCloudinaryUrl(relatedPost.featuredImage, 800)} alt={relatedPost.title} className="w-full h-full object-cover" />
                       </div>
                     )}
                     <div className="pt-4 pb-2">

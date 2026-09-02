@@ -28,6 +28,15 @@ export async function uploadImageToCloudinary(file: File): Promise<string> {
   }
 }
 
-export function getCloudinaryImageUrl(publicId: string, width: number = 800, height: number = 500) {
-  return `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/w_${width},h_${height},c_fill/${publicId}`;
+/**
+ * Rewrites a stored Cloudinary delivery URL to request an auto-optimized
+ * (format + quality) version capped to the given display width, instead of
+ * the full original. No-op for non-Cloudinary URLs.
+ */
+export function optimizeCloudinaryUrl(url: string, width?: number): string;
+export function optimizeCloudinaryUrl(url: string | undefined, width?: number): string | undefined;
+export function optimizeCloudinaryUrl(url: string | undefined, width?: number): string | undefined {
+  if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return url;
+  const transformation = width ? `f_auto,q_auto,w_${width},c_limit` : 'f_auto,q_auto';
+  return url.replace('/upload/', `/upload/${transformation}/`);
 }

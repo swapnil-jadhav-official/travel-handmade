@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { HeroImage } from '@/types';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface HeroCarouselProps {
   images: HeroImage[];
@@ -38,7 +39,7 @@ export default function HeroCarousel({
           return (
             <Image
               key={image.id}
-              src={image.image}
+              src={optimizeCloudinaryUrl(image.image, 1920)}
               alt={image.title}
               fill
               sizes="100vw"

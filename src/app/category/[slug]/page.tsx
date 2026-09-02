@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { getCategoryBySlugServer, getPostsByCategoryServer } from '@/lib/firestore-server';
 import CategoryPageContent from './CategoryPageContent';
 
-const DEFAULT_OG_IMAGE = 'https://res.cloudinary.com/dzrabrzd4/image/upload/v1778396717/k5bn4hhzofln8atagn6r.png';
+const DEFAULT_OG_IMAGE = 'https://res.cloudinary.com/iomadqap/image/upload/v1778396717/k5bn4hhzofln8atagn6r.png';
 
 interface CategoryPageProps {
   params: Promise<{ slug: string }>;

@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Article } from "@/types";
+import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 
 interface FoodDrinksProps {
   articles: Article[];
@@ -61,7 +62,7 @@ export default function FoodDrinks({
             >
               <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-72 sm:h-96 lg:h-full">
                 <Image
-                  src={article.image}
+                  src={optimizeCloudinaryUrl(article.image, 800)}
                   alt={article.title}
                   fill
                   sizes="(min-width: 1024px) 33vw, 100vw"

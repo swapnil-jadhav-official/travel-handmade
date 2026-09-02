@@ -6,6 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getSiteSettings } from '@/lib/settings';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 import {
   LayoutDashboard,
   FileText,
@@ -64,7 +65,7 @@ export default function AdminSidebar(): React.ReactElement {
       <div className="border-b border-gray-800 px-6 py-6 flex items-center justify-center">
         {logoUrl.startsWith('http') ? (
           <img
-            src={logoUrl}
+            src={optimizeCloudinaryUrl(logoUrl, 300)}
             alt="Travel Handmade"
             className="h-16 object-contain"
           />
@@ -168,7 +169,7 @@ export default function AdminSidebar(): React.ReactElement {
               <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-sm font-semibold flex-shrink-0">
                 {userProfile.avatarUrl ? (
                   <img
-                    src={userProfile.avatarUrl}
+                    src={optimizeCloudinaryUrl(userProfile.avatarUrl, 100)}
                     alt={userProfile.displayName}
                     className="w-full h-full rounded-full object-cover"
                   />

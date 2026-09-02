@@ -6,6 +6,7 @@ import { InstagramIcon, LinkedinIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { getCategories } from '@/lib/firestore';
 import { getSiteSettings } from '@/lib/settings';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 import type { Category } from '@/types';
 
 export default function Footer() {
@@ -43,7 +44,7 @@ export default function Footer() {
           <div className="flex-shrink-0">
             {!loading && (logoUrl.startsWith('http') ? (
               <img
-                src={logoUrl}
+                src={optimizeCloudinaryUrl(logoUrl, 300)}
                 alt="Travel Handmade"
                 className="h-8 sm:h-10 md:h-12 object-contain mb-4 sm:mb-6"
               />

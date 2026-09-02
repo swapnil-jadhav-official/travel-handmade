@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
+import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface BlogContentProps {
   html: string;
@@ -37,6 +38,13 @@ function isInsideFigure(html: string, offset: number): boolean {
   return beforeImage.lastIndexOf('<figure') > beforeImage.lastIndexOf('</figure');
 }
 
+function optimizeContentImages(html: string): string {
+  return html.replace(/(<img\b[^>]*\ssrc=)(["'])([\s\S]*?)\2/gi, (match, prefix, quote, src) => {
+    const optimized = optimizeCloudinaryUrl(src, 1200);
+    return `${prefix}${quote}${optimized}${quote}`;
+  });
+}
+
 function addImageCaptions(html: string): string {
   return html.replace(/<img\b[^>]*>/gi, (imgTag, offset: number) => {
     if (isInsideFigure(html, offset)) return imgTag;
@@ -57,7 +65,7 @@ function addImageCaptions(html: string): string {
 }
 
 export default function BlogContent({ html, articleType = 'listicle' }: BlogContentProps) {
-  const htmlWithCaptions = useMemo(() => addImageCaptions(html), [html]);
+  const htmlWithCaptions = useMemo(() => addImageCaptions(optimizeContentImages(html)), [html]);
 
   const galleryStyles = articleType === 'visual-gallery'
     ? ' [&_figure]:w-full [&_figure]:lg:w-[calc(100%+8rem)] [&_figure]:lg:-ml-16 [&_figure_img]:w-full [&_figure_img]:max-w-none [&_figure_img]:lg:w-full'
