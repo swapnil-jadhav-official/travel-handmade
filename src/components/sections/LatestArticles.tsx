@@ -60,7 +60,7 @@ export default function LatestArticles({
               src={articles[activeIndex].image}
               alt={articles[activeIndex].title}
               fill
-              sizes="(min-width: 1280px) 480px, 400px"
+              sizes="(min-width: 1280px) 570px, 490px"
               className="object-cover"
             />
           </div>

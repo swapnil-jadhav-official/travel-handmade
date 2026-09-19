@@ -53,7 +53,7 @@ export default function Retreats({
               src={articles[activeIndex].image}
               alt={articles[activeIndex].title}
               fill
-              sizes="(min-width: 1280px) 480px, 400px"
+              sizes="(min-width: 1280px) 610px, 530px"
               className="object-cover"
             />
           </div>
