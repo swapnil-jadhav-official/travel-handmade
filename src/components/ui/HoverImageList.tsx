@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Article } from "@/types";
 import Image from "next/image";
-import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 
 interface HoverImageListProps {
   articles: Article[];
@@ -83,7 +82,7 @@ export default function HoverImageList({
           <Link href={`/blog/${activeArticle.slug}`}>
             <div className="relative overflow-hidden bg-gray-200 cursor-pointer group aspect-[373/539]">
               <Image
-                src={optimizeCloudinaryUrl(activeArticle.image, 800)}
+                src={activeArticle.image}
                 alt={activeArticle.title}
                 width={373}
                 height={539}

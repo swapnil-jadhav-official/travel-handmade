@@ -40,3 +40,13 @@ export function optimizeCloudinaryUrl(url: string | undefined, width?: number): 
   const transformation = width ? `f_auto,q_auto,w_${width},c_limit` : 'f_auto,q_auto';
   return url.replace('/upload/', `/upload/${transformation}/`);
 }
+
+/**
+ * Builds a 1x/2x `srcSet` for a plain <img> tag so retina/high-DPI screens
+ * get real pixel data instead of the browser upscaling a 1x image. Use
+ * alongside `optimizeCloudinaryUrl(url, width)` as the 1x `src` fallback.
+ */
+export function cloudinarySrcSet(url: string | undefined, width: number): string | undefined {
+  if (!url || !url.includes('res.cloudinary.com') || !url.includes('/upload/')) return undefined;
+  return `${optimizeCloudinaryUrl(url, width)} 1x, ${optimizeCloudinaryUrl(url, width * 2)} 2x`;
+}

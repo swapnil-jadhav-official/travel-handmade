@@ -6,7 +6,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { getSiteSettings } from '@/lib/settings';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl, cloudinarySrcSet } from '@/lib/cloudinary';
 import {
   LayoutDashboard,
   FileText,
@@ -66,6 +66,7 @@ export default function AdminSidebar(): React.ReactElement {
         {logoUrl.startsWith('http') ? (
           <img
             src={optimizeCloudinaryUrl(logoUrl, 300)}
+            srcSet={cloudinarySrcSet(logoUrl, 300)}
             alt="Travel Handmade"
             className="h-16 object-contain"
           />
@@ -170,6 +171,7 @@ export default function AdminSidebar(): React.ReactElement {
                 {userProfile.avatarUrl ? (
                   <img
                     src={optimizeCloudinaryUrl(userProfile.avatarUrl, 100)}
+                    srcSet={cloudinarySrcSet(userProfile.avatarUrl, 100)}
                     alt={userProfile.displayName}
                     className="w-full h-full rounded-full object-cover"
                   />

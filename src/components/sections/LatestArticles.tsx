@@ -4,7 +4,6 @@ import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Article } from '@/types';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface LatestArticlesProps {
   articles: Article[];
@@ -58,7 +57,7 @@ export default function LatestArticles({
           <div className="relative flex-1 bg-gray-200 overflow-hidden">
             <Image
               key={articles[activeIndex].id}
-              src={optimizeCloudinaryUrl(articles[activeIndex].image, 800)}
+              src={articles[activeIndex].image}
               alt={articles[activeIndex].title}
               fill
               sizes="(min-width: 1280px) 480px, 400px"

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getNewsletterBySlug } from '@/lib/firestore';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl, cloudinarySrcSet } from '@/lib/cloudinary';
 import type { NewsletterIssue } from '@/data/newsletters';
 
 // ── Shared text styles ──────────────────────────────────────────────────────
@@ -185,6 +185,7 @@ export default function NewsletterDetailPage() {
             >
               <img
                 src={optimizeCloudinaryUrl(issue.heroImage, 1600)}
+                srcSet={cloudinarySrcSet(issue.heroImage, 1600)}
                 alt={`Departures — Issue ${issue.issueNumber}`}
                 className="w-full h-full object-cover"
               />
@@ -280,6 +281,7 @@ export default function NewsletterDetailPage() {
                   <div className="overflow-hidden" style={{ aspectRatio: '240 / 220' }}>
                     <img
                       src={optimizeCloudinaryUrl(article.image, 600)}
+                      srcSet={cloudinarySrcSet(article.image, 600)}
                       alt={article.title}
                       className="w-full h-full object-cover"
                     />

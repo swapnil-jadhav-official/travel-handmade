@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Header from '@/components/Common/Header';
 import Footer from '@/components/Common/Footer';
 import { getNewsletters } from '@/lib/firestore';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl, cloudinarySrcSet } from '@/lib/cloudinary';
 import type { NewsletterIssue } from '@/data/newsletters';
 
 // ── Mini magazine cover card (152×190 px — exact Figma dimensions)
@@ -93,6 +93,7 @@ function CoverCard({
       >
         <img
           src={optimizeCloudinaryUrl(thumbnail, 400)}
+          srcSet={cloudinarySrcSet(thumbnail, 400)}
           alt={`Departures Issue ${issueNumber} — ${title}`}
           className="w-full h-full object-cover"
         />

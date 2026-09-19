@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { Article } from "@/types";
-import { optimizeCloudinaryUrl } from "@/lib/cloudinary";
 
 interface TravelLivingProps {
   articles: Article[];
@@ -64,7 +63,7 @@ export default function TravelLiving({
           >
             <div className="relative overflow-hidden bg-gray-300 cursor-pointer group h-64 sm:h-80 lg:h-full">
               <Image
-                src={optimizeCloudinaryUrl(article.image, 1200)}
+                src={article.image}
                 alt={article.title}
                 fill
                 sizes={idx === 0 ? "(min-width: 1024px) 66vw, (min-width: 640px) 66vw, 0px" : "(min-width: 640px) 33vw, 100vw"}

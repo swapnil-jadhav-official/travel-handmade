@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo } from 'react';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
+import { optimizeCloudinaryUrl, cloudinarySrcSet } from '@/lib/cloudinary';
 
 interface BlogContentProps {
   html: string;
@@ -39,9 +39,11 @@ function isInsideFigure(html: string, offset: number): boolean {
 }
 
 function optimizeContentImages(html: string): string {
-  return html.replace(/(<img\b[^>]*\ssrc=)(["'])([\s\S]*?)\2/gi, (match, prefix, quote, src) => {
+  return html.replace(/(<img\b[^>]*?)\ssrc=(["'])([\s\S]*?)\2/gi, (match, prefix, quote, src) => {
     const optimized = optimizeCloudinaryUrl(src, 1200);
-    return `${prefix}${quote}${optimized}${quote}`;
+    const srcSet = cloudinarySrcSet(src, 1200);
+    const srcSetAttr = srcSet ? ` srcset=${quote}${srcSet}${quote}` : '';
+    return `${prefix} src=${quote}${optimized}${quote}${srcSetAttr}`;
   });
 }
 

@@ -1,7 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import type { Article } from '@/types';
-import { optimizeCloudinaryUrl } from '@/lib/cloudinary';
 
 interface ArticleCardProps {
   article: Article;
@@ -18,7 +17,7 @@ export default function ArticleCard({
         {/* Image Container */}
         <div className="relative h-72 w-full overflow-hidden bg-gray-200">
           <Image
-            src={optimizeCloudinaryUrl(article.image, 800)}
+            src={article.image}
             alt={article.title}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
