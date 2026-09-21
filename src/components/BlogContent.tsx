@@ -72,10 +72,11 @@ export default function BlogContent({ html, articleType = 'listicle' }: BlogCont
   const galleryStyles = articleType === 'visual-gallery'
     ? ' [&_figure]:w-full [&_figure]:lg:w-[calc(100%+8rem)] [&_figure]:lg:-ml-16 [&_figure_img]:w-full [&_figure_img]:max-w-none [&_figure_img]:lg:w-full'
     : '';
+  const listicleClass = articleType === 'listicle' ? ' listicle-figures' : '';
 
   return (
     <div
-      className={`prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_p]:font-[family-name:var(--font-work-sans)] [&_p]:leading-[1.61] [&_h1]:text-2xl [&_h1]:font-[family-name:var(--font-unbounded)] [&_h2]:text-xl [&_h2]:font-[family-name:var(--font-unbounded)] [&_h3]:text-lg [&_h3]:font-[family-name:var(--font-unbounded)] [&_h4]:font-[family-name:var(--font-unbounded)] [&_figure]:my-6 ${galleryStyles}`}
+      className={`prose max-w-none mb-12 [&_p:empty]:min-h-4 [&_p]:text-sm [&_p]:font-[family-name:var(--font-work-sans)] [&_p]:leading-[1.61] [&_h1]:text-2xl [&_h1]:font-[family-name:var(--font-unbounded)] [&_h2]:text-xl [&_h2]:font-[family-name:var(--font-unbounded)] [&_h3]:text-lg [&_h3]:font-[family-name:var(--font-unbounded)] [&_h4]:font-[family-name:var(--font-unbounded)] [&_figure]:my-6${listicleClass}${galleryStyles}`}
       dangerouslySetInnerHTML={{ __html: htmlWithCaptions }}
     />
   );

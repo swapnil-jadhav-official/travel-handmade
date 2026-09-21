@@ -109,6 +109,23 @@ body {
   border-radius: 0 !important;
 }
 
+/* Listicle-only: figure shrink-wraps to its image's rendered width, so
+   the caption below (a table-caption) wraps within that same width
+   instead of spanning the full content column. Scoped to
+   .listicle-figures (not all .prose figure) so it never overrides
+   visual-gallery's full-bleed breakout layout. */
+.ProseMirror figure,
+.listicle-figures figure {
+  display: table;
+  margin: 1.5rem auto;
+}
+
+.ProseMirror figure figcaption,
+.listicle-figures figure figcaption {
+  display: table-caption;
+  caption-side: bottom;
+}
+
 /* Image grid support - 2x2 layout */
 .ProseMirror img.img-half {
   width: 48%;
