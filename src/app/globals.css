@@ -104,7 +104,7 @@ body {
 .prose img {
   max-width: 100%;
   height: auto;
-  margin: 0.5rem 0;
+  margin: 0.5rem auto;
   display: block;
   border-radius: 0 !important;
 }
