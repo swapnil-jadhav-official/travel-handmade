@@ -1,0 +1,566 @@
+@import "tailwindcss";
+
+html {
+  font-family: var(--font-work-sans);
+}
+
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Dark mode intentionally disabled — site uses light-only white backgrounds */
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+} */
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-work-sans);
+}
+
+/* TipTap Editor Styles */
+.ProseMirror {
+  min-height: 300px;
+}
+
+.ProseMirror p {
+  margin: 0.5rem 0;
+}
+
+.ProseMirror h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.ProseMirror h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1.25rem 0 0.5rem 0;
+}
+
+.ProseMirror h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 1rem 0 0.5rem 0;
+}
+
+.ProseMirror ul {
+  list-style: disc;
+  margin: 0.5rem 0 0.5rem 1.5rem;
+}
+
+.ProseMirror ol {
+  list-style: decimal;
+  margin: 0.5rem 0 0.5rem 1.5rem;
+}
+
+.ProseMirror li {
+  margin: 0.25rem 0;
+}
+
+.ProseMirror pre {
+  background: #f3f4f6;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 0.5rem 0;
+}
+
+.ProseMirror code {
+  background: #f3f4f6;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+}
+
+.ProseMirror pre code {
+  background: none;
+  padding: 0;
+}
+
+.ProseMirror a {
+  color: #2563eb;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ProseMirror img,
+.prose img {
+  max-width: 100%;
+  height: auto;
+  margin: 0.5rem auto;
+  display: block;
+  border-radius: 0 !important;
+}
+
+/* Listicle-only: figure and image always match the paragraph column's
+   full width (no breakout, unlike visual-gallery). Since the image
+   fills 100% of the figure, the figcaption -- a normal block child
+   with no width of its own -- automatically matches it too, with no
+   extra sizing tricks needed. Scoped to .listicle-figures (not all
+   .prose figure) so it never overrides visual-gallery's full-bleed
+   breakout layout. */
+.ProseMirror figure,
+.listicle-figures figure {
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+.listicle-figures figure img {
+  width: 100%;
+  /* The figure now handles spacing via its own margin; the image's
+     own vertical margin (from the shared .prose img rule) would add
+     an extra visible gap inside the figure. */
+  margin: 0;
+}
+
+.listicle-figures figure figcaption {
+  text-align: left;
+}
+
+/* Image grid support - 2x2 layout */
+.ProseMirror img.img-half {
+  width: 48%;
+  display: inline-block;
+  margin-right: 2%;
+  margin-bottom: 0.5rem;
+}
+
+.ProseMirror img.img-half:nth-child(even) {
+  margin-right: 0;
+}
+
+/* Image full width */
+.ProseMirror img.img-full {
+  width: 100%;
+  display: block;
+}
+
+/* 2 images per row layout */
+img[data-layout="2"] {
+  width: 48%;
+  display: inline-block;
+  margin-right: 4%;
+  margin-bottom: 0.5rem;
+  vertical-align: top;
+}
+
+img[data-layout="2"]:nth-of-type(2n) {
+  margin-right: 0;
+}
+
+/* ===== Typography System (Figma Design) ===== */
+
+/* Font families as global variables */
+:root {
+  --font-unbounded: 'Unbounded', sans-serif;
+  --font-work-sans: 'Work Sans', sans-serif;
+}
+
+/* Heading 1 */
+.heading-1 {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: 32px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  color: #000000;
+}
+
+/* Heading 2 */
+.heading-2 {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  color: #000000;
+}
+
+/* Category 1 */
+.category-1 {
+  font-family: var(--font-unbounded);
+  font-weight: 300;
+  font-size: 20px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  color: #000000;
+}
+
+/* Category 2 */
+.category-2 {
+  font-family: var(--font-unbounded);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  color: #000000;
+}
+
+/* Subcategory 1 */
+.subcategory-1 {
+  font-family: var(--font-work-sans);
+  word-spacing: normal;
+  font-weight: 400;
+  font-size: 9px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  color: #000000;
+}
+
+/* Paragraph 1 */
+.paragraph-1 {
+  font-family: var(--font-work-sans);
+  word-spacing: normal;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 140%;
+  letter-spacing: -0.03em;
+  color: #000000;
+}
+
+/* ===== Responsive Typography Classes (Figma Design) ===== */
+
+/* Main Category Title - Unbounded Light All Caps 18px (lg) */
+.heading-main-category {
+  font-family: var(--font-unbounded);
+  font-weight: 300;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: black;
+}
+
+@media (min-width: 640px) {
+  .heading-main-category {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-main-category {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-main-category {
+    font-size: 18px;
+  }
+}
+
+/* Main Category Title - Dark variant for dark backgrounds */
+.heading-main-category-dark {
+  font-family: var(--font-unbounded);
+  font-weight: 300;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+}
+
+@media (min-width: 640px) {
+  .heading-main-category-dark {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-main-category-dark {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-main-category-dark {
+    font-size: 18px;
+  }
+}
+
+/* Article Title - Unbounded Medium 14px (lg) */
+.heading-article-title {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  .heading-article-title {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-article-title {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-article-title {
+    font-size: 18px;
+  }
+}
+
+/* Post Title - Unbounded Medium 33px (lg) */
+.heading-post-title {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: 19px;
+  line-height: 110%;
+  letter-spacing: -0.02em;
+  word-spacing: 0.1em;
+}
+
+@media (min-width: 640px) {
+  .heading-post-title {
+    font-size: 21px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-post-title {
+    font-size: 27px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-post-title {
+    font-size: 33px;
+  }
+}
+
+/* Header Menu Items - Unbounded Regular All Caps (lg) */
+.heading-nav {
+  font-family: var(--font-unbounded);
+  font-weight: 400;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 640px) {
+  .heading-nav {
+    font-size: 8.5px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-nav {
+    font-size: 9px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-nav {
+    font-size: 10px;
+  }
+}
+
+/* Location - Unbounded Regular 14px (lg) */
+.heading-location {
+  font-family: var(--font-unbounded);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+@media (min-width: 640px) {
+  .heading-location {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) {
+  .heading-location {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-location {
+    font-size: 20px;
+  }
+}
+
+/* Subcategory - Work Sans Regular All Caps 10px (lg) */
+.text-subcategory {
+  font-family: var(--font-work-sans);
+  word-spacing: normal;
+  font-weight: 400;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (min-width: 640px) {
+  .text-subcategory {
+    font-size: 9.5px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-subcategory {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-subcategory {
+    font-size: 11px;
+  }
+}
+
+/* Article Paragraph - Work Sans Regular 13px (lg) */
+.text-article-paragraph {
+  font-family: var(--font-work-sans);
+  word-spacing: normal;
+  font-weight: 400;
+  font-size: 11px;
+}
+
+@media (min-width: 640px) {
+  .text-article-paragraph {
+    font-size: 11px;
+  }
+}
+
+@media (min-width: 768px) {
+  .text-article-paragraph {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-article-paragraph {
+    font-size: 13px;
+  }
+}
+
+/* Card Author - Work Sans Regular 10px */
+.text-card-author {
+  font-family: var(--font-work-sans);
+  word-spacing: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 140%;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Card Title - Unbounded Medium 16px (lg) */
+.heading-card-title {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 130%;
+  letter-spacing: -0.02em;
+}
+
+@media (min-width: 640px) {
+  .heading-card-title {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .heading-card-title {
+    font-size: 16px;
+  }
+}
+
+/* Section header bottom gap */
+.section-header-gap {
+  margin-bottom: 32px;
+}
+
+@media (min-width: 640px) {
+  .section-header-gap {
+    margin-bottom: 40px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-header-gap {
+    margin-bottom: 65px;
+  }
+}
+
+/* Divider Line */
+.divider-line {
+  border-top: 1px solid #E9E9E9;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 24px 0px;
+  gap: 10px;
+}
+
+/* Static Page Title */
+.static-page-title {
+  font-family: var(--font-unbounded);
+  font-weight: 500;
+  font-size: clamp(22px, 3vw, 32px);
+  line-height: 110%;
+  letter-spacing: -0.05em;
+  text-align: center;
+  max-width: 660px;
+  margin: 4.5rem auto 4rem;
+}
+
+@media (min-width: 640px) {
+  .static-page-title {
+    margin: 5rem auto 5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .static-page-title {
+    margin: 6rem auto 6rem;
+  }
+}
+
+/* Privacy Page Divider */
+.privacy-divider {
+  opacity: 0.34;
+  border-top: 1px solid #000000;
+  display: block;
+  width: 100%;
+}
+
+/* Hide Scrollbar while keeping scroll functionality */
+main {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+main::-webkit-scrollbar {
+  display: none;
+}
+
+nav {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+nav::-webkit-scrollbar {
+  display: none;
+}

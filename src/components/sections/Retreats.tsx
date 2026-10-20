@@ -1,0 +1,64 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import type { Article } from "@/types";
+
+interface RetreatsProps {
+  articles: Article[];
+}
+
+export default function Retreats({
+  articles,
+}: RetreatsProps): React.ReactElement {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  return (
+    <section className="w-full bg-black flex flex-col lg:flex-row lg:h-dvh">
+      {/* Left Side: Title + List */}
+      <div className="flex-1 px-6 sm:px-8 lg:px-12 py-10 lg:py-12 flex flex-col">
+        <div className="pb-3 border-b border-white section-header-gap">
+          <div className="heading-main-category-dark">Retreats</div>
+        </div>
+        <div className="flex-1 flex flex-col">
+          {articles.map((article, index) => (
+            <Link key={article.id} href={`/blog/${article.slug}`} className="flex-1">
+              <div
+                onMouseEnter={() => setActiveIndex(index)}
+                className={`group cursor-pointer h-full transition-all duration-200 flex flex-col justify-center py-3 ${
+                  index !== articles.length - 1 ? "border-b border-white/20" : ""
+                }`}
+              >
+                {article.author && (
+                  <p className="text-subcategory text-gray-400 mb-1 lg:mb-2">
+                    {article.author.toUpperCase()}
+                  </p>
+                )}
+                <div className="heading-article-title text-white group-hover:opacity-60 transition-opacity duration-200">
+                  {article.title}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Right Side: Featured Image (desktop only) */}
+      <div className="hidden lg:block w-[530px] xl:w-[610px] flex-shrink-0 pl-24 xl:pl-28">
+        {articles[activeIndex] && (
+          <div className="relative w-full h-full bg-gray-800 overflow-hidden">
+            <Image
+              key={articles[activeIndex].id}
+              src={articles[activeIndex].image}
+              alt={articles[activeIndex].title}
+              fill
+              sizes="(min-width: 1280px) 610px, 530px"
+              className="object-cover"
+            />
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
