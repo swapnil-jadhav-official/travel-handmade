@@ -88,6 +88,20 @@ export default function ComingSoon() {
           sharper, and tells better stories. Check back soon.
         </p>
 
+        <p
+          className="mt-6"
+          style={{
+            fontFamily: 'var(--font-work-sans)',
+            fontSize: 'clamp(14px, 1.5vw, 16px)',
+            lineHeight: '1.7',
+            letterSpacing: '-0.02em',
+            color: '#c9b99a',
+            maxWidth: '520px',
+          }}
+        >
+          We are under maintenance and will be back in 48 hours.
+        </p>
+
         {/* CTA */}
         <a
           href="https://www.instagram.com/travelhandmade_mag/"
