@@ -1,8 +1,12 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { db } from '@/lib/firebase';
-import { collection, query, where, getDocs } from 'firebase/firestore';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut as firebaseSignOut,
+} from 'firebase/auth';
+import { auth } from '@/lib/firebase';
 import { getUserProfile, updateUserProfile } from '@/lib/users';
 import type { UserProfile, UserRole } from '@/types';
 
@@ -33,54 +37,33 @@ export function AuthProvider({ children }: { children: ReactNode }): React.React
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Restore session from localStorage on mount
   useEffect(() => {
-    const savedUserId = localStorage.getItem('userId');
-    const savedEmail = localStorage.getItem('userEmail');
+    const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!firebaseUser) {
+        setUser(null);
+        setUserProfile(null);
+        setLoading(false);
+        return;
+      }
 
-    if (savedUserId && savedEmail) {
-      setUser({ uid: savedUserId, email: savedEmail });
-      // Fetch the profile
-      getUserProfile(savedUserId)
-        .then(profile => setUserProfile(profile))
-        .catch(error => {
-          console.error('Error fetching profile:', error);
-          localStorage.removeItem('userId');
-          localStorage.removeItem('userEmail');
-          setUser(null);
-        })
-        .finally(() => setLoading(false));
-    } else {
-      setLoading(false);
-    }
+      setUser({ uid: firebaseUser.uid, email: firebaseUser.email ?? '' });
+      try {
+        const profile = await getUserProfile(firebaseUser.uid);
+        setUserProfile(profile);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        setUserProfile(null);
+      } finally {
+        setLoading(false);
+      }
+    });
+
+    return unsubscribe;
   }, []);
 
   const signIn = async (email: string, password: string): Promise<void> => {
     try {
-      // Query Firestore for user with matching email and password
-      const usersRef = collection(db, 'users');
-      const q = query(
-        usersRef,
-        where('email', '==', email),
-        where('password', '==', password)
-      );
-
-      const querySnapshot = await getDocs(q);
-
-      if (querySnapshot.empty) {
-        throw new Error('Invalid email or password');
-      }
-
-      const userDoc = querySnapshot.docs[0];
-      const uid = userDoc.id;
-      const profile = userDoc.data() as UserProfile;
-
-      // Save to localStorage
-      localStorage.setItem('userId', uid);
-      localStorage.setItem('userEmail', email);
-
-      setUser({ uid, email });
-      setUserProfile(profile);
+      await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
       console.error('Sign in error:', error);
       throw error;
@@ -88,10 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }): React.React
   };
 
   const signOut = async (): Promise<void> => {
-    localStorage.removeItem('userId');
-    localStorage.removeItem('userEmail');
-    setUser(null);
-    setUserProfile(null);
+    await firebaseSignOut(auth);
   };
 
   const refreshProfile = async (): Promise<void> => {
